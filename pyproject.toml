@@ -2,7 +2,7 @@
 name = "miniprojekti"
 version = "0.0.1"
 description = "Ohjelmistotuotannon miniprojekti, lähteet BiBtex muotoon"
-authors = ["Your Name <you@example.com>"]
+authors = ["Eero-Pekka Karppinen"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
