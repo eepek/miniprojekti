@@ -36,8 +36,7 @@ class Inproceedings(Reference):
         Returns:
             String: returns string in Bibtex- format
         """
-        fields = {
-            "author": self.author,
+        fields = {"author": self.author,
             "title": self.title,
             "booktitle": self.booktitle,
             "year": self.year,
@@ -47,8 +46,7 @@ class Inproceedings(Reference):
             "pages": self.pages,
             "address": self.address,
             "month": self.month,
-            "note": self.note
-        }
+            "note": self.note}
 
         bibtex_entries = []
         for key, value in fields.items():
