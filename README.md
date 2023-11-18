@@ -1,5 +1,7 @@
 # miniprojekti
 
+[![CI workflow badge](https://github.com/eepek/miniprojekti/workflows/CI/badge.svg)](https://github.com/eepek/miniprojekti/actions/workflows/CI.yml)
+
 OHTU miniprojekti
 
 [Definition of Done](https://github.com/eepek/miniprojekti/blob/main/documentation/DefinitionOfDone.md)
