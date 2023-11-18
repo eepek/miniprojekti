@@ -25,6 +25,6 @@ jobs:
       - name: Create coverage report
         run: poetry run coverage xml
       - name: Publish coverage report to Codecov
-      - run: bash <(curl -s https://codecov.io/bash)
+        run: bash <(curl -s https://codecov.io/bash)
       - name: Lint
         run: poetry run pylint src
