@@ -1,8 +1,10 @@
 from ui import UI
-
+from cli_io import ConsoleIO
 
 def main():
-    program = UI()
+    _io = ConsoleIO()
+    program = UI(_io)
+    program.start()
 
 
 if __name__ == "__main__":
