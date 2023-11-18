@@ -1,6 +1,7 @@
 # miniprojekti
 
 [![CI workflow badge](https://github.com/eepek/miniprojekti/workflows/CI/badge.svg)](https://github.com/eepek/miniprojekti/actions/workflows/CI.yml)
+[![Codecov badge](https://codecov.io/gh/eepek/miniprojekti/graph/badge.svg?token=TFLFQVR8IK)](https://codecov.io/gh/eepek/miniprojekti)
 
 OHTU miniprojekti
 
