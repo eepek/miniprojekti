@@ -4,6 +4,8 @@
   Returns:
       String: User input
   """
+
+
 class ConsoleIO:
     """Class which reads inputs from the user
   and prints out values for user to see

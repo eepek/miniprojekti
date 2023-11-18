@@ -1,9 +1,15 @@
 from ui import UI
 from cli_io import ConsoleIO
+from repositories.reference_repository import ReferenceRepository
+from services.refrence_services import ReferenceServices
+
 
 def main():
     _io = ConsoleIO()
-    program = UI(_io)
+    _reference_repository = ReferenceRepository()
+    # Injektoidaan ReferenceRepository sekä serviceille että UI:lle
+    _reference_services = ReferenceServices(_reference_repository)
+    program = UI(_io, _reference_repository, _reference_services)
     program.start()
 
 

@@ -1,10 +1,12 @@
 """Unittests for reference module"""
 import unittest
-from reference import Reference
-from reference import Inproceedings
+from entities.reference import Reference
+from entities.reference import Inproceedings
+
 
 class TestReference(unittest.TestCase):
     """Unittests for reference module"""
+
     def setUp(self):
         """Creating couple of Inproceedings class objects
         - One with all the optional parameters
@@ -12,23 +14,23 @@ class TestReference(unittest.TestCase):
         """
         self.ref = Reference("key1", "Test title")
         self.inpro_all = Inproceedings(
-                key="Key123",
-                title="Inproceeding name",
-                author="Mikki Hiiri",
-                booktitle="Proceedings of the Conference",
-                year=2023,
-                volume="1",
-                pages="123-145",
-                address="Helsinki",
-                month="June",
-                note="test")
+            key="Key123",
+            title="Inproceeding name",
+            author="Mikki Hiiri",
+            booktitle="Proceedings of the Conference",
+            year=2023,
+            volume="1",
+            pages="123-145",
+            address="Helsinki",
+            month="June",
+            note="test")
         self.inpro_some = Inproceedings(
-                key="Key123",
-                title="Inproceeding name",
-                author="Mikki Hiiri",
-                booktitle="Proceedings of the Conference",
-                year=2023,
-                note="test")
+            key="Key123",
+            title="Inproceeding name",
+            author="Mikki Hiiri",
+            booktitle="Proceedings of the Conference",
+            year=2023,
+            note="test")
 
     def test_creating_object(self):
         """Testing for the correct instances"""
@@ -47,7 +49,7 @@ class TestReference(unittest.TestCase):
 
     def test_none_fields_not_in_inproceedings_str(self):
         """ Testing for correct __str__ method output
-        paramaters not set in the constructor should not be found 
+        paramaters not set in the constructor should not be found
         in the return of str(self.inpro_some).
         Title and note should be in the string.
         """
