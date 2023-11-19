@@ -10,6 +10,7 @@ class TestReference(unittest.TestCase):
     def setUp(self):
         self.repository = ReferenceRepository("src/tests/test_references.bib")
         self.repository.empty_all_references()
+        self.repository.init_references()
         self.inpro_all = Inproceedings(
             key="Key123",
             title="Inproceeding name",
@@ -34,9 +35,21 @@ class TestReference(unittest.TestCase):
 
         self.assertEqual(before_lines + 12, after_lines)
 
-    def test_loading_references_gives_correct_amount(self):
+    def test_loading_references_from_empty_gives_correct_amount(self):
         """Tests that initially the list containing references
         is empty
         """
         references = self.repository.load_all()
         self.assertEqual(len(references), 0)
+
+    def test_after_saving_reference_list_is_updated(self):
+        """Tests that after adding reference it is found
+        in file and in list"""
+
+        self.repository.save(self.inpro_all)
+        lines = self.repository.file_lines()
+        self.assertEqual(12, lines)
+
+        reference_list = self.repository.load_all()
+
+        self.assertEqual(1, len(reference_list))

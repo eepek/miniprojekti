@@ -1,5 +1,5 @@
-import os
 """Module for constants"""
+import os
 
 MISSING_FIELD_ERROR = "Fields: key, title, author, booktitle and year are mandatory fields"
 YEAR_FORMAT_ERROR = "Year must be YYYY"

@@ -4,7 +4,7 @@ import pytest
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
 from constants import MISSING_FIELD_ERROR, YEAR_FORMAT_ERROR, \
-    MONTH_FORMAT_ERROR, VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR
+    MONTH_FORMAT_ERROR, VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR, ROOT_DIR
 
 
 class TestReferenceServices(unittest.TestCase):
@@ -13,10 +13,11 @@ class TestReferenceServices(unittest.TestCase):
     def setUp(self):
         """Creates ReferenceRepository and ReferenceServices objects
 
-        Create dictionary with all valid fields corresponding to 
+        Create dictionary with all valid fields corresponding to
         Reference class object
         """
-        self.repository = ReferenceRepository()
+        self.repository = ReferenceRepository(
+            f"{ROOT_DIR}/tests/test_references.bib")
         self.ref_services = ReferenceServices(self.repository)
 
         self.inpro = {

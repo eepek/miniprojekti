@@ -1,3 +1,4 @@
+import bibtexparser
 from entities.reference import Inproceedings
 
 
@@ -9,6 +10,32 @@ class ReferenceRepository:
     def __init__(self, file_path):
         self._references = []
         self._file_path = file_path
+        self.init_references()
+
+    def init_references(self):
+        """Loads Inproceedings references from
+        database file and saves them into _references
+        list.
+        """
+        self._references = []
+        with open(self._file_path, "r", encoding="utf-8") as references_data:
+
+            bib_data = bibtexparser.load(references_data)
+
+        optional_fields = [
+            'editor', 'volume', 'series',
+            'pages', 'address', 'month',
+            'note']
+        for entry in bib_data.entries:
+            for key in entry.keys():
+                if key in optional_fields:
+                    optional_fields.remove(key)
+
+            for value in optional_fields:
+                entry[value] = None
+            new_reference = Inproceedings(entry['ID'], entry['title'], entry['author'], entry['booktitle'], entry['year'],
+                                          entry['editor'], entry['volume'], entry['series'], entry['pages'], entry['address'], entry['month'], entry['note'])
+            self._references.append(new_reference)
 
     def save(self, reference: Inproceedings):
         """Saves reference into references list
