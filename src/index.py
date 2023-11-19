@@ -1,7 +1,7 @@
 from ui import UI
 from cli_io import ConsoleIO
 from repositories.reference_repository import ReferenceRepository
-from services.refrence_services import ReferenceServices
+from services.reference_services import ReferenceServices
 
 
 def main():

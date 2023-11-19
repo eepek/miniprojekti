@@ -2,7 +2,7 @@
 import unittest
 import pytest
 from repositories.reference_repository import ReferenceRepository
-from services.refrence_services import ReferenceServices
+from services.reference_services import ReferenceServices
 from constants import MISSING_FIELD_ERROR, YEAR_FORMAT_ERROR, \
     MONTH_FORMAT_ERROR, VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR
 
