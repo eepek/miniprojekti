@@ -6,7 +6,7 @@ from services.reference_services import ReferenceServices
 
 def main():
     _io = ConsoleIO()
-    _reference_repository = ReferenceRepository()
+    _reference_repository = ReferenceRepository("./data/references.bib")
     # Injektoidaan ReferenceRepository sekä serviceille että UI:lle
     _reference_services = ReferenceServices(_reference_repository)
     program = UI(_io, _reference_repository, _reference_services)

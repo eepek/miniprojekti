@@ -1,10 +1,14 @@
 """Module consisting of parent class Reference and it's children."""
+
+
 class Reference:
     """Parent class for all Bibtex- entry types
     """
+
     def __init__(self, key, title):
         self.key = key
         self.title = title
+
 
 class Inproceedings(Reference):
     """Bibtex entry- type inproceeding
@@ -12,10 +16,11 @@ class Inproceedings(Reference):
     Args:
         Reference (class): parent class, key & title
     """
+
     def __init__(self, key, title, author, booktitle, year,
-                 editor = None, volume = None, series = None,
-                 pages = None, address = None, month = None,
-                 note = None):
+                 editor=None, volume=None, series=None,
+                 pages=None, address=None, month=None,
+                 note=None):
         super().__init__(key, title)
         self.author = author
         self.booktitle = booktitle
@@ -37,20 +42,23 @@ class Inproceedings(Reference):
             String: returns string in Bibtex- format
         """
         fields = {"author": self.author,
-            "title": self.title,
-            "booktitle": self.booktitle,
-            "year": self.year,
-            "editor": self.editor,
-            "volume": self.volume,
-            "series": self.series,
-            "pages": self.pages,
-            "address": self.address,
-            "month": self.month,
-            "note": self.note}
+                  "title": self.title,
+                  "booktitle": self.booktitle,
+                  "year": self.year,
+                  "editor": self.editor,
+                  "volume": self.volume,
+                  "series": self.series,
+                  "pages": self.pages,
+                  "address": self.address,
+                  "month": self.month,
+                  "note": self.note}
 
         bibtex_entries = []
         for key, value in fields.items():
             if value is not None:
-                bibtex_entries.append(f"{key} = {{{value}}}")
+                if key == "year":
+                    bibtex_entries.append(f"   {key:<13}= {value}")
+                else:
+                    bibtex_entries.append(f"   {key:<13}= {{{value}}}")
 
-        return f"@inproceedings{{{self.key},\n" + ",\n".join(bibtex_entries) + "\n}"
+        return f"@inproceedings{{{self.key},\n" + ",\n".join(bibtex_entries) + "\n}\n"
