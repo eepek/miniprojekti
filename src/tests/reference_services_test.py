@@ -117,3 +117,20 @@ class TestReferenceServices(unittest.TestCase):
         self.inpro["extrafiled"] = "foo"
         with pytest.raises(ValueError, match=EXTRA_KEYS_ERROR):
             self.ref_services.create_reference(self.inpro)
+
+    def test_only_mandatory_fields_passes(self):
+        inpro = {
+            "key": "dockey12",
+            "title": "Title",
+            "author": "Ghost Writer",
+            "booktitle": "Proceedings of the Conference",
+            "year": 2023,
+            "editor": "",
+            "volume": "",
+            "series": "",
+            "pages": "",
+            "address": "",
+            "month": "",
+            "note": ""
+        }
+        self.ref_services.create_reference(inpro)
