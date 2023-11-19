@@ -57,8 +57,8 @@ class Inproceedings(Reference):
         for key, value in fields.items():
             if value is not None:
                 if key == "year":
-                    bibtex_entries.append(f"   {key:<13}= {value}")
+                    bibtex_entries.append(f"    {key:<13}= {value}")
                 else:
-                    bibtex_entries.append(f"   {key:<13}= {{{value}}}")
+                    bibtex_entries.append(f"    {key:<13}= {{{value}}}")
 
         return f"@inproceedings{{{self.key},\n" + ",\n".join(bibtex_entries) + "\n}\n"

@@ -1,16 +1,26 @@
+"""Module for the command line user interface"""
+import sys
 from cli_io import ConsoleIO
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
-
+from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, \
+    FIELD_MANDATORY_ERROR, UNSUITABLE_COMMAND_ERROR
 
 class UI():
+    """Class that creates a command line user interface to the program.
+
+    Args:
+        io (ConsoleIO): class to write and read from the console
+        reference_repository (ReferenceRepository): class to store References
+        reference_service (ReferenceService): class to create References
+    """
     def __init__(self, io: ConsoleIO, reference_repository: ReferenceRepository,
                  reference_service: ReferenceServices):
         self._io = io
         self._reference_repository = reference_repository
         self._reference_services = reference_service
         self.commands = {
-            "1": "Browse all references ",
+            "1": "Browse all references",
             "2": "Add reference (inproceedings)",
             "c": "Show command options",
             "x": "Exit"
@@ -21,6 +31,7 @@ class UI():
         self._io.write("Welcome to your vault of references!")
 
     def start(self):
+        """Start an interactive command line session to ask the user for commands."""
         self.show_commands()
 
         while True:
@@ -28,10 +39,10 @@ class UI():
             command = self._io.read("What would you like to do?: ")
 
             if command not in self.commands:
-                self._io.write("Error: Unsuitable command")
+                self._io.write("Error: " + UNSUITABLE_COMMAND_ERROR)
 
             if command == "1":
-                self.show_inproceedings()
+                self.show_references()
 
             if command == "2":
                 self.add_inproceedings()
@@ -42,30 +53,66 @@ class UI():
             if command == "x":
                 self.exit()
 
-    def show_commands(self):
+    def show_commands(self) -> None:
+        """Print command options."""
         self._io.write("\nCommand options:\n")
         for key, value in self.commands.items():
             command = f"{key}: {value}"
             self._io.write(command)
 
-    def add_inproceedings(self):
+    def get_field(self, field: str, mandatory: bool) -> str:
+        """Start an interactive command line session to ask the user for
+        a field value.
 
-        reference = self._io.read("\nAdd reference: ")  # temporary
-        if reference:
-            # Tässä sit kun saadaan kaikki tiedot kerättyä niin kutsutaan referencerepositorya
-            self._reference_services.create_reference(reference)
-            # tai jos/kun halutaan checkata user inputit niin
-            # joku reference_service luokka joka tekee
-            # checkit ja sen jälkeen kutsuu reference repositorya
-            self._io.write(f"\n{reference} added succesfully")
+        Args:
+            field (str): the field name to ask the value for
+            mandatory (bool): whether to insist for a value, or allow skipping
+        
+        Returns:
+            str: value for field
+        """
+        mandatory_text = ""
+
+        if mandatory:
+            mandatory_text = "mandatory"
         else:
-            # this is not the final error message
-            self._io.write("\nError: Something went wrong")
+            mandatory_text = "optional, enter to skip"
 
-    def show_inproceedings(self):
+        while True:
+            value = self._io.read(f"Enter value for field {field} ({mandatory_text}): ")
+            if value == "":
+                if mandatory:
+                    self._io.write(f"Error: {field}: " + FIELD_MANDATORY_ERROR)
+                else:
+                    return ""
+            else:
+                return value
+
+    def add_inproceedings(self) -> None:
+        """Start an interactive command line session to ask the user for
+        field values for an Inproceedings-reference.
+
+        Calls reference_services.create_reference with field values.
+        """
+        field_values = {}
+
+        for field in INPROCEEDINGS_KEYS:
+            mandatory = field in INPROCEEDINGS_MANDATORY_KEYS
+            value = self.get_field(field, mandatory)
+            if value != "":
+                field_values[field] = value
+
+        try:
+            self._reference_services.create_reference(field_values)
+        except ValueError as error:
+            self._io.write("Error: " + str(error))
+
+    def show_references(self) -> None:
+        """Print references."""
         for reference in self._reference_repository.load_all():
             self._io.write(str(reference))
 
     def exit(self):
+        """Exit program."""
         self._io.write("\nShutting down")
-        exit()
+        sys.exit()

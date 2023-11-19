@@ -2,13 +2,14 @@
 import unittest
 from repositories.reference_repository import ReferenceRepository
 from entities.reference import Inproceedings
+from constants import ROOT_DIR
 
 
 class TestReference(unittest.TestCase):
     """Tests for reference repository class """
 
     def setUp(self):
-        self.repository = ReferenceRepository("src/tests/test_references.bib")
+        self.repository = ReferenceRepository(f"{ROOT_DIR}/tests/test_references.bib")
         self.repository.empty_all_references()
         self.repository.init_references()
         self.inpro_all = Inproceedings(

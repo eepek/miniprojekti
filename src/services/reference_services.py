@@ -44,7 +44,7 @@ class ReferenceServices:
         if not re.match(year_pattern, str(reference["year"])):
             raise ValueError(YEAR_FORMAT_ERROR)
 
-        if reference["month"] != "":
+        if "month" in reference and reference["month"] != "":
             month_pattern = re.compile(
                 r'^(0?[1-9]|1[0-2]|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?| \
                 jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)$',
@@ -52,12 +52,12 @@ class ReferenceServices:
             if not re.match(month_pattern, str(reference["month"])):
                 raise ValueError(MONTH_FORMAT_ERROR)
 
-        if reference["volume"] != "":
+        if "volume" in reference and reference["volume"] != "":
             regex = r"^\d+$"
             if not re.match(regex, reference["volume"]):
                 raise ValueError(VOLUME_FORMAT_ERROR)
 
-        if reference["pages"] != "":
+        if "pages" in reference and reference["pages"] != "":
             regex = r"^\d+([-]\d+)?$"
             if not re.match(regex, reference["pages"]):
                 raise ValueError(PAGES_FORMAT_ERROR)

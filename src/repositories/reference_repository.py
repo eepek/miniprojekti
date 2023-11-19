@@ -1,5 +1,6 @@
 import bibtexparser
 from entities.reference import Inproceedings
+from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS
 
 
 class ReferenceRepository:
@@ -22,19 +23,25 @@ class ReferenceRepository:
 
             bib_data = bibtexparser.load(references_data)
 
-        optional_fields = [
-            'editor', 'volume', 'series',
-            'pages', 'address', 'month',
-            'note']
         for entry in bib_data.entries:
-            for key in entry.keys():
-                if key in optional_fields:
-                    optional_fields.remove(key)
+            ref_prototype = {
+                "key": entry["ID"]
+            }
 
-            for value in optional_fields:
-                entry[value] = None
-            new_reference = Inproceedings(entry['ID'], entry['title'], entry['author'], entry['booktitle'], entry['year'],
-                                          entry['editor'], entry['volume'], entry['series'], entry['pages'], entry['address'], entry['month'], entry['note'])
+            missing_mandatory_keys = set(INPROCEEDINGS_MANDATORY_KEYS) # copy
+            missing_mandatory_keys.remove("key")
+
+            for key, value in entry.items():
+                if key in INPROCEEDINGS_KEYS:
+                    ref_prototype[key] = value
+                    if key in INPROCEEDINGS_MANDATORY_KEYS:
+                        missing_mandatory_keys.remove(key)
+            
+            # If haven't found all mandatory keys, don't load this entry
+            if len(missing_mandatory_keys) > 0:
+                continue
+
+            new_reference = Inproceedings(**ref_prototype)
             self._references.append(new_reference)
 
     def save(self, reference: Inproceedings):
