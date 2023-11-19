@@ -1,3 +1,4 @@
+"""Main program module."""
 from ui import UI
 from cli_io import ConsoleIO
 from repositories.reference_repository import ReferenceRepository
@@ -6,6 +7,7 @@ from constants import ROOT_DIR
 
 
 def main():
+    """Main program function."""
     _data_folder = f"{ROOT_DIR}/data/references.bib"
     _io = ConsoleIO()
     _reference_repository = ReferenceRepository(_data_folder)

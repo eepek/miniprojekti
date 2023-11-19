@@ -1,3 +1,4 @@
+"""Module for saving references"""
 import bibtexparser
 from entities.reference import Inproceedings
 from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS
@@ -36,7 +37,7 @@ class ReferenceRepository:
                     ref_prototype[key] = value
                     if key in INPROCEEDINGS_MANDATORY_KEYS:
                         missing_mandatory_keys.remove(key)
-            
+
             # If haven't found all mandatory keys, don't load this entry
             if len(missing_mandatory_keys) > 0:
                 continue
@@ -80,5 +81,5 @@ class ReferenceRepository:
     def empty_all_references(self):
         """Deletes all content in database .bib file
         """
-        with open(self._file_path, "w", encoding="utf-8") as file:
+        with open(self._file_path, "w", encoding="utf-8"):
             pass
