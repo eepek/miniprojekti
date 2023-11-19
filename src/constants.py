@@ -1,3 +1,4 @@
+import os
 """Module for constants"""
 
 MISSING_FIELD_ERROR = "Fields: key, title, author, booktitle and year are mandatory fields"
@@ -9,3 +10,5 @@ EXTRA_KEYS_ERROR = "Input contains extra fields"
 INPROCEEDINGS_KEYS = ["key", "title", "author", "booktitle", "year",
                       "editor", "volume", "series", "pages", "address",
                       "month", "note"]
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
