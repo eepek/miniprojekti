@@ -26,46 +26,38 @@ poetry install
 
 All command line actions to be run on project main folder.
 
-1. Start Poetry shell:
+1. To start program run:
 
 ```bash
-poetry poetry shell
+poetry run invoke start
 ```
 
-All following actions are to be run on Poetry shell.
-
-2. Start Program:
+2. Static code analysis is run with:
 
 ```bash
-python3 src/index.py
+poetry run invoke lint
 ```
 
-3. Static code analysis is run with:
+3. Unit tests are run with:
 
 ```bash
-pylint src
+poetry run invoke test
 ```
 
-4. Unit tests are run with:
+4. Test coverage is run with:
 
 ```bash
-pytest src
+poetry run invoke coverage
 ```
 
-5. Test coverage is run with:
+5. Test coverage report can be generated with:
 
 ```bash
-coverage run --branch -m pytest src
+poetry run invoke coverage-report
 ```
 
-6. Test coverage report can be generated with:
+6. Html format can be generated
 
 ```bash
-coverage report -m
-```
-
-7. Html format can be generated
-
-```bash
-coverage html
+poetry run invoke coverage-report-html
 ```

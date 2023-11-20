@@ -17,18 +17,10 @@ poetry install
 
 All command line actions to be run on project main folder.
 
-1. Start Poetry shell:
+To start program run:
 
 ```bash
-poetry poetry shell
-```
-
-All following actions are to be run on Poetry shell.
-
-2. Start Program:
-
-```bash
-python3 src/index.py
+poetry run invoke start
 ```
 
 ## Main view
