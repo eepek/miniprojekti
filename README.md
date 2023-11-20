@@ -13,6 +13,8 @@ OHTU miniprojekti
 
 [User Manual](https://github.com/eepek/miniprojekti/blob/main/Documents/UserManual.md)
 
+[License](https://github.com/eepek/miniprojekti/blob/main/LICENSE)
+
 ## Installation
 
 1. Clone repository [Miniprojekti](https://github.com/eepek/miniprojekti)
