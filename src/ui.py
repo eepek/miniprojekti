@@ -86,7 +86,11 @@ class UI():
                 else:
                     return ""
             else:
-                return value
+                try:
+                    self._reference_services.validate_field(field, value)
+                    return value
+                except ValueError as validation_error:
+                    self._io.write(f"Validation Error for {field}: {str(validation_error)}")
 
     def add_inproceedings(self) -> None:
         """Start an interactive command line session to ask the user for
@@ -99,9 +103,9 @@ class UI():
         for field in INPROCEEDINGS_KEYS:
             mandatory = field in INPROCEEDINGS_MANDATORY_KEYS
             value = self.get_field(field, mandatory)
+
             if value != "":
                 field_values[field] = value
-
         try:
             self._reference_services.create_reference(field_values)
         except ValueError as error:
