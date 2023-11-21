@@ -89,6 +89,9 @@ class TestReferenceServices(unittest.TestCase):
                            match=MISSING_FIELD_ERROR):
             self.ref_services.create_reference(self.inpro)
 
+    def test_valid_month_does_not_raise_error(self):
+        self.ref_services.validate_field("month", "january")
+
     def test_invalid_month_raises_error(self):
         """Test Value error with invalid month format"""
         with pytest.raises(ValueError, match=MONTH_FORMAT_ERROR):
@@ -99,10 +102,16 @@ class TestReferenceServices(unittest.TestCase):
         with pytest.raises(ValueError, match=YEAR_FORMAT_ERROR):
             self.ref_services.validate_field("year", 21)
 
+    def test_valid_volume_does_not_raise_error(self):
+        self.ref_services.validate_field("volume", str(1))
+
     def test_invalid_volume_raises_error(self):
         """Test Value error with invalid volume format"""
         with pytest.raises(ValueError, match=VOLUME_FORMAT_ERROR):
             self.ref_services.validate_field("volume", "VolumeX")
+    
+    def test_valid_pages_does_not_raise_error(self):
+        self.ref_services.validate_field("pages", str(11))
 
     def test_invalid_pages_raises_error(self):
         """Test Value error with invalid pages format"""
