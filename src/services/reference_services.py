@@ -50,7 +50,7 @@ class ReferenceServices:
             field (str): Field to evaluate
             value (int/str): Value to be evaluated
         Raises:
-            ValueError: _description_
+            ValueError
         """
 
         if field == "year":
