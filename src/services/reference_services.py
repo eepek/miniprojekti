@@ -24,7 +24,6 @@ class ReferenceServices:
         generates Reference object and
         and calls reference_repository save method
         Text type fields are only validated for existence not for contents
-        Raises ValueError in case of invalid fields
         Converst Reference Object into dictionary before calling reference_repository.save()
 
         Args:
@@ -40,27 +39,36 @@ class ReferenceServices:
                 or not reference["booktitle"] or not reference["year"]:
             raise ValueError(MISSING_FIELD_ERROR)
 
-        year_pattern = r"\d{4}"
-        if not re.match(year_pattern, str(reference["year"])):
-            raise ValueError(YEAR_FORMAT_ERROR)
+        ref_object = Inproceedings(**reference)
+        self._reference_repository.save(ref_object)
 
-        if "month" in reference and reference["month"] != "":
+
+    def validate_field(self, field, value):
+        """Validate the user input for a specific field.
+            Raises ValueError in case of invalid fields
+        Args:
+            field (str): Field to evaluate
+            value (int/str): Value to be evaluated
+        Raises:
+            ValueError
+        """
+
+        if field == "year":
+            year_pattern = r"\d{4}"
+            if not re.match(year_pattern, str(value)):
+                raise ValueError(YEAR_FORMAT_ERROR)
+        elif field == "month":
             month_pattern = re.compile(
                 r'^(0?[1-9]|1[0-2]|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?| \
                 jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)$',
                 re.IGNORECASE)
-            if not re.match(month_pattern, str(reference["month"])):
+            if not re.match(month_pattern, str(value)):
                 raise ValueError(MONTH_FORMAT_ERROR)
-
-        if "volume" in reference and reference["volume"] != "":
+        elif field == "volume":
             regex = r"^\d+$"
-            if not re.match(regex, reference["volume"]):
+            if not re.match(regex, value):
                 raise ValueError(VOLUME_FORMAT_ERROR)
-
-        if "pages" in reference and reference["pages"] != "":
+        elif field == "pages":
             regex = r"^\d+([-]\d+)?$"
-            if not re.match(regex, reference["pages"]):
+            if not re.match(regex, value):
                 raise ValueError(PAGES_FORMAT_ERROR)
-
-        ref_object = Inproceedings(**reference)
-        self._reference_repository.save(ref_object)
