@@ -21,7 +21,6 @@ class TestReferenceServices(unittest.TestCase):
         self.ref_services = ReferenceServices(self.repository)
 
         self.inpro = {
-            "key": "dockey12",
             "title": "Title",
             "author": "Ghost Writer",
             "booktitle": "Proceedings of the Conference",
@@ -54,23 +53,9 @@ class TestReferenceServices(unittest.TestCase):
         self.inpro["pages"] = "44"
         self.ref_services.create_reference(self.inpro)
 
-    def test_missing_key_raises_error(self):
-        """Test Value error with missing field key"""
-        self.inpro["key"] = None
-        with pytest.raises(ValueError,
-                           match=MISSING_FIELD_ERROR):
-            self.ref_services.create_reference(self.inpro)
-
     def test_missing_title_raises_error(self):
         """Test Value error with missing field title"""
         self.inpro["title"] = None
-        with pytest.raises(ValueError,
-                           match=MISSING_FIELD_ERROR):
-            self.ref_services.create_reference(self.inpro)
-
-    def test_missing_author_raises_error(self):
-        """Test Value error with missing field author"""
-        self.inpro["author"] = None
         with pytest.raises(ValueError,
                            match=MISSING_FIELD_ERROR):
             self.ref_services.create_reference(self.inpro)
@@ -129,7 +114,7 @@ class TestReferenceServices(unittest.TestCase):
         inpro = {
             "key": "dockey12",
             "title": "Title",
-            "author": "Ghost Writer",
+            "author": "Ghost, Writer",
             "booktitle": "Proceedings of the Conference",
             "year": 2023,
             "editor": "",
@@ -141,3 +126,26 @@ class TestReferenceServices(unittest.TestCase):
             "note": ""
         }
         self.ref_services.create_reference(inpro)
+    
+    def test_bibtex_key_generator(self):
+        """ Test for bibtex key constructing"""
+        inpro = {
+            "title": "How to Google",
+            "author": "Alphabet Inc.",
+            "booktitle": "Proceedings of the Conference",
+            "year": 2023,
+            "editor": "",
+            "volume": "",
+            "series": "",
+            "pages": "",
+            "address": "",
+            "month": "",
+            "note": ""
+        }
+        self.ref_services.create_reference(inpro)
+        key1 = self.ref_services.construct_bibtex_key("Powers", 2023)
+        key2 = self.ref_services.construct_bibtex_key("Powersson", 1995)
+        key3 = self.ref_services.construct_bibtex_key("Alphabet Inc.", 2023)
+        self.assertEqual(key1, "powers23")
+        self.assertEqual(key2, "powerss95")
+        self.assertEqual(key3, "alphabe23_1")

@@ -1,7 +1,7 @@
 """Module for saving references"""
 import bibtexparser
 from entities.reference import Inproceedings
-from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS
+from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, KEY_DOES_NOT_EXIST_ERROR
 
 
 class ReferenceRepository:
@@ -66,6 +66,30 @@ class ReferenceRepository:
             list: List of all references
         """
         return self._references
+
+    def load_one(self, search_key):
+        """Retrieves reference by key
+
+        Args:
+            search_key (String): Key to determine correct reference
+        Raises:
+            ValueError: Raises, if key not found
+        Returns:
+            Reference: Reference or subclass object
+        """
+        reference = [ref for ref in self._references if ref.key == search_key]
+        if reference:
+            return reference[0]
+        raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
+
+    def get_similar_key_count(self, key: str) -> int:
+        """Returns key substring occurrences in self._references
+        Args:
+            key (str): Key to be searched
+        Returns:
+            int: Amount of similar keys
+        """
+        return sum(key in reference.key for reference in self._references)
 
     def file_lines(self):
         """Helper function for testing

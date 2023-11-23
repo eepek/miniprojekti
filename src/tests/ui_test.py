@@ -1,11 +1,12 @@
 """Unittests for UI module."""
 import unittest
+import re
 from collections import deque
 from typing import List
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
 from ui import UI
-from constants import ROOT_DIR, UNSUITABLE_COMMAND_ERROR, FIELD_MANDATORY_ERROR, YEAR_FORMAT_ERROR
+from constants import ROOT_DIR, UNSUITABLE_COMMAND_ERROR, FIELD_MANDATORY_ERROR, YEAR_FORMAT_ERROR, KEY_DOES_NOT_EXIST_ERROR
 
 class MockIO:
     """Class to mock IO.
@@ -135,3 +136,46 @@ class TestUI(unittest.TestCase):
         ]
         output = self.run_program(command_list)
         self.assertIn(YEAR_FORMAT_ERROR, output)
+    
+    def test_show_all_reference_keys(self):
+        """Test showing all reference keys."""
+        command_list = [
+            "3",
+            "x"
+        ]
+        fields = {"title":"test title","author":"test author","booktitle":"test_title", "year":1995}
+        self.ref_services.create_reference(fields)
+        self.ref_services.create_reference(fields)
+        output = self.run_program(command_list)
+        self.assertEqual(output.count("testaut95"), len(self.ref_repository._references))
+
+    def test_show_reference_by_key(self):
+        """Test accessing single reference via ui"""
+        command_list = [
+            "3",
+            "k",
+            "testaut95",
+            "x",
+            "x"
+        ]
+        fields = {"title":"test title","author":"test author","booktitle":"test title", "year":1995}
+        expected_output = "@inproceedings{testaut95,\n"\
+                        "    author       = {test author},\n"\
+                        "    title        = {test title},\n"\
+                        "    booktitle    = {test title},\n"\
+                        "    year         = 1995\n"\
+                        "}"
+        self.ref_services.create_reference(fields)
+        self.ref_services.create_reference(fields)
+        output = self.run_program(command_list)
+        self.assertIn(expected_output, output)
+
+    def test_show_reference_by_invalid_key(self):
+        """Test for raising error if key does not exist"""
+        command_list = [
+            "3",
+            "invalid_key"
+        ]
+        output = self.run_program(command_list)
+        print(output)
+        self.assertIn(KEY_DOES_NOT_EXIST_ERROR, output)
