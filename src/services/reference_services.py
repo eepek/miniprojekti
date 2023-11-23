@@ -88,11 +88,11 @@ class ReferenceServices:
             author = author.split(",")[0]
         if " " in author:
             author = author.replace(" ", "")
-        if len(author) >= 7:
+        if len(author) >= 8:
             author = author[:7]
         year = str(year)[2:]
-        bibtex = author + year
-        previous = self._reference_repository.get_similar_key_count(bibtex)
+        bibtex_key = author + year
+        previous = self._reference_repository.get_similar_key_count(bibtex_key)
         if previous > 0:
-            bibtex = bibtex + "_" + str(previous)
-        return bibtex
+            bibtex_key = bibtex_key + "_" + str(previous)
+        return bibtex_key
