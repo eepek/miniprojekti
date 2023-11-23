@@ -1,12 +1,12 @@
-CREATE TABLE References (
+CREATE TABLE Bibrefs (
     key TEXT PRIMARY KEY UNIQUE,
     title TEXT NOT NULL,
     author_id INT NOT NULL REFERENCES Authors,
     year INT NOT NULL,
-    institution_id INT REFERENCES Institutions
+    institution_id INT REFERENCES Institutions,
     booktitle_id INT REFERENCES Booktitles,
     editor_id INT REFERENCES Editors,
-    referecentype_id INT REFERENCES Referencetypes
+    referecentype_id INT REFERENCES Referencetypes,
     volume TEXT,
     type_id INT REFERENCES Types,
     number TEXT,
