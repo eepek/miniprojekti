@@ -2,7 +2,7 @@
 import bibtexparser
 from entities.reference import Inproceedings
 from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, KEY_DOES_NOT_EXIST_ERROR
-from database_connection import get_database_connection
+# from database_connection import get_database_connection
 
 
 class ReferenceRepository:
@@ -14,7 +14,7 @@ class ReferenceRepository:
         self._references = []
         self._file_path = file_path
         self.init_references()
-        self._connection = get_database_connection()  # temp should be init parameter
+        # self._connection = get_database_connection()  # temp should be init parameter
 
     def init_references(self):
         """Loads Inproceedings references from
@@ -62,79 +62,64 @@ class ReferenceRepository:
 
         # self.save_to_db(reference)
 
-    def save_to_db(self, reference: Inproceedings):
-        """Saves reference into database
+    # def save_to_db(self, reference: Inproceedings):
+    #     """Saves reference into database
 
-        Args:   
-            reference (Inproceedings): Reference to be saved
-        """
+    #     Args:
+    #         reference (Inproceedings): Reference to be saved
+    #     """
 
-        cursor = self._connection.cursor()
+    #     cursor = self._connection.cursor()
 
-        sql = """INSERT INTO Authors (author) VALUES (:author) ON CONFLICT DO NOTHING"""
-        cursor.execute(sql, {"author": reference.author})
-        self._connection.commit()
+    #     sql = """INSERT INTO Authors (author) VALUES (:author) ON CONFLICT DO NOTHING"""
+    #     cursor.execute(sql, {"author": reference.author})
+    #     self._connection.commit()
 
-        sql = """INSERT INTO Institutions (institution)
-                VALUES (:institution) ON CONFLICT DO NOTHING"""
-        cursor.execute(sql, {"institution": None})
-        self._connection.commit()
+    #     sql = """INSERT INTO Institutions (institution)
+    #             VALUES (:institution) ON CONFLICT DO NOTHING"""
+    #     cursor.execute(sql, {"institution": None})
+    #     self._connection.commit()
 
-        sql = """INSERT INTO Booktitles (booktitle) VALUES (:booktitle) ON CONFLICT DO NOTHING"""
-        cursor.execute(sql, {"booktitle": reference.booktitle})
-        self._connection.commit()
+    #     sql = """INSERT INTO Booktitles (booktitle) VALUES (:booktitle) ON CONFLICT DO NOTHING"""
+    #     cursor.execute(sql, {"booktitle": reference.booktitle})
+    #     self._connection.commit()
 
-        sql = """INSERT INTO Editors (editor) VALUES (:editor) ON CONFLICT DO NOTHING"""
-        cursor.execute(sql, {"editor": reference.editor})
-        self._connection.commit()
+    #     sql = """INSERT INTO Editors (editor) VALUES (:editor) ON CONFLICT DO NOTHING"""
+    #     cursor.execute(sql, {"editor": reference.editor})
+    #     self._connection.commit()
 
-        sql = """INSERT INTO Series (series) VALUES (:series) ON CONFLICT DO NOTHING"""
-        cursor.execute(sql, {"series": reference.series})
-        self._connection.commit()
+    #     sql = """INSERT INTO Series (series) VALUES (:series) ON CONFLICT DO NOTHING"""
+    #     cursor.execute(sql, {"series": reference.series})
+    #     self._connection.commit()
 
-        sql = """INSERT INTO Types (type) VALUES (:type) ON CONFLICT DO NOTHING"""
-        cursor.execute(sql, {"type": None})
-        self._connection.commit()
+    #     sql = """INSERT INTO Types (type) VALUES (:type) ON CONFLICT DO NOTHING"""
+    #     cursor.execute(sql, {"type": None})
+    #     self._connection.commit()
 
-        sql = """INSERT INTO Referencetypes (referencetype)
-                VALUES (:referencetype) ON CONFLICT DO NOTHING"""
-        cursor.execute(sql, {"referencetype": None})
-        self._connection.commit()
+    #     sql = """INSERT INTO Referencetypes (referencetype)
+    #             VALUES (:referencetype) ON CONFLICT DO NOTHING"""
+    #     cursor.execute(sql, {"referencetype": None})
+    #     self._connection.commit()
 
-        sql = """INSERT INTO Bibrefs (
-                    key, title, author_id, year, institution_id, booktitle_id, editor_id,
-                    referecentype_id, volume, type_id, number, series_id, pages, address,
-                    month, note
-                ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?, 
-                (SELECT id FROM Institutions WHERE institution = ?), (SELECT id FROM Booktitles WHERE booktitle = ?), 
-                (SELECT id FROM Editors WHERE editor = ?), (SELECT id FROM Referencetypes WHERE referencetype = ?), ?, 
-                (SELECT id FROM Types WHERE type = ?), ?, (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
-            """
+    #     sql = """INSERT INTO Bibrefs (
+    #                 key, title, author_id, year, institution_id, booktitle_id, editor_id,
+    #                 referecentype_id, volume, type_id, number, series_id, pages, address,
+    #                 month, note
+    #             ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
+    #             (SELECT id FROM Institutions WHERE institution = ?), (SELECT id FROM Booktitles WHERE booktitle = ?),
+    #             (SELECT id FROM Editors WHERE editor = ?), (SELECT id FROM Referencetypes WHERE referencetype = ?), ?,
+    #             (SELECT id FROM Types WHERE type = ?), ?, (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
+    #         """
+    #     values = (
+    #         reference.key, reference.title, reference.author, reference.year,
+    #         "NULL", reference.booktitle, reference.editor,
+    #         None, reference.volume, None,
+    #         None, reference.series, reference.pages,
+    #         reference.address, reference.month, reference.note
+    #     )
 
-        # sql = """INSERT INTO Bibrefs (
-        #             key, title, author_id, year, institution_id, booktitle_id, editor_id,
-        #             referecentype_id, volume, type_id, number, series_id, pages, address,
-        #             month, note
-        #         ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
-        #         (SELECT id FROM Institutions WHERE insititution = ?),
-        #           (SELECT id FROM Booktitles WHERE booktitle = ?),
-        #         (SELECT id FROM Editors WHERE editor = ?),
-        #           (SELECT id FROM Referencetypes WHERE referencetype = ?), ?,
-        #         (SELECT id FROM Types WHERE type = ?), ?,
-        #           (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
-        #     """
-
-        # Get values from the 'reference' object (assuming it has appropriate attributes)
-        values = (
-            reference.key, reference.title, reference.author, reference.year,
-            "NULL", reference.booktitle, reference.editor,
-            None, reference.volume, None,
-            None, reference.series, reference.pages,
-            reference.address, reference.month, reference.note
-        )
-
-        cursor.execute(sql, values)
-        self._connection.commit()
+    #     cursor.execute(sql, values)
+    #     self._connection.commit()
 
     def load_all(self):
         """Returns all the references currently in
