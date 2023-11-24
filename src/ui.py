@@ -22,6 +22,7 @@ class UI():
         self.commands = {
             "1": "Browse all references",
             "2": "Add reference (inproceedings)",
+            "3": "View references by key",
             "c": "Show command options",
             "x": "Exit"
             # more commands added when needed
@@ -46,6 +47,9 @@ class UI():
 
             if command == "2":
                 self.add_inproceedings()
+
+            if command == "3":
+                self.show_reference_by_key()
 
             if command == "c":
                 self.show_commands()
@@ -79,7 +83,12 @@ class UI():
             mandatory_text = "optional, enter to skip"
 
         while True:
-            value = self._io.read(f"Enter value for field {field} ({mandatory_text}): ")
+            if field == "author":
+                value = self._io.read(
+                    f"Enter value for field {field} (Lastname, Firstname) ({mandatory_text}): "
+                    )
+            else:
+                value = self._io.read(f"Enter value for field {field} ({mandatory_text}): ")
             if value == "":
                 if mandatory:
                     self._io.write(f"Error: {field}: " + FIELD_MANDATORY_ERROR)
@@ -101,6 +110,8 @@ class UI():
         field_values = {}
 
         for field in INPROCEEDINGS_KEYS:
+            if field == "key":
+                continue
             mandatory = field in INPROCEEDINGS_MANDATORY_KEYS
             value = self.get_field(field, mandatory)
 
@@ -115,6 +126,35 @@ class UI():
         """Print references."""
         for reference in self._reference_repository.load_all():
             self._io.write(str(reference))
+
+    def show_one_reference(self, key: str) -> None:
+        """Print one reference with given key
+        Args:
+            key (String): Reference key
+        """
+        reference = self._reference_repository.load_one(key)
+        self._io.write(f"\n{str(reference)}")
+
+    def show_all_reference_keys(self) -> None:
+        """Print all keys"""
+        self._io.write("Keys:")
+        for reference in self._reference_repository.load_all():
+            self._io.write(f"   {reference.key}")
+
+    def show_reference_by_key(self) -> None:
+        """Loop for viewing references by key"""
+        self.show_all_reference_keys()
+        while True:
+            key = self._io.read("\nEnter key, 'k' for keys or 'x' for return: ")
+            if key == "x":
+                return
+            if key == "k":
+                self.show_all_reference_keys()
+            else:
+                try:
+                    self.show_one_reference(key)
+                except ValueError as error:
+                    self._io.write("Error: " + str(error))
 
     def exit(self):
         """Exit program."""

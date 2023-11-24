@@ -19,7 +19,7 @@ class ReferenceServices:
         """
         self._reference_repository = reference_repository
 
-    def create_reference(self, reference):
+    def create_reference(self, reference: dict):
         """Validates reference dictionary fields
         generates Reference object and
         and calls reference_repository save method
@@ -29,8 +29,8 @@ class ReferenceServices:
         Args:
           reference (Reference): Refence object
         """
-
         ref_keys = reference.keys()
+        reference["key"] = self.construct_bibtex_key(reference["author"], reference["year"])
 
         if not all(item in INPROCEEDINGS_KEYS for item in ref_keys):
             raise ValueError(EXTRA_KEYS_ERROR)
@@ -72,3 +72,27 @@ class ReferenceServices:
             regex = r"^\d+([-]\d+)?$"
             if not re.match(regex, value):
                 raise ValueError(PAGES_FORMAT_ERROR)
+
+
+    def construct_bibtex_key(self, author: str, year: int) -> str:
+        """Algorithm for constucting bibtex -key.
+        if author: Powers and year: 2023 -> powers23
+        Expected author notation: {Lastname, Firstname}
+        In case for company name etc. notation does not matter.
+        Args:
+            author (String): Reference author
+            year (Int): Reference year
+        """
+        author = author.lower()
+        if "," in author:
+            author = author.split(",")[0]
+        if " " in author:
+            author = author.replace(" ", "")
+        if len(author) >= 8:
+            author = author[:7]
+        year = str(year)[2:]
+        bibtex_key = author + year
+        previous = self._reference_repository.get_similar_key_count(bibtex_key)
+        if previous > 0:
+            bibtex_key = bibtex_key + "_" + str(previous)
+        return bibtex_key
