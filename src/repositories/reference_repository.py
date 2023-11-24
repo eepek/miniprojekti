@@ -105,10 +105,13 @@ class ReferenceRepository:
     #                 key, title, author_id, year, institution_id, booktitle_id, editor_id,
     #                 referecentype_id, volume, type_id, number, series_id, pages, address,
     #                 month, note
-    #             ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
-    #             (SELECT id FROM Institutions WHERE institution = ?), (SELECT id FROM Booktitles WHERE booktitle = ?),
-    #             (SELECT id FROM Editors WHERE editor = ?), (SELECT id FROM Referencetypes WHERE referencetype = ?), ?,
-    #             (SELECT id FROM Types WHERE type = ?), ?, (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
+    #           ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
+    #           (SELECT id FROM Institutions WHERE institution = ?),
+    #           (SELECT id FROM Booktitles WHERE booktitle = ?),
+    #           (SELECT id FROM Editors WHERE editor = ?),
+    #           (SELECT id FROM Referencetypes WHERE referencetype = ?), ?,
+    #           (SELECT id FROM Types WHERE type = ?), ?,
+    #           (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
     #         """
     #     values = (
     #         reference.key, reference.title, reference.author, reference.year,
