@@ -24,7 +24,7 @@ CREATE TABLE Authors (
 
 CREATE TABLE Institutions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    instituion TEXT NOT NULL
+    institution TEXT NOT NULL
 );
 
 CREATE TABLE Booktitles (

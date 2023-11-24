@@ -13,7 +13,7 @@ def create_tables(connection):
     sql = """
         CREATE TABLE Authors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            author TEXT NOT NULL
+            author TEXT
         );
         """
     cursor.execute(sql)
@@ -21,7 +21,7 @@ def create_tables(connection):
     sql = """
     CREATE TABLE Institutions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        instituion TEXT NOT NULL
+        institution TEXT
     );
     """
 
@@ -30,7 +30,7 @@ def create_tables(connection):
     sql = """
     CREATE TABLE Booktitles (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        booktitle TEXT NOT NULL
+        booktitle TEXT
     );
     """
     cursor.execute(sql)
@@ -38,7 +38,7 @@ def create_tables(connection):
     sql = """
         CREATE TABLE Editors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            editor TEXT NOT NULL
+            editor TEXT
         );
         """
     cursor.execute(sql)
@@ -46,7 +46,7 @@ def create_tables(connection):
     sql = """
     CREATE TABLE Series (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        series TEXT NOT NULL
+        series TEXT 
     );
     """
     cursor.execute(sql)
@@ -54,7 +54,7 @@ def create_tables(connection):
     sql = """
     CREATE TABLE Types (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        type TEXT NOT NULL
+        type TEXT
     );
     """
     cursor.execute(sql)
@@ -62,9 +62,10 @@ def create_tables(connection):
     sql = """
     CREATE TABLE Referencetypes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        referencetype TEXT NOT NULL
+        referencetype TEXT
     );
     """
+    cursor.execute(sql)
 
     sql = """
     CREATE TABLE Bibrefs (
