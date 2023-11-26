@@ -1,6 +1,7 @@
+from textual import events
 from ui import UI
 from entities.reference import Reference
-from textual import events, on
+from components.reference_item import ReferenceItem
 from textual.app import App,  ComposeResult
 from textual.widgets import Header, Footer, Button, Label, Static, OptionList
 from textual.widgets.option_list import Option
@@ -8,7 +9,7 @@ from textual.containers import Grid, Center
 from textual.screen import ModalScreen, Screen
 
 
-class QuitScreen(ModalScreen):
+class QuitScreen(Screen):
 
     BINDINGS = [("q", "exit", "Quit"),
                 ("c", "cancel", "Cancel")]
@@ -34,50 +35,36 @@ class QuitScreen(ModalScreen):
         self.app.pop_screen()
 
 
-class SingleReference(ModalScreen[None]):
+class SingleReference(Screen[None]):
 
     def __init__(self, references, reference_id) -> None:
         super().__init__()
         self.reference = references[reference_id]
 
-    BINDINGS = [("escape", "app.pop_screen")]
+    BINDINGS = [("e", "edit_reference", "Edit"),
+                ("d", "delete_reference", "Delete")]
 
     def compose(self) -> ComposeResult:
         yield Center(Label(str(self.reference)), id="dialog")
-
-
-class ShowAll(Screen[None]):
-    def __init__(self, references) -> None:
-        super().__init__()
-        self.references = [Label(str(ref)) for ref in references]
-
-    BINDINGS = [("m", "back_to_menu", "Main Menu")]
-
-    def compose(self) -> ComposeResult:
-        yield Center(
-            *self.references)
-
-    def action_back_to_menu(self):
-        self.app.pop_screen()
 
 
 class ListKeys(Screen[None]):
     def __init__(self, references: list[Reference]) -> None:
         super().__init__()
         self.references = references
-        self.option_items = [Button(ref.key, id=index)
-                             for index, ref in enumerate(references)]
+        self.option_items = [Option(ref.key, id=ref.key)
+                             for ref in references]
         self.option_id = 0
 
-    BINDINGS = [("m", "back_to_menu", "Main Menu"),
+    BINDINGS = [("b", "back_to_menu", "Back"),
                 ("o", "open_option", "Open")]
 
     def compose(self) -> ComposeResult:
-        yield Center(*self.option_items, id="optionList")
+        yield Center(OptionList(*self.option_items, id="optionList"))
 
-    def on_button_click(self, event: Button.Pressed):
-        self.app.switch_screen(SingleReference(
-            self.references, event.button.id))
+    @on(OptionList.OptionMessage)
+    def user_selected(self, event: OptionList.OptionSelected):
+        self.option_id = event.option_index
 
     def action_open_option(self):
         self.app.switch_screen(SingleReference(
@@ -87,37 +74,40 @@ class ListKeys(Screen[None]):
         self.app.pop_screen()
 
 
+class ShowAll(Screen[None]):
+    def __init__(self, references) -> None:
+        super().__init__()
+        self.references = references
+
+    def compose(self) -> ComposeResult:
+        self.textfile = Static(*str(self.references))
+        yield self.textfile
+
+    def on_mount(self) -> None:
+        self.textfile.styles.width = "50%"
+
+
 class GUI(App[None]):
 
     def __init__(self, ui: UI):
         super().__init__()
         self.ui = ui
+        self.references = self.ui.show_references()
 
     CSS_PATH = "css/modal.tcss"
-    BINDINGS = [("q", "request_quit", "Quit"), ("s", "show_all", "Show All"),
-                ("l", "list_references", "List Keys"), ("a",
-                                                        "add_reference", "Add Reference"),
+    BINDINGS = [("q", "request_quit", "Quit"), ("s", "show_all", "Show file"),
+                ("l", "list_references", "List view"), ("a",
+                                                        "add_reference", "Add"),
                 ]
 
     def compose(self) -> ComposeResult:
-        yield Header("References to Bibtex")
-        yield Static("Welcome to your vault of references!")
-        yield Grid(Button("Show all references in Bibtex", id="showInBib"), Button("List reference keys", id="listAll"), Button("Add Reference", id="addRef"), id="menuGrid")
-        yield Footer()
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "showInBib":
-            self.action_show_all()
-        elif event.button.id == "listAll":
-            self.action_list_references()
+        Header(name="Vault of references")
+        Center(Button("Show in BibTex format", id="toBibtex"), Button(
+            "List all references", id="listAll"), Button("Add new", id="addNew"))
+        Footer()
 
     def action_show_all(self):
-        references = self.ui.show_references()
-        self.push_screen(ShowAll(references))
-
-    def action_list_references(self):
-        references = self.ui.show_references()
-        self.push_screen(ListKeys(references))
+        self.push_screen(ListKeys)
 
     def action_request_quit(self):
         self.push_screen(QuitScreen())
