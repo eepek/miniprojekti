@@ -1,7 +1,7 @@
 """Module for saving references"""
 import bibtexparser
-from entities.reference import Inproceedings
-from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, KEY_DOES_NOT_EXIST_ERROR
+from entities.reference import Reference, ReferenceType
+from constants import KEY_DOES_NOT_EXIST_ERROR
 # from database_connection import get_database_connection
 
 
@@ -17,7 +17,7 @@ class ReferenceRepository:
         # self._connection = get_database_connection()  # temp should be init parameter
 
     def init_references(self):
-        """Loads Inproceedings references from
+        """Loads references from
         database file and saves them into _references
         list.
         """
@@ -27,33 +27,40 @@ class ReferenceRepository:
             bib_data = bibtexparser.load(references_data)
 
         for entry in bib_data.entries:
-            ref_prototype = {
-                "key": entry["ID"]
-            }
+            ref_type_literal = entry["ENTRYTYPE"] # value after the @ symbol in bibtex
+            ref_key = entry["ID"]
 
-            missing_mandatory_keys = set(INPROCEEDINGS_MANDATORY_KEYS)  # copy
-            missing_mandatory_keys.remove("key")
+            # Don't load unsupported reference types
+            if ref_type_literal not in [t.value for t in ReferenceType]:
+                continue
 
+            ref_type = ReferenceType(ref_type_literal)
+            ref_type_keys = ref_type.get_keys()
+            ref_type_mandatory_keys = ref_type.get_mandatory_keys()
+
+            missing_mandatory_keys = set(ref_type_mandatory_keys) # copy
+
+            ref_prototype = {}
             for key, value in entry.items():
-                if key in INPROCEEDINGS_KEYS:
+                if key in ref_type_keys:
                     ref_prototype[key] = value
-                    if key in INPROCEEDINGS_MANDATORY_KEYS:
+                    if key in ref_type_mandatory_keys:
                         missing_mandatory_keys.remove(key)
 
             # If haven't found all mandatory keys, don't load this entry
             if len(missing_mandatory_keys) > 0:
                 continue
 
-            new_reference = Inproceedings(**ref_prototype)
+            new_reference = Reference(ref_type, ref_key, ref_prototype)
             self._references.append(new_reference)
 
-    def save(self, reference: Inproceedings):
+    def save(self, reference: Reference):
         """Saves reference into references list
         which can be read when displaying references
         to user
 
         Args:
-            reference (Inproceedings): Reference to be saved
+            reference (Reference): Reference to be saved
         """
         self._references.append(reference)
         with open(self._file_path, "a", encoding="utf-8") as references_data:

@@ -11,8 +11,9 @@ FIELD_MANDATORY_ERROR = "Field is mandatory"
 UNSUITABLE_COMMAND_ERROR = "Unsuitable command"
 KEY_DOES_NOT_EXIST_ERROR = "Key does not exist"
 
-INPROCEEDINGS_KEYS = ["key", "title", "author", "booktitle", "year",
+INPROCEEDINGS_KEYS = ["title", "author", "booktitle", "year",
                       "editor", "volume", "series", "pages", "address",
                       "month", "note"]
-INPROCEEDINGS_MANDATORY_KEYS = set(["key", "author", "title", "booktitle", "year"])
+INPROCEEDINGS_MANDATORY_KEYS = set(["author", "title", "booktitle", "year"])
+NUMBER_KEYS = set(["year", "volume"])
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))

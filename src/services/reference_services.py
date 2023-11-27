@@ -1,7 +1,7 @@
 """Module consisting on Reference Serices class """
 import re
 from repositories.reference_repository import ReferenceRepository
-from entities.reference import Inproceedings
+from entities.reference import Reference, ReferenceType
 from constants import MISSING_FIELD_ERROR, YEAR_FORMAT_ERROR, MONTH_FORMAT_ERROR, \
     VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR, INPROCEEDINGS_KEYS
 
@@ -24,22 +24,21 @@ class ReferenceServices:
         generates Reference object and
         and calls reference_repository save method
         Text type fields are only validated for existence not for contents
-        Converst Reference Object into dictionary before calling reference_repository.save()
 
         Args:
           reference (Reference): Refence object
         """
         ref_keys = reference.keys()
-        reference["key"] = self.construct_bibtex_key(reference["author"], reference["year"])
+        key = self.construct_bibtex_key(reference["author"], reference["year"])
 
         if not all(item in INPROCEEDINGS_KEYS for item in ref_keys):
             raise ValueError(EXTRA_KEYS_ERROR)
 
-        if not reference["key"] or not reference["title"] or not reference["author"] \
+        if not reference["title"] or not reference["author"] \
                 or not reference["booktitle"] or not reference["year"]:
             raise ValueError(MISSING_FIELD_ERROR)
 
-        ref_object = Inproceedings(**reference)
+        ref_object = Reference(ReferenceType.INPROCEEDINGS, key, reference)
         self._reference_repository.save(ref_object)
 
 

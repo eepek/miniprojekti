@@ -1,8 +1,8 @@
 """Unittests for reference module"""
 import unittest
 import pytest
-from repositories.reference_repository import ReferenceRepository
-from entities.reference import Inproceedings, Reference
+from repositories.reference_repository import ReferenceRepository, ReferenceType
+from entities.reference import Reference
 from constants import ROOT_DIR, KEY_DOES_NOT_EXIST_ERROR
 
 
@@ -13,17 +13,17 @@ class TestReference(unittest.TestCase):
         self.repository = ReferenceRepository(f"{ROOT_DIR}/tests/test_references.bib")
         self.repository.empty_all_references()
         self.repository.init_references()
-        self.inpro_all = Inproceedings(
-            key="Key123",
-            title="Inproceeding name",
-            author="Mikki Hiiri",
-            booktitle="Proceedings of the Conference",
-            year=2023,
-            volume="1",
-            pages="123-145",
-            address="Helsinki",
-            month="June",
-            note="test")
+        self.inpro_all = Reference(ReferenceType.INPROCEEDINGS, "Key123", {
+            "title": "Inproceeding name",
+            "author": "Mikki Hiiri",
+            "booktitle": "Proceedings of the Conference",
+            "year": 2023,
+            "volume": 1,
+            "pages": "123-145",
+            "address": "Helsinki",
+            "month": "June",
+            "note": "test"
+        })
 
     def test_saving_reference_work(self):
         """Testing that after adding self.inpro_all Inproceedings

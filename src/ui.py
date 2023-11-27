@@ -110,8 +110,6 @@ class UI():
         field_values = {}
 
         for field in INPROCEEDINGS_KEYS:
-            if field == "key":
-                continue
             mandatory = field in INPROCEEDINGS_MANDATORY_KEYS
             value = self.get_field(field, mandatory)
 

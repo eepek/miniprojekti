@@ -112,7 +112,6 @@ class TestReferenceServices(unittest.TestCase):
     def test_only_mandatory_fields_passes(self):
         """Tests that reference with only mandatory fields doesn't cause Value Error"""
         inpro = {
-            "key": "dockey12",
             "title": "Title",
             "author": "Ghost, Writer",
             "booktitle": "Proceedings of the Conference",

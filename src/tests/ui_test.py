@@ -1,6 +1,5 @@
 """Unittests for UI module."""
 import unittest
-import re
 from collections import deque
 from typing import List
 from repositories.reference_repository import ReferenceRepository
@@ -160,8 +159,8 @@ class TestUI(unittest.TestCase):
         ]
         fields = {"title":"test title","author":"test author","booktitle":"test title", "year":1995}
         expected_output = "@inproceedings{testaut95,\n"\
-                        "    author       = {test author},\n"\
                         "    title        = {test title},\n"\
+                        "    author       = {test author},\n"\
                         "    booktitle    = {test title},\n"\
                         "    year         = 1995\n"\
                         "}"
