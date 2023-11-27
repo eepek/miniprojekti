@@ -1,5 +1,4 @@
 """Module for the command line user interface"""
-import sys
 from cli_io import ConsoleIO
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
@@ -38,24 +37,27 @@ class UI():
         while True:
             self._io.write("\nTo view command options, type c")
             command = self._io.read("What would you like to do?: ")
+            try:
+                if command not in self.commands:
+                    self._io.write("Error: " + UNSUITABLE_COMMAND_ERROR)
 
-            if command not in self.commands:
-                self._io.write("Error: " + UNSUITABLE_COMMAND_ERROR)
+                if command == "1":
+                    self.show_references()
 
-            if command == "1":
-                self.show_references()
+                if command == "2":
+                    self.add_reference()
 
-            if command == "2":
-                self.add_reference()
+                if command == "3":
+                    self.show_reference_by_key()
 
-            if command == "3":
-                self.show_reference_by_key()
+                if command == "c":
+                    self.show_commands()
 
-            if command == "c":
-                self.show_commands()
-
-            if command == "x":
-                self.exit()
+                if command == "x":
+                    self._io.write("\nShutting down")
+                    break
+            except SystemExit:
+                break
 
     def show_commands(self) -> None:
         """Print command options."""
@@ -168,8 +170,3 @@ class UI():
                     self.show_one_reference(key)
                 except ValueError as error:
                     self._io.write("Error: " + str(error))
-
-    def exit(self):
-        """Exit program."""
-        self._io.write("\nShutting down")
-        sys.exit()

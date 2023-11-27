@@ -11,8 +11,11 @@ class MockIO:
     Args:
         command_list (List[str]): list of strings to feed to the program in order
     """
-    def __init__(self, command_list: List[str] = []) -> None:
-        self.command_list = deque(command_list)
+    def __init__(self, command_list: List[str] = None) -> None:
+        if command_list is not None:
+            self.command_list = deque(command_list)
+        else:
+            self.command_list = []
         self.output = ""
 
     def read(self, prompt: str) -> str:
@@ -21,14 +24,14 @@ class MockIO:
         Also write the prompt to the output.
         """
         self.output += "\n" + prompt
-        if len(self.command_list) > 0:
-            return self.command_list.popleft()
+        if len(self.command_list) == 0:
+            raise SystemExit
+        return self.command_list.popleft()
 
     def write(self, text: str) -> None:
-        "Write text to the output."
+        """Write text to the output."""
         self.output += "\n" + text
-        print(self.output)
-    
-    def add_input(self, input: str):
-        self.command_list.append(input)
-        print("input added", input)
+
+    def add_command(self, command: str):
+        """Add command to be executed."""
+        self.command_list.append(command)

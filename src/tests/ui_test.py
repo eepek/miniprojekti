@@ -28,8 +28,10 @@ class TestUI(unittest.TestCase):
         """
         mock_io = MockIO(command_list)
         ui = UI(mock_io, self.ref_repository, self.ref_services)
-        with self.assertRaises(SystemExit):
+        try:
             ui.start()
+        except SystemExit:
+            pass
         return mock_io.output
 
     def test_shutting_down(self):

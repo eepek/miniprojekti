@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20231127 15:32:05.473" rpa="false" schemaversion="4">
+<suite id="s1" name="Tests" source="/home/jaakkomo/Documents/Projects/miniprojekti/src/tests">
+<suite id="s1-s1" name="Tests" source="/home/jaakkomo/Documents/Projects/miniprojekti/src/tests/tests.robot">
+<test id="s1-s1-t1" name="Adding Inproceedings Works" line="5">
+<kw name="Command" library="AppLibrary">
+<arg>2</arg>
+<status status="PASS" starttime="20231127 15:32:05.538" endtime="20231127 15:32:05.543"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>inproceedings</arg>
+<status status="PASS" starttime="20231127 15:32:05.543" endtime="20231127 15:32:05.544"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>title_value</arg>
+<status status="PASS" starttime="20231127 15:32:05.544" endtime="20231127 15:32:05.544"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>author_value</arg>
+<status status="PASS" starttime="20231127 15:32:05.544" endtime="20231127 15:32:05.544"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>booktitle_value</arg>
+<status status="PASS" starttime="20231127 15:32:05.544" endtime="20231127 15:32:05.544"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>2000</arg>
+<status status="PASS" starttime="20231127 15:32:05.544" endtime="20231127 15:32:05.545"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>\</arg>
+<status status="PASS" starttime="20231127 15:32:05.545" endtime="20231127 15:32:05.545"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>\</arg>
+<status status="PASS" starttime="20231127 15:32:05.545" endtime="20231127 15:32:05.545"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>\</arg>
+<status status="PASS" starttime="20231127 15:32:05.545" endtime="20231127 15:32:05.545"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>\</arg>
+<status status="PASS" starttime="20231127 15:32:05.545" endtime="20231127 15:32:05.546"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>\</arg>
+<status status="PASS" starttime="20231127 15:32:05.546" endtime="20231127 15:32:05.546"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>\</arg>
+<status status="PASS" starttime="20231127 15:32:05.546" endtime="20231127 15:32:05.546"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>\</arg>
+<status status="PASS" starttime="20231127 15:32:05.546" endtime="20231127 15:32:05.546"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>1</arg>
+<status status="PASS" starttime="20231127 15:32:05.546" endtime="20231127 15:32:05.546"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>x</arg>
+<status status="PASS" starttime="20231127 15:32:05.546" endtime="20231127 15:32:05.546"/>
+</kw>
+<kw name="Run Program" library="AppLibrary">
+<msg timestamp="20231127 15:32:05.547" level="INFO">Welcome to your vault of references!
+
+Command options:
+
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+inproceedings, techreport
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+inproceedings, techreport
+
+Enter reference type: 
+Enter value for field title (mandatory): 
+Enter value for field author (Lastname, Firstname) (mandatory): 
+Enter value for field booktitle (mandatory): 
+Enter value for field year (mandatory): 
+Enter value for field editor (optional, enter to skip): 
+Enter value for field volume (optional, enter to skip): 
+Enter value for field series (optional, enter to skip): 
+Enter value for field pages (optional, enter to skip): 
+Enter value for field address (optional, enter to skip): 
+Enter value for field month (optional, enter to skip): 
+Enter value for field note (optional, enter to skip): 
+
+To view command options, type c
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+inproceedings, techreport
+
+Enter reference type: 
+Enter value for field title (mandatory): 
+Enter value for field author (Lastname, Firstname) (mandatory): 
+Enter value for field booktitle (mandatory): 
+Enter value for field year (mandatory): 
+Enter value for field editor (optional, enter to skip): 
+Enter value for field volume (optional, enter to skip): 
+Enter value for field series (optional, enter to skip): 
+Enter value for field pages (optional, enter to skip): 
+Enter value for field address (optional, enter to skip): 
+Enter value for field month (optional, enter to skip): 
+Enter value for field note (optional, enter to skip): 
+
+To view command options, type c
+What would you like to do?: 
+@inproceedings{author_00,
+    title        = {title_value},
+    author       = {author_value},
+    booktitle    = {booktitle_value},
+    year         = 2000
+}
+
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+inproceedings, techreport
+
+Enter reference type: 
+Enter value for field title (mandatory): 
+Enter value for field author (Lastname, Firstname) (mandatory): 
+Enter value for field booktitle (mandatory): 
+Enter value for field year (mandatory): 
+Enter value for field editor (optional, enter to skip): 
+Enter value for field volume (optional, enter to skip): 
+Enter value for field series (optional, enter to skip): 
+Enter value for field pages (optional, enter to skip): 
+Enter value for field address (optional, enter to skip): 
+Enter value for field month (optional, enter to skip): 
+Enter value for field note (optional, enter to skip): 
+
+To view command options, type c
+What would you like to do?: 
+@inproceedings{author_00,
+    title        = {title_value},
+    author       = {author_value},
+    booktitle    = {booktitle_value},
+    year         = 2000
+}
+
+
+To view command options, type c
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+inproceedings, techreport
+
+Enter reference type: 
+Enter value for field title (mandatory): 
+Enter value for field author (Lastname, Firstname) (mandatory): 
+Enter value for field booktitle (mandatory): 
+Enter value for field year (mandatory): 
+Enter value for field editor (optional, enter to skip): 
+Enter value for field volume (optional, enter to skip): 
+Enter value for field series (optional, enter to skip): 
+Enter value for field pages (optional, enter to skip): 
+Enter value for field address (optional, enter to skip): 
+Enter value for field month (optional, enter to skip): 
+Enter value for field note (optional, enter to skip): 
+
+To view command options, type c
+What would you like to do?: 
+@inproceedings{author_00,
+    title        = {title_value},
+    author       = {author_value},
+    booktitle    = {booktitle_value},
+    year         = 2000
+}
+
+
+To view command options, type c
+What would you like to do?: 
+
+Shutting down</msg>
+<status status="PASS" starttime="20231127 15:32:05.547" endtime="20231127 15:32:05.547"/>
+</kw>
+<kw name="Output Should Contain" library="AppLibrary">
+<arg>{author_value}</arg>
+<status status="PASS" starttime="20231127 15:32:05.547" endtime="20231127 15:32:05.548"/>
+</kw>
+<status status="PASS" starttime="20231127 15:32:05.537" endtime="20231127 15:32:05.548"/>
+</test>
+<test id="s1-s1-t2" name="Shutting Down Works" line="24">
+<kw name="Command" library="AppLibrary">
+<arg>x</arg>
+<status status="PASS" starttime="20231127 15:32:05.548" endtime="20231127 15:32:05.555"/>
+</kw>
+<kw name="Run Program" library="AppLibrary">
+<msg timestamp="20231127 15:32:05.556" level="INFO">Welcome to your vault of references!
+
+Command options:
+
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Shutting down</msg>
+<status status="PASS" starttime="20231127 15:32:05.556" endtime="20231127 15:32:05.556"/>
+</kw>
+<kw name="Output Should Contain" library="AppLibrary">
+<arg>Shutting down</arg>
+<status status="PASS" starttime="20231127 15:32:05.556" endtime="20231127 15:32:05.556"/>
+</kw>
+<status status="PASS" starttime="20231127 15:32:05.548" endtime="20231127 15:32:05.556"/>
+</test>
+<test id="s1-s1-t3" name="Mandatory Field Is Required" line="29">
+<kw name="Command" library="AppLibrary">
+<arg>2</arg>
+<status status="PASS" starttime="20231127 15:32:05.557" endtime="20231127 15:32:05.565"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>inproceedings</arg>
+<status status="PASS" starttime="20231127 15:32:05.565" endtime="20231127 15:32:05.566"/>
+</kw>
+<kw name="Command" library="AppLibrary">
+<arg>\</arg>
+<status status="PASS" starttime="20231127 15:32:05.566" endtime="20231127 15:32:05.566"/>
+</kw>
+<kw name="Run Program" library="AppLibrary">
+<msg timestamp="20231127 15:32:05.566" level="INFO">Welcome to your vault of references!
+
+Command options:
+
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+inproceedings, techreport
+
+Welcome to your vault of references!
+
+Command options:
+
+1: Browse all references
+2: Add reference
+3: View references by key
+c: Show command options
+x: Exit
+
+To view command options, type c
+What would you like to do?: 
+
+Supported reference types:
+inproceedings, techreport
+
+Enter reference type: 
+Enter value for field title (mandatory): 
+Error: title: Field is mandatory</msg>
+<status status="PASS" starttime="20231127 15:32:05.566" endtime="20231127 15:32:05.566"/>
+</kw>
+<kw name="Output Should Contain" library="AppLibrary">
+<arg>Field is mandatory</arg>
+<status status="PASS" starttime="20231127 15:32:05.566" endtime="20231127 15:32:05.567"/>
+</kw>
+<status status="PASS" starttime="20231127 15:32:05.557" endtime="20231127 15:32:05.567"/>
+</test>
+<status status="PASS" starttime="20231127 15:32:05.492" endtime="20231127 15:32:05.567"/>
+</suite>
+<status status="PASS" starttime="20231127 15:32:05.474" endtime="20231127 15:32:05.568"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="3" fail="0" skip="0" id="s1" name="Tests">Tests</stat>
+<stat pass="3" fail="0" skip="0" id="s1-s1" name="Tests">Tests.Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
