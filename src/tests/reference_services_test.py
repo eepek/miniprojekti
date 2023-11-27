@@ -27,7 +27,7 @@ class TestReferenceServices(unittest.TestCase):
             "booktitle": "Proceedings of the Conference",
             "year": 2023,
             "editor": "Super Editor",
-            "volume": "1",
+            "volume": 1,
             "series": "Proceedings in Science",
             "pages": "123-145",
             "address": "Helsinki",
@@ -116,14 +116,7 @@ class TestReferenceServices(unittest.TestCase):
             "title": "Title",
             "author": "Ghost, Writer",
             "booktitle": "Proceedings of the Conference",
-            "year": 2023,
-            "editor": "",
-            "volume": "",
-            "series": "",
-            "pages": "",
-            "address": "",
-            "month": "",
-            "note": ""
+            "year": 2023
         }
         self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, inpro)
     
@@ -133,14 +126,7 @@ class TestReferenceServices(unittest.TestCase):
             "title": "How to Google",
             "author": "Alphabet Inc.",
             "booktitle": "Proceedings of the Conference",
-            "year": 2023,
-            "editor": "",
-            "volume": "",
-            "series": "",
-            "pages": "",
-            "address": "",
-            "month": "",
-            "note": ""
+            "year": 2023
         }
         self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, inpro)
         key1 = self.ref_services.construct_bibtex_key("Powers", 2023)

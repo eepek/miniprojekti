@@ -1,6 +1,8 @@
 """Unittests for reference module"""
 import unittest
 from entities.reference import Reference, ReferenceType
+from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, TECHREPORT_KEYS, \
+    TECHREPORT_MANDATORY_KEYS
 
 
 class TestReference(unittest.TestCase):
@@ -56,3 +58,13 @@ class TestReference(unittest.TestCase):
         self.assertNotIn("month", str(self.inpro_some))
         self.assertIn("title", str(self.inpro_some))
         self.assertIn("note", str(self.inpro_some))
+
+    def test_inproceedings_get_keys(self):
+        inproceedings = ReferenceType("inproceedings")
+        self.assertListEqual(inproceedings.get_keys(), INPROCEEDINGS_KEYS)
+        self.assertSetEqual(inproceedings.get_mandatory_keys(), INPROCEEDINGS_MANDATORY_KEYS)
+
+    def test_techreport_get_keys(self):
+        techreport = ReferenceType("techreport")
+        self.assertListEqual(techreport.get_keys(), TECHREPORT_KEYS)
+        self.assertSetEqual(techreport.get_mandatory_keys(), TECHREPORT_MANDATORY_KEYS)

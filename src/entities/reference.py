@@ -1,6 +1,7 @@
 """Module for the Reference class"""
 from enum import Enum
-from constants import NUMBER_KEYS, INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS
+from constants import NUMBER_KEYS, INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, \
+    TECHREPORT_KEYS, TECHREPORT_MANDATORY_KEYS
 
 
 class ReferenceType(Enum):
@@ -9,18 +10,23 @@ class ReferenceType(Enum):
     The enum value for each type is the bibtex literal for that type.
     """
     INPROCEEDINGS = "inproceedings"
+    TECHREPORT = "techreport"
 
     def get_keys(self):
         """Get field keys for this enum instance."""
         match self.name:
             case "INPROCEEDINGS":
                 return INPROCEEDINGS_KEYS
+            case "TECHREPORT":
+                return TECHREPORT_KEYS
 
     def get_mandatory_keys(self):
         """Get mandatory field keys for this enum instance."""
         match self.name:
             case "INPROCEEDINGS":
                 return INPROCEEDINGS_MANDATORY_KEYS
+            case "TECHREPORT":
+                return TECHREPORT_MANDATORY_KEYS
 
     @classmethod
     def get_literals(cls):
@@ -43,6 +49,8 @@ class Reference:
     def __str__(self):
         bibtex_fields = []
         for key, value in self.fields.items():
+            if value is None:
+                continue
 
             printable_value = ""
 

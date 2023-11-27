@@ -32,12 +32,12 @@ class ReferenceServices:
         key = self.construct_bibtex_key(reference["author"], reference["year"])
 
         ref_type_keys = reference_type.get_keys()
+        ref_type_mandatory_keys = reference_type.get_mandatory_keys()
 
         if not all(item in ref_type_keys for item in ref_keys):
             raise ValueError(EXTRA_KEYS_ERROR)
 
-        if not reference["title"] or not reference["author"] \
-                or not reference["booktitle"] or not reference["year"]:
+        if not all((m in reference and reference[m] is not None) for m in ref_type_mandatory_keys):
             raise ValueError(MISSING_FIELD_ERROR)
 
         ref_object = Reference(reference_type, key, reference)

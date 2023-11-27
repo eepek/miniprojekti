@@ -16,5 +16,10 @@ INPROCEEDINGS_KEYS = ["title", "author", "booktitle", "year",
                       "editor", "volume", "series", "pages", "address",
                       "month", "note"]
 INPROCEEDINGS_MANDATORY_KEYS = set(["author", "title", "booktitle", "year"])
+
+TECHREPORT_KEYS = ["title", "author", "institution", "year", "type", "number",
+                   "address", "month", "note", "annote"]
+TECHREPORT_MANDATORY_KEYS = set(["title", "author", "institution", "year"])
+
 NUMBER_KEYS = set(["year", "volume"])
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
