@@ -15,7 +15,7 @@ class MockIO:
         if command_list is not None:
             self.command_list = deque(command_list)
         else:
-            self.command_list = []
+            self.command_list = deque([])
         self.output = ""
 
     def read(self, prompt: str) -> str:

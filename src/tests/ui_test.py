@@ -28,10 +28,7 @@ class TestUI(unittest.TestCase):
         """
         mock_io = MockIO(command_list)
         ui = UI(mock_io, self.ref_repository, self.ref_services)
-        try:
-            ui.start()
-        except SystemExit:
-            pass
+        ui.start()
         return mock_io.output
 
     def test_shutting_down(self):
@@ -119,6 +116,7 @@ class TestUI(unittest.TestCase):
         """Test showing all reference keys."""
         command_list = [
             "3",
+            "x",
             "x"
         ]
         fields = {"title":"test title","author":"test author","booktitle":"test_title", "year":1995}

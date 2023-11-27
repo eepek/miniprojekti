@@ -1,5 +1,5 @@
 *** Settings ***
-Library  ../app_library.py
+Library  ../AppLibrary.py
 
 *** Test Cases ***
 Adding Inproceedings Works
