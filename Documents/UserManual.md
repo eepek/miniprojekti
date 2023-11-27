@@ -101,11 +101,7 @@ Here is an example view:
 ---
 Keys:
    doe20
-   smith22
-   powers65
-   doe20_1
-   doe05
-   leikas96
+
 
 Enter key, 'k' for keys or 'x' for return:
 
