@@ -1,10 +1,9 @@
 """Module for the command line user interface"""
-import sys
 from cli_io import ConsoleIO
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
-from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, \
-    FIELD_MANDATORY_ERROR, UNSUITABLE_COMMAND_ERROR
+from entities.reference import ReferenceType
+from constants import FIELD_MANDATORY_ERROR, UNSUITABLE_COMMAND_ERROR, INVALID_REFERENCE_TYPE_ERROR
 
 class UI():
     """Class that creates a command line user interface to the program.
@@ -21,7 +20,8 @@ class UI():
         self._reference_services = reference_service
         self.commands = {
             "1": "Browse all references",
-            "2": "Add reference (inproceedings)",
+            "2": "Add reference",
+            "3": "View references by key",
             "c": "Show command options",
             "x": "Exit"
             # more commands added when needed
@@ -37,21 +37,27 @@ class UI():
         while True:
             self._io.write("\nTo view command options, type c")
             command = self._io.read("What would you like to do?: ")
+            try:
+                if command not in self.commands:
+                    self._io.write("Error: " + UNSUITABLE_COMMAND_ERROR)
 
-            if command not in self.commands:
-                self._io.write("Error: " + UNSUITABLE_COMMAND_ERROR)
+                if command == "1":
+                    self.show_references()
 
-            if command == "1":
-                self.show_references()
+                if command == "2":
+                    self.add_reference()
 
-            if command == "2":
-                self.add_inproceedings()
+                if command == "3":
+                    self.show_reference_by_key()
 
-            if command == "c":
-                self.show_commands()
+                if command == "c":
+                    self.show_commands()
 
-            if command == "x":
-                self.exit()
+                if command == "x":
+                    self._io.write("\nShutting down")
+                    break
+            except SystemExit:
+                break
 
     def show_commands(self) -> None:
         """Print command options."""
@@ -79,31 +85,55 @@ class UI():
             mandatory_text = "optional, enter to skip"
 
         while True:
-            value = self._io.read(f"Enter value for field {field} ({mandatory_text}): ")
+            if field == "author":
+                value = self._io.read(
+                    f"Enter value for field {field} (Lastname, Firstname) ({mandatory_text}): "
+                    )
+            else:
+                value = self._io.read(f"Enter value for field {field} ({mandatory_text}): ")
             if value == "":
                 if mandatory:
                     self._io.write(f"Error: {field}: " + FIELD_MANDATORY_ERROR)
                 else:
                     return ""
             else:
-                return value
+                try:
+                    self._reference_services.validate_field(field, value)
+                    return value
+                except ValueError as validation_error:
+                    self._io.write(f"Validation Error for {field}: {str(validation_error)}")
 
-    def add_inproceedings(self) -> None:
+    def add_reference(self) -> None:
         """Start an interactive command line session to ask the user for
-        field values for an Inproceedings-reference.
+        field values for a reference.
 
         Calls reference_services.create_reference with field values.
         """
+        ref_type_literal = ""
+
+        while True:
+            self._io.write("\nSupported reference types:")
+            self._io.write(", ".join(ReferenceType.get_literals()))
+            value = self._io.read("\nEnter reference type: ")
+            if value in ReferenceType.get_literals():
+                ref_type_literal = value
+                break
+            self._io.write("Error: " + INVALID_REFERENCE_TYPE_ERROR)
+
+        ref_type = ReferenceType(ref_type_literal)
+        ref_type_keys = ref_type.get_keys()
+        ref_type_mandatory_keys = ref_type.get_mandatory_keys()
+
         field_values = {}
 
-        for field in INPROCEEDINGS_KEYS:
-            mandatory = field in INPROCEEDINGS_MANDATORY_KEYS
+        for field in ref_type_keys:
+            mandatory = field in ref_type_mandatory_keys
             value = self.get_field(field, mandatory)
+
             if value != "":
                 field_values[field] = value
-
         try:
-            self._reference_services.create_reference(field_values)
+            self._reference_services.create_reference(ref_type, field_values)
         except ValueError as error:
             self._io.write("Error: " + str(error))
 
@@ -112,7 +142,31 @@ class UI():
         for reference in self._reference_repository.load_all():
             self._io.write(str(reference))
 
-    def exit(self):
-        """Exit program."""
-        self._io.write("\nShutting down")
-        sys.exit()
+    def show_one_reference(self, key: str) -> None:
+        """Print one reference with given key
+        Args:
+            key (String): Reference key
+        """
+        reference = self._reference_repository.load_one(key)
+        self._io.write(f"\n{str(reference)}")
+
+    def show_all_reference_keys(self) -> None:
+        """Print all keys"""
+        self._io.write("Keys:")
+        for reference in self._reference_repository.load_all():
+            self._io.write(f"   {reference.key}")
+
+    def show_reference_by_key(self) -> None:
+        """Loop for viewing references by key"""
+        self.show_all_reference_keys()
+        while True:
+            key = self._io.read("\nEnter key, 'k' for keys or 'x' for return: ")
+            if key == "x":
+                return
+            if key == "k":
+                self.show_all_reference_keys()
+            else:
+                try:
+                    self.show_one_reference(key)
+                except ValueError as error:
+                    self._io.write("Error: " + str(error))

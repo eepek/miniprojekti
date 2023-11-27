@@ -29,3 +29,7 @@ def coverage_report_html(c):
 @task
 def lint(c):
     c.run('pylint src', pty=True)
+
+@task
+def build(ctx):
+    ctx.run('python3 src/build.py', pty=True)

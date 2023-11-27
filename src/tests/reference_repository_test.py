@@ -1,8 +1,9 @@
 """Unittests for reference module"""
 import unittest
-from repositories.reference_repository import ReferenceRepository
-from entities.reference import Inproceedings
-from constants import ROOT_DIR
+import pytest
+from repositories.reference_repository import ReferenceRepository, ReferenceType
+from entities.reference import Reference
+from constants import ROOT_DIR, KEY_DOES_NOT_EXIST_ERROR
 
 
 class TestReference(unittest.TestCase):
@@ -12,17 +13,17 @@ class TestReference(unittest.TestCase):
         self.repository = ReferenceRepository(f"{ROOT_DIR}/tests/test_references.bib")
         self.repository.empty_all_references()
         self.repository.init_references()
-        self.inpro_all = Inproceedings(
-            key="Key123",
-            title="Inproceeding name",
-            author="Mikki Hiiri",
-            booktitle="Proceedings of the Conference",
-            year=2023,
-            volume="1",
-            pages="123-145",
-            address="Helsinki",
-            month="June",
-            note="test")
+        self.inpro_all = Reference(ReferenceType.INPROCEEDINGS, "Key123", {
+            "title": "Inproceeding name",
+            "author": "Mikki Hiiri",
+            "booktitle": "Proceedings of the Conference",
+            "year": 2023,
+            "volume": 1,
+            "pages": "123-145",
+            "address": "Helsinki",
+            "month": "June",
+            "note": "test"
+        })
 
     def test_saving_reference_work(self):
         """Testing that after adding self.inpro_all Inproceedings
@@ -54,3 +55,22 @@ class TestReference(unittest.TestCase):
         reference_list = self.repository.load_all()
 
         self.assertEqual(1, len(reference_list))
+
+    def test_loading_one_from_empty_raises_error(self):
+        """Test for loading one reference when there are none"""
+        with pytest.raises(ValueError,
+                           match=KEY_DOES_NOT_EXIST_ERROR):
+            self.repository.load_one("test_key")
+
+    def test_loading_one_with_incorrect_key_raises_error(self):
+        """Test for loading one reference when key is wrong"""
+        self.repository.save(self.inpro_all)
+        with pytest.raises(ValueError,
+                           match=KEY_DOES_NOT_EXIST_ERROR):
+            self.repository.load_one("Key321")
+
+    def test_loading_one_returns_reference_object(self):
+        """Test succesfull retrieval"""
+        self.repository.save(self.inpro_all)
+        reference = self.repository.load_one("Key123")
+        assert issubclass(type(reference), Reference)

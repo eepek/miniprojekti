@@ -1,64 +1,64 @@
-"""Module consisting of parent class Reference and it's children."""
+"""Module for the Reference class"""
+from enum import Enum
+from constants import NUMBER_KEYS, INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, \
+    TECHREPORT_KEYS, TECHREPORT_MANDATORY_KEYS
 
+
+class ReferenceType(Enum):
+    """Enum for supported reference types.
+    
+    The enum value for each type is the bibtex literal for that type.
+    """
+    INPROCEEDINGS = "inproceedings"
+    TECHREPORT = "techreport"
+
+    def get_keys(self):
+        """Get field keys for this enum instance."""
+        match self.name:
+            case "INPROCEEDINGS":
+                return INPROCEEDINGS_KEYS
+            case "TECHREPORT":
+                return TECHREPORT_KEYS
+
+    def get_mandatory_keys(self):
+        """Get mandatory field keys for this enum instance."""
+        match self.name:
+            case "INPROCEEDINGS":
+                return INPROCEEDINGS_MANDATORY_KEYS
+            case "TECHREPORT":
+                return TECHREPORT_MANDATORY_KEYS
+
+    @classmethod
+    def get_literals(cls):
+        """Get list of supported reference type bibtex literals"""
+        return [t.value for t in cls]
 
 class Reference:
-    """Parent class for all Bibtex- entry types
-    """
-
-    def __init__(self, key, title):
-        self.key = key
-        self.title = title
-
-
-class Inproceedings(Reference):
-    """Bibtex entry- type inproceeding
-
+    """Class for references.
+    
     Args:
-        Reference (class): parent class, key & title
+        reference_type (ReferenceType): type of reference
+        key (str): unique identifier for reference
+        fields (dict): field-value pairs for reference
     """
-
-    def __init__(self, key, title, author, booktitle, year,
-                 editor=None, volume=None, series=None,
-                 pages=None, address=None, month=None,
-                 note=None):
-        super().__init__(key, title)
-        self.author = author
-        self.booktitle = booktitle
-        self.year = year
-        self.editor = editor
-        self.volume = volume
-        self.series = series
-        self.pages = pages
-        self.address = address
-        self.month = month
-        self.note = note
+    def __init__(self, reference_type: ReferenceType, key: str, fields: dict):
+        self.reference_type = reference_type
+        self.key = key
+        self.fields = fields
 
     def __str__(self):
-        """Constructs a dict of objects values and then
-        goes thru the dict and creates bibtex fields if the
-        value is not None.
+        bibtex_fields = []
+        for key, value in self.fields.items():
+            if value is None:
+                continue
 
-        Returns:
-            String: returns string in Bibtex- format
-        """
-        fields = {"author": self.author,
-                  "title": self.title,
-                  "booktitle": self.booktitle,
-                  "year": self.year,
-                  "editor": self.editor,
-                  "volume": self.volume,
-                  "series": self.series,
-                  "pages": self.pages,
-                  "address": self.address,
-                  "month": self.month,
-                  "note": self.note}
+            printable_value = ""
 
-        bibtex_entries = []
-        for key, value in fields.items():
-            if value is not None:
-                if key == "year":
-                    bibtex_entries.append(f"    {key:<13}= {value}")
-                else:
-                    bibtex_entries.append(f"    {key:<13}= {{{value}}}")
+            if key in NUMBER_KEYS:
+                printable_value = value
+            else:
+                printable_value = "{" + str(value) + "}"
 
-        return f"@inproceedings{{{self.key},\n" + ",\n".join(bibtex_entries) + "\n}\n"
+            bibtex_fields.append(f"    {key:<13}= {printable_value}")
+
+        return f"@{self.reference_type.value}{{{self.key},\n" + ",\n".join(bibtex_fields) + "\n}\n"
