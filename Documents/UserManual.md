@@ -61,14 +61,16 @@ Command is chosen by pressing key 1, 2, 3 c or x from keyboard:
 
 Choosing "Add reference" opens prompt for inputting details of new reference. First you are greeted with a view where you can specify the type of reference you wish to add:
 
+---
 Supported reference types:
 inproceedings, techreport
 
 Enter reference type:
-
+---
 
 After inputting type to be added prompt is asking one detail at the time. Mandatory fields must be inputted (they will be asked again), optional fields can be skipped by pressing enter. Where there are constraints for the user input, an error will be shown if the input is invalid and the input field will be repeated until valid input is entered. Below is list of asked details(example for type inproceedings), with format requirements:
 
+---
 - Enter value for field title (mandatory): free text
 - Enter value for field author (Lastname, Firstname) (mandatory): free text
 - Enter value for field booktitle (mandatory): free text
@@ -83,6 +85,7 @@ After inputting type to be added prompt is asking one detail at the time. Mandat
   - English standard abbreviation (jan, feb, mar, ...)
   - English full month name (January, February, ...)
 - Enter value for field note (optional, enter to skip): free text
+---
 
 Program will check that each field is in required format, and in case it is not, error message is shown. If all fields in the inputted reference are in acceptable format, the reference will be saved into a file.
 
@@ -95,6 +98,7 @@ Choosing "View reference by key" displays all the BibTex- reference keys in work
 
 Here is an example view:
 
+---
 Keys:
    doe20
    smith22
@@ -104,3 +108,4 @@ Keys:
    leikas96
 
 Enter key, 'k' for keys or 'x' for return:
+---
