@@ -1,40 +1,13 @@
 """Unittests for UI module."""
 import unittest
-from collections import deque
 from typing import List
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
 from entities.reference import ReferenceType
 from ui import UI
+from mock_io import MockIO
 from constants import ROOT_DIR, UNSUITABLE_COMMAND_ERROR, FIELD_MANDATORY_ERROR, YEAR_FORMAT_ERROR, KEY_DOES_NOT_EXIST_ERROR
 
-class MockIO:
-    """Class to mock IO.
-
-    This class allows to replace standard console IO with a predetermined list
-    of commands and get the output as a string.
-
-    Args:
-        command_list (List[str]): list of strings to feed to the program in order
-    """
-    def __init__(self, command_list: List[str]) -> None:
-        self.command_list = deque(command_list)
-        self.output = ""
-
-    def read(self, prompt: str) -> str:
-        """Return next input from the command list.
-        
-        Also write the prompt to the output.
-        """
-        self.output += "\n" + prompt
-        if len(self.command_list) == 0:
-            # If you don't give the exit command, this handles it.
-            raise SystemExit
-        return self.command_list.popleft()
-
-    def write(self, text: str) -> None:
-        "Write text to the output."
-        self.output += "\n" + text
 
 class TestUI(unittest.TestCase):
     """Unittests for UI class."""
@@ -55,8 +28,7 @@ class TestUI(unittest.TestCase):
         """
         mock_io = MockIO(command_list)
         ui = UI(mock_io, self.ref_repository, self.ref_services)
-        with self.assertRaises(SystemExit):
-            ui.start()
+        ui.start()
         return mock_io.output
 
     def test_shutting_down(self):
@@ -144,6 +116,7 @@ class TestUI(unittest.TestCase):
         """Test showing all reference keys."""
         command_list = [
             "3",
+            "x",
             "x"
         ]
         fields = {"title":"test title","author":"test author","booktitle":"test_title", "year":1995}
