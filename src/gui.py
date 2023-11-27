@@ -1,9 +1,8 @@
-from textual import events
+from textual import events, on
 from ui import UI
 from entities.reference import Reference
-from components.reference_item import ReferenceItem
 from textual.app import App,  ComposeResult
-from textual.widgets import Header, Footer, Button, Label, Static, OptionList
+from textual.widgets import Header, Footer, Button, Label, Static, OptionList, Input
 from textual.widgets.option_list import Option
 from textual.containers import Grid, Center
 from textual.screen import ModalScreen, Screen
@@ -21,6 +20,7 @@ class QuitScreen(Screen):
             Button("Cancel", variant="primary", id="cancel"),
             id="dialog"
         )
+        yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "quit":
@@ -42,10 +42,15 @@ class SingleReference(Screen[None]):
         self.reference = references[reference_id]
 
     BINDINGS = [("e", "edit_reference", "Edit"),
-                ("d", "delete_reference", "Delete")]
+                ("d", "delete_reference", "Delete"),
+                ("b", "back", "Back")]
 
     def compose(self) -> ComposeResult:
         yield Center(Label(str(self.reference)), id="dialog")
+        yield Footer()
+
+    def action_back(self):
+        self.app.pop_screen()
 
 
 class ListKeys(Screen[None]):
@@ -56,11 +61,12 @@ class ListKeys(Screen[None]):
                              for ref in references]
         self.option_id = 0
 
-    BINDINGS = [("b", "back_to_menu", "Back"),
+    BINDINGS = [("b", "back", "Back"),
                 ("o", "open_option", "Open")]
 
     def compose(self) -> ComposeResult:
         yield Center(OptionList(*self.option_items, id="optionList"))
+        yield Footer()
 
     @on(OptionList.OptionMessage)
     def user_selected(self, event: OptionList.OptionSelected):
@@ -70,21 +76,41 @@ class ListKeys(Screen[None]):
         self.app.switch_screen(SingleReference(
             self.references, self.option_id))
 
-    def action_back_to_menu(self):
+    def action_back(self):
         self.app.pop_screen()
 
 
 class ShowAll(Screen[None]):
     def __init__(self, references) -> None:
         super().__init__()
-        self.references = references
+        self.references = [Label(str(ref)) for ref in references]
+
+    BINDINGS = [("b", "back", "Back")]
 
     def compose(self) -> ComposeResult:
-        self.textfile = Static(*str(self.references))
+        self.textfile = Center(*self.references)
         yield self.textfile
+        yield Footer()
 
     def on_mount(self) -> None:
         self.textfile.styles.width = "50%"
+
+    def action_back(self):
+        self.app.pop_screen()
+
+
+class AddReference(Screen):
+
+    BINDINGS = [("b", "back", "Back")]
+
+    def compose(self) -> ComposeResult:
+        yield Input("Title")
+        yield Input("Author")
+
+        yield Footer()
+
+    def action_back(self):
+        self.app.pop_screen()
 
 
 class GUI(App[None]):
@@ -101,13 +127,19 @@ class GUI(App[None]):
                 ]
 
     def compose(self) -> ComposeResult:
-        Header(name="Vault of references")
-        Center(Button("Show in BibTex format", id="toBibtex"), Button(
+        yield Header(name="Vault of references")
+        yield Center(Button("Show in BibTex format", id="toBibtex"), Button(
             "List all references", id="listAll"), Button("Add new", id="addNew"))
-        Footer()
+        yield Footer()
 
     def action_show_all(self):
-        self.push_screen(ListKeys)
+        self.push_screen(ShowAll(self.references))
+
+    def action_list_references(self):
+        self.push_screen(ListKeys(self.references))
+
+    def action_add_reference(self):
+        self.push_screen(AddReference())
 
     def action_request_quit(self):
         self.push_screen(QuitScreen())

@@ -10,7 +10,6 @@ python = "^3.10"
 bibtexparser = "^1.4.1"
 invoke = "^2.2.0"
 python-dotenv = "^1.0.0"
-textualize = "^0.1"
 textual = "^0.41.0"
 
 [tool.poetry.group.dev.dependencies]
