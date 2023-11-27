@@ -3,8 +3,8 @@ import sys
 from cli_io import ConsoleIO
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
-from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, \
-    FIELD_MANDATORY_ERROR, UNSUITABLE_COMMAND_ERROR
+from entities.reference import ReferenceType
+from constants import FIELD_MANDATORY_ERROR, UNSUITABLE_COMMAND_ERROR, INVALID_REFERENCE_TYPE_ERROR
 
 class UI():
     """Class that creates a command line user interface to the program.
@@ -21,7 +21,7 @@ class UI():
         self._reference_services = reference_service
         self.commands = {
             "1": "Browse all references",
-            "2": "Add reference (inproceedings)",
+            "2": "Add reference",
             "3": "View references by key",
             "c": "Show command options",
             "x": "Exit"
@@ -46,7 +46,7 @@ class UI():
                 self.show_references()
 
             if command == "2":
-                self.add_inproceedings()
+                self.add_reference()
 
             if command == "3":
                 self.show_reference_by_key()
@@ -101,22 +101,37 @@ class UI():
                 except ValueError as validation_error:
                     self._io.write(f"Validation Error for {field}: {str(validation_error)}")
 
-    def add_inproceedings(self) -> None:
+    def add_reference(self) -> None:
         """Start an interactive command line session to ask the user for
-        field values for an Inproceedings-reference.
+        field values for a reference.
 
         Calls reference_services.create_reference with field values.
         """
+        ref_type_literal = ""
+
+        while True:
+            self._io.write("\nSupported reference types:")
+            self._io.write(", ".join(ReferenceType.get_literals()))
+            value = self._io.read("\nEnter reference type: ")
+            if value in ReferenceType.get_literals():
+                ref_type_literal = value
+                break
+            self._io.write("Error: " + INVALID_REFERENCE_TYPE_ERROR)
+
+        ref_type = ReferenceType(ref_type_literal)
+        ref_type_keys = ref_type.get_keys()
+        ref_type_mandatory_keys = ref_type.get_mandatory_keys()
+
         field_values = {}
 
-        for field in INPROCEEDINGS_KEYS:
-            mandatory = field in INPROCEEDINGS_MANDATORY_KEYS
+        for field in ref_type_keys:
+            mandatory = field in ref_type_mandatory_keys
             value = self.get_field(field, mandatory)
 
             if value != "":
                 field_values[field] = value
         try:
-            self._reference_services.create_reference(field_values)
+            self._reference_services.create_reference(ref_type, field_values)
         except ValueError as error:
             self._io.write("Error: " + str(error))
 

@@ -3,7 +3,7 @@ import re
 from repositories.reference_repository import ReferenceRepository
 from entities.reference import Reference, ReferenceType
 from constants import MISSING_FIELD_ERROR, YEAR_FORMAT_ERROR, MONTH_FORMAT_ERROR, \
-    VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR, INPROCEEDINGS_KEYS
+    VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR
 
 
 class ReferenceServices:
@@ -19,7 +19,7 @@ class ReferenceServices:
         """
         self._reference_repository = reference_repository
 
-    def create_reference(self, reference: dict):
+    def create_reference(self, reference_type: ReferenceType, reference: dict):
         """Validates reference dictionary fields
         generates Reference object and
         and calls reference_repository save method
@@ -31,14 +31,16 @@ class ReferenceServices:
         ref_keys = reference.keys()
         key = self.construct_bibtex_key(reference["author"], reference["year"])
 
-        if not all(item in INPROCEEDINGS_KEYS for item in ref_keys):
+        ref_type_keys = reference_type.get_keys()
+
+        if not all(item in ref_type_keys for item in ref_keys):
             raise ValueError(EXTRA_KEYS_ERROR)
 
         if not reference["title"] or not reference["author"] \
                 or not reference["booktitle"] or not reference["year"]:
             raise ValueError(MISSING_FIELD_ERROR)
 
-        ref_object = Reference(ReferenceType.INPROCEEDINGS, key, reference)
+        ref_object = Reference(reference_type, key, reference)
         self._reference_repository.save(ref_object)
 
 

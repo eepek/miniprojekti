@@ -3,6 +3,7 @@ import unittest
 import pytest
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
+from entities.reference import ReferenceType
 from constants import MISSING_FIELD_ERROR, YEAR_FORMAT_ERROR, \
     MONTH_FORMAT_ERROR, VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR, ROOT_DIR
 
@@ -36,43 +37,43 @@ class TestReferenceServices(unittest.TestCase):
 
     def test_all_valid_fields_does_not_raise_error(self):
         """No ValueError with all valid fields"""
-        self.ref_services.create_reference(self.inpro)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_alternative_month_format_does_not_raise_error(self):
         """No Value error when month is standard English abbreviation"""
         self.inpro["month"] = "jun"
-        self.ref_services.create_reference(self.inpro)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_alternative_numerical_month_format_does_not_raise_error(self):
         """No Value error when month is in numerical format"""
         self.inpro["month"] = 6
-        self.ref_services.create_reference(self.inpro)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_single_page_does_not_raise_error(self):
         """Tests with single page article, no ValueError"""
         self.inpro["pages"] = "44"
-        self.ref_services.create_reference(self.inpro)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_missing_title_raises_error(self):
         """Test Value error with missing field title"""
         self.inpro["title"] = None
         with pytest.raises(ValueError,
                            match=MISSING_FIELD_ERROR):
-            self.ref_services.create_reference(self.inpro)
+            self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_missing_booktitle_raises_error(self):
         """Test Value error with missing field booktitletitle"""
         self.inpro["booktitle"] = None
         with pytest.raises(ValueError,
                            match=MISSING_FIELD_ERROR):
-            self.ref_services.create_reference(self.inpro)
+            self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_missing_year_raises_error(self):
         """Test Value error with missing field year"""
         self.inpro["year"] = None
         with pytest.raises(ValueError,
                            match=MISSING_FIELD_ERROR):
-            self.ref_services.create_reference(self.inpro)
+            self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_valid_month_does_not_raise_error(self):
         self.ref_services.validate_field("month", "january")
@@ -107,7 +108,7 @@ class TestReferenceServices(unittest.TestCase):
         """Test Value error with invalid pages format"""
         self.inpro["extrafiled"] = "foo"
         with pytest.raises(ValueError, match=EXTRA_KEYS_ERROR):
-            self.ref_services.create_reference(self.inpro)
+            self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_only_mandatory_fields_passes(self):
         """Tests that reference with only mandatory fields doesn't cause Value Error"""
@@ -124,7 +125,7 @@ class TestReferenceServices(unittest.TestCase):
             "month": "",
             "note": ""
         }
-        self.ref_services.create_reference(inpro)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, inpro)
     
     def test_bibtex_key_generator(self):
         """ Test for bibtex key constructing"""
@@ -141,7 +142,7 @@ class TestReferenceServices(unittest.TestCase):
             "month": "",
             "note": ""
         }
-        self.ref_services.create_reference(inpro)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, inpro)
         key1 = self.ref_services.construct_bibtex_key("Powers", 2023)
         key2 = self.ref_services.construct_bibtex_key("Powersson", 1995)
         key3 = self.ref_services.construct_bibtex_key("Alphabet Inc.", 2023)

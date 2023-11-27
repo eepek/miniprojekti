@@ -22,6 +22,10 @@ class ReferenceType(Enum):
             case "INPROCEEDINGS":
                 return INPROCEEDINGS_MANDATORY_KEYS
 
+    @classmethod
+    def get_literals(cls):
+        """Get list of supported reference type bibtex literals"""
+        return [t.value for t in cls]
 
 class Reference:
     """Class for references.

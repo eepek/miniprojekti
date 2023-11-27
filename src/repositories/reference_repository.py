@@ -31,7 +31,7 @@ class ReferenceRepository:
             ref_key = entry["ID"]
 
             # Don't load unsupported reference types
-            if ref_type_literal not in [t.value for t in ReferenceType]:
+            if ref_type_literal not in ReferenceType.get_literals():
                 continue
 
             ref_type = ReferenceType(ref_type_literal)

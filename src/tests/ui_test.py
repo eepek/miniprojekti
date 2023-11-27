@@ -4,6 +4,7 @@ from collections import deque
 from typing import List
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
+from entities.reference import ReferenceType
 from ui import UI
 from constants import ROOT_DIR, UNSUITABLE_COMMAND_ERROR, FIELD_MANDATORY_ERROR, YEAR_FORMAT_ERROR, KEY_DOES_NOT_EXIST_ERROR
 
@@ -70,6 +71,7 @@ class TestUI(unittest.TestCase):
         """Test adding a reference (Inproceeding)."""
         command_list = [
             "2", # command
+            "inproceedings", # type
             "key_value", # key
             "title_value", # title
             "author_value", # author
@@ -110,6 +112,7 @@ class TestUI(unittest.TestCase):
         """Test that an empty string on a mandatory field gives an error."""
         command_list = [
             "2",
+            "inproceedings",
             ""
         ]
         output = self.run_program(command_list)
@@ -119,6 +122,7 @@ class TestUI(unittest.TestCase):
         """Test that an invalid field prints a validation error."""
         command_list = [
             "2", # command
+            "inproceedings", # type
             "key_value", # key
             "title_value", # title
             "author_value", # author
@@ -143,8 +147,8 @@ class TestUI(unittest.TestCase):
             "x"
         ]
         fields = {"title":"test title","author":"test author","booktitle":"test_title", "year":1995}
-        self.ref_services.create_reference(fields)
-        self.ref_services.create_reference(fields)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
         output = self.run_program(command_list)
         self.assertEqual(output.count("testaut95"), len(self.ref_repository._references))
 
@@ -164,8 +168,8 @@ class TestUI(unittest.TestCase):
                         "    booktitle    = {test title},\n"\
                         "    year         = 1995\n"\
                         "}"
-        self.ref_services.create_reference(fields)
-        self.ref_services.create_reference(fields)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
         output = self.run_program(command_list)
         self.assertIn(expected_output, output)
 
