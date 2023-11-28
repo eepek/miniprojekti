@@ -1,17 +1,19 @@
 from textual import events, on
 from ui import UI
 from entities.reference import Reference
+from textual.binding import Binding
 from textual.app import App,  ComposeResult
-from textual.widgets import Header, Footer, Button, Label, Static, OptionList, Input
+from textual.widgets import Header, Footer, Button, Label, OptionList, Input, RichLog, Select
 from textual.widgets.option_list import Option
-from textual.containers import Grid, Center
+from textual.containers import Grid, Center, Vertical
 from textual.screen import ModalScreen, Screen
 
 
 class QuitScreen(Screen):
 
     BINDINGS = [("q", "exit", "Quit"),
-                ("c", "cancel", "Cancel")]
+                ("c", "cancel", "Cancel"),
+                ("enter, ctrl+j", "on_button_pressed")]
 
     def compose(self) -> ComposeResult:
         yield Grid(
@@ -27,6 +29,9 @@ class QuitScreen(Screen):
             self.app.exit()
         else:
             self.app.pop_screen()
+
+    # def on_button_selected(self, key: events.Key, message: Button.Selected):
+    #     if key in ["ctrl+j", "enter", "newline"]:
 
     def action_exit(self):
         self.app.exit()
@@ -53,6 +58,22 @@ class SingleReference(Screen[None]):
         self.app.pop_screen()
 
 
+class TestScreen(Screen):
+
+    def compose(self) -> ComposeResult:
+        yield RichLog()
+        yield Button("One", id="one")
+        yield Button("Two", id="two")
+
+    def on_key(self, event: Button._on_key) -> None:
+        # self.query_one(RichLog).write(event)
+        self.query_one(RichLog).write(event)
+        Button.press(self)
+
+    def on_button_pressed(self, event: Button.Pressed):
+        self.query_one(RichLog).write(event.button.id)
+
+
 class ListKeys(Screen[None]):
     def __init__(self, references: list[Reference]) -> None:
         super().__init__()
@@ -62,7 +83,7 @@ class ListKeys(Screen[None]):
         self.option_id = 0
 
     BINDINGS = [("b", "back", "Back"),
-                ("o", "open_option", "Open")]
+                ("enter, ctrl+j", "open_option", "Open", )]
 
     def compose(self) -> ComposeResult:
         yield Center(OptionList(*self.option_items, id="optionList"))
@@ -101,16 +122,37 @@ class ShowAll(Screen[None]):
 
 class AddReference(Screen):
 
-    BINDINGS = [("b", "back", "Back")]
+    CSS = """
+        OptionList {
+            width: 50%;
+            margin: 2;
+}
+      """
+    BINDINGS = [("b", "back", "Back"),
+                ("enter, ctrl+j", "open_option", "Open", )]
 
     def compose(self) -> ComposeResult:
-        yield Input("Title")
-        yield Input("Author")
 
-        yield Footer()
+        reference_types = [
+            Option("TechReport", id="tech"),
+            Option("Inproceedings", id="inpro")
+        ]
+        yield Header()
+        yield Center(OptionList(*reference_types, id="option_list"))
+
+    @on(OptionList.OptionMessage)
+    def user_selected(self, event: OptionList.OptionSelected):
+        self.option_id = event.option_index
+
+    def action_open_option(self):
+        self.app.switch_screen(ReferenceForm(
+            self.option_id))
 
     def action_back(self):
         self.app.pop_screen()
+
+class ReferenceForm(Screen[Reference]):
+
 
 
 class GUI(App[None]):
@@ -122,15 +164,20 @@ class GUI(App[None]):
 
     CSS_PATH = "css/modal.tcss"
     BINDINGS = [("q", "request_quit", "Quit"), ("s", "show_all", "Show file"),
-                ("l", "list_references", "List view"), ("a",
-                                                        "add_reference", "Add"),
+                ("l", "list_references", "List view"), ("a", "add_reference", "Add"),
+                Binding("t", "test_screen", "test", show=False)
                 ]
+    INITIAL_VALUE = 1
 
     def compose(self) -> ComposeResult:
         yield Header(name="Vault of references")
         yield Center(Button("Show in BibTex format", id="toBibtex"), Button(
             "List all references", id="listAll"), Button("Add new", id="addNew"))
         yield Footer()
+
+    @on(Select.Changed)
+    def select_changed(self, event: Select.Changed) -> None:
+        self.title = str(event.value)
 
     def action_show_all(self):
         self.push_screen(ShowAll(self.references))
@@ -140,6 +187,9 @@ class GUI(App[None]):
 
     def action_add_reference(self):
         self.push_screen(AddReference())
+
+    def action_test_screen(self):
+        self.push_screen(TestScreen())
 
     def action_request_quit(self):
         self.push_screen(QuitScreen())
