@@ -5,6 +5,7 @@ from services.reference_services import ReferenceServices
 from entities.reference import ReferenceType
 from constants import FIELD_MANDATORY_ERROR, UNSUITABLE_COMMAND_ERROR, INVALID_REFERENCE_TYPE_ERROR
 
+
 class UI():
     """Class that creates a command line user interface to the program.
 
@@ -13,6 +14,7 @@ class UI():
         reference_repository (ReferenceRepository): class to store References
         reference_service (ReferenceService): class to create References
     """
+
     def __init__(self, io: ConsoleIO, reference_repository: ReferenceRepository,
                  reference_service: ReferenceServices):
         self._io = io
@@ -73,7 +75,7 @@ class UI():
         Args:
             field (str): the field name to ask the value for
             mandatory (bool): whether to insist for a value, or allow skipping
-        
+
         Returns:
             str: value for field
         """
@@ -88,9 +90,10 @@ class UI():
             if field == "author":
                 value = self._io.read(
                     f"Enter value for field {field} (Lastname, Firstname) ({mandatory_text}): "
-                    )
+                )
             else:
-                value = self._io.read(f"Enter value for field {field} ({mandatory_text}): ")
+                value = self._io.read(
+                    f"Enter value for field {field} ({mandatory_text}): ")
             if value == "":
                 if mandatory:
                     self._io.write(f"Error: {field}: " + FIELD_MANDATORY_ERROR)
@@ -101,7 +104,8 @@ class UI():
                     self._reference_services.validate_field(field, value)
                     return value
                 except ValueError as validation_error:
-                    self._io.write(f"Validation Error for {field}: {str(validation_error)}")
+                    self._io.write(
+                        f"Validation Error for {field}: {str(validation_error)}")
 
     def add_reference(self) -> None:
         """Start an interactive command line session to ask the user for
@@ -160,7 +164,8 @@ class UI():
         """Loop for viewing references by key"""
         self.show_all_reference_keys()
         while True:
-            key = self._io.read("\nEnter key, 'k' for keys or 'x' for return: ")
+            key = self._io.read(
+                "\nEnter key, 'k' for keys or 'x' for return: ")
             if key == "x":
                 return
             if key == "k":
@@ -170,3 +175,9 @@ class UI():
                     self.show_one_reference(key)
                 except ValueError as error:
                     self._io.write("Error: " + str(error))
+
+    # FOR GUI USE ONLY
+
+    def list_references_for_gui(self) -> list:
+        """Return list of references"""
+        return self._reference_repository.load_all()
