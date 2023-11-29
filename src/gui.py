@@ -218,6 +218,7 @@ class AddReference(Screen):
         yield Header()
         yield Center(OptionList(*reference_types, id="option_list"))
         yield RichLog()
+        yield Footer()
 
     @on(OptionList.OptionMessage)
     def user_selected(self, event: OptionList.OptionSelected):
