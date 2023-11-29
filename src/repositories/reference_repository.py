@@ -2,7 +2,7 @@
 import bibtexparser
 from entities.reference import Reference, ReferenceType
 from constants import KEY_DOES_NOT_EXIST_ERROR
-# from database_connection import get_database_connection
+from database_connection import get_database_connection
 
 
 class ReferenceRepository:
@@ -14,7 +14,7 @@ class ReferenceRepository:
         self._references = []
         self._file_path = file_path
         self.init_references()
-        # self._connection = get_database_connection()  # temp should be init parameter
+        self._connection = get_database_connection()  # temp should be init parameter
 
     def init_references(self):
         """Loads references from
@@ -54,7 +54,7 @@ class ReferenceRepository:
             new_reference = Reference(ref_type, ref_key, ref_prototype)
             self._references.append(new_reference)
 
-    def save(self, reference: Reference):
+    def save(self, reference):
         """Saves reference into references list
         which can be read when displaying references
         to user
@@ -62,74 +62,84 @@ class ReferenceRepository:
         Args:
             reference (Reference): Reference to be saved
         """
+
         self._references.append(reference)
         with open(self._file_path, "a", encoding="utf-8") as references_data:
             references_data.write("\n")
             references_data.write(str(reference))
 
-        # self.save_to_db(reference)
+        self.save_to_db(reference)
 
-    # def save_to_db(self, reference: Inproceedings):
-    #     """Saves reference into database
+    def save_to_db(self, reference):
+        """Saves reference into database
 
-    #     Args:
-    #         reference (Inproceedings): Reference to be saved
-    #     """
+        """
 
-    #     cursor = self._connection.cursor()
+        cursor = self._connection.cursor()
+        print(reference.reference_type)
+        print(reference.key)
+        print(reference.fields)
+        sql = """INSERT INTO Authors (author) VALUES (:author) ON CONFLICT DO NOTHING"""
+        cursor.execute(sql, {"author": reference.fields["author"]})
+        self._connection.commit()
 
-    #     sql = """INSERT INTO Authors (author) VALUES (:author) ON CONFLICT DO NOTHING"""
-    #     cursor.execute(sql, {"author": reference.author})
-    #     self._connection.commit()
+        if "institution" in reference.fields:
+            sql = """INSERT INTO Institutions (institution)
+                VALUES (:institution) ON CONFLICT DO NOTHING"""
+            cursor.execute(sql, {"institution":reference.fields["institution"]})
+            self._connection.commit()
 
-    #     sql = """INSERT INTO Institutions (institution)
-    #             VALUES (:institution) ON CONFLICT DO NOTHING"""
-    #     cursor.execute(sql, {"institution": None})
-    #     self._connection.commit()
 
-    #     sql = """INSERT INTO Booktitles (booktitle) VALUES (:booktitle) ON CONFLICT DO NOTHING"""
-    #     cursor.execute(sql, {"booktitle": reference.booktitle})
-    #     self._connection.commit()
+        if "booktitle" in reference.fields:
+            sql = """INSERT INTO Booktitles (booktitle) VALUES (:booktitle) ON CONFLICT DO NOTHING"""
+            cursor.execute(sql, {"booktitle": reference.fields["booktitle"]})
+            self._connection.commit()
 
-    #     sql = """INSERT INTO Editors (editor) VALUES (:editor) ON CONFLICT DO NOTHING"""
-    #     cursor.execute(sql, {"editor": reference.editor})
-    #     self._connection.commit()
+        if "editor" in reference.fields:
+            sql = """INSERT INTO Editors (editor) VALUES (:editor) ON CONFLICT DO NOTHING"""
+            cursor.execute(sql, {"editor": reference.fields["editor"]})
+            self._connection.commit()
 
-    #     sql = """INSERT INTO Series (series) VALUES (:series) ON CONFLICT DO NOTHING"""
-    #     cursor.execute(sql, {"series": reference.series})
-    #     self._connection.commit()
+        if "series" in reference.fields:
+            sql = """INSERT INTO Series (series) VALUES (:series) ON CONFLICT DO NOTHING"""
+            cursor.execute(sql, {"series": reference.fields["series"]})
+            self._connection.commit()
 
-    #     sql = """INSERT INTO Types (type) VALUES (:type) ON CONFLICT DO NOTHING"""
-    #     cursor.execute(sql, {"type": None})
-    #     self._connection.commit()
+        if "type" in reference.fields:
+            sql = """INSERT INTO Types (type) VALUES (:type) ON CONFLICT DO NOTHING"""
+            cursor.execute(sql, {"type": reference.fields["type"]})
+            self._connection.commit()
 
-    #     sql = """INSERT INTO Referencetypes (referencetype)
-    #             VALUES (:referencetype) ON CONFLICT DO NOTHING"""
-    #     cursor.execute(sql, {"referencetype": None})
-    #     self._connection.commit()
+        sql = """INSERT INTO Referencetypes (referencetype)
+                VALUES (:referencetype) ON CONFLICT DO NOTHING"""
+        cursor.execute(sql, {"referencetype": str(reference.reference_type)})
+        self._connection.commit()
 
-    #     sql = """INSERT INTO Bibrefs (
-    #                 key, title, author_id, year, institution_id, booktitle_id, editor_id,
-    #                 referecentype_id, volume, type_id, number, series_id, pages, address,
-    #                 month, note
-    #           ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
-    #           (SELECT id FROM Institutions WHERE institution = ?),
-    #           (SELECT id FROM Booktitles WHERE booktitle = ?),
-    #           (SELECT id FROM Editors WHERE editor = ?),
-    #           (SELECT id FROM Referencetypes WHERE referencetype = ?), ?,
-    #           (SELECT id FROM Types WHERE type = ?), ?,
-    #           (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
-    #         """
-    #     values = (
-    #         reference.key, reference.title, reference.author, reference.year,
-    #         "NULL", reference.booktitle, reference.editor,
-    #         None, reference.volume, None,
-    #         None, reference.series, reference.pages,
-    #         reference.address, reference.month, reference.note
-    #     )
+        sql = """INSERT INTO Bibrefs (
+                    key, title, author_id, year, institution_id, booktitle_id, editor_id,
+                    referecentype_id, volume, type_id, number, series_id, pages, address,
+                    month, note
+              ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
+              (SELECT id FROM Institutions WHERE institution = ?),
+              (SELECT id FROM Booktitles WHERE booktitle = ?),
+              (SELECT id FROM Editors WHERE editor = ?),
+              (SELECT id FROM Referencetypes WHERE referencetype = ?), ?,
+              (SELECT id FROM Types WHERE type = ?), ?,
+              (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
+            """
+        values = (
+            reference.key, reference.fields["title"], reference.fields["author"], reference.fields["year"],
+            None if "institution" not in reference.fields else reference.fields["institution"], None if "booktitle" not in reference.fields else reference.fields["booktitle"],
+            None if "editor" not in reference.fields else reference.fields["editor"],
+            str(reference.reference_type), None if "volume" not in reference.fields else reference.fields["volume"], None if "type" not in reference.fields else reference.fields["type"],
+            None if "number" not in reference.fields else reference.fields["number"], None if "series" not in reference.fields else reference.fields["series"], 
+            None if "pages" not in reference.fields else reference.fields["pages"],
+            None if "address" not in reference.fields else reference.fields["address"], None if "month" not in reference.fields else reference.fields["month"], 
+            None if "note" not in reference.fields else reference.fields["note"]
+        )
 
-    #     cursor.execute(sql, values)
-    #     self._connection.commit()
+        cursor.execute(sql, values)
+        self._connection.commit()
 
     def load_all(self):
         """Returns all the references currently in
@@ -180,3 +190,13 @@ class ReferenceRepository:
         """
         with open(self._file_path, "w", encoding="utf-8"):
             pass
+
+    def empty_all_tables(self):
+
+        cursor = self._connection.cursor()
+        tables =  ["Bibrefs", "Authors", "Institutions", "Booktitles", "Editors", "Series", "Types", "Referencetypes"]
+        for table in tables:
+            cursor.execute(f"delete from {table}")
+
+
+        self._connection.commit()

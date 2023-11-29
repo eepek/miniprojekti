@@ -12,6 +12,7 @@ class TestReference(unittest.TestCase):
     def setUp(self):
         self.repository = ReferenceRepository(f"{ROOT_DIR}/tests/test_references.bib")
         self.repository.empty_all_references()
+        self.repository.empty_all_tables()
         self.repository.init_references()
         self.inpro_all = Reference(ReferenceType.INPROCEEDINGS, "Key123", {
             "title": "Inproceeding name",
