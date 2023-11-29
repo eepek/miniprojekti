@@ -1,14 +1,21 @@
-from textual import events, on
+"""Module constisting of all the GUI-screens
+    that are shown to user.
+
+    Yields:
+        Screen: Textual Screen Widgets
+    """
+
+from textual import on
+from textual.binding import Binding
+from textual.app import App,  ComposeResult
+from textual.widgets import Header, Footer, Button, Label, OptionList, Input, RichLog
+from textual.widgets.option_list import Option
+from textual.containers import Grid, Center
+from textual.screen import Screen
 from services.reference_services import ReferenceServices
 from repositories.reference_repository import ReferenceRepository
 from entities.reference import Reference, ReferenceType
-from textual.binding import Binding
-from textual.app import App,  ComposeResult
-from textual.widgets import Header, Footer, Button, Label, OptionList, Input, RichLog, Select
-from textual.widgets.option_list import Option
-from textual.containers import Grid, Center, Vertical
-from textual.screen import ModalScreen, Screen
-from constants import TECHREPORT_KEYS, TECHREPORT_MANDATORY_KEYS, INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS
+from constants import TECHREPORT_KEYS, INPROCEEDINGS_KEYS
 
 
 class QuitScreen(Screen):
@@ -107,6 +114,7 @@ class TestScreen(Screen):
     #     Button.press(self)
 
     def on_input_changed(self, message: Input.Changed):
+        """Test function"""
         input_info = message.input
         self.query_one(RichLog).write(input_info)
 
@@ -273,6 +281,7 @@ class ReferenceForm(Screen[dict]):
     # Button actions
 
     def on_button_pressed(self, event: Button.Pressed):
+        """Button press calls approiate function"""
         if event.button.id == "save":
             self.action_save()
         elif event.button.id == "cancel":
@@ -292,7 +301,8 @@ class GUI(App[None]):
     """Main app that shows menu screen and buttons
     to open wanted subscreen"""
 
-    def __init__(self, reference_repository: ReferenceRepository, reference_services: ReferenceServices):
+    def __init__(self, reference_repository: ReferenceRepository,
+                 reference_services: ReferenceServices):
         super().__init__()
         self._reference_repository = reference_repository
         self._reference_services = reference_services

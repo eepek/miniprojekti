@@ -1,7 +1,5 @@
 """Main program module."""
-from ui import UI
 from gui import GUI
-from cli_io import ConsoleIO
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
 from constants import ROOT_DIR
