@@ -1,9 +1,9 @@
 """Module consisting on Reference Serices class """
 import re
 from repositories.reference_repository import ReferenceRepository
-from entities.reference import Inproceedings
+from entities.reference import Reference, ReferenceType
 from constants import MISSING_FIELD_ERROR, YEAR_FORMAT_ERROR, MONTH_FORMAT_ERROR, \
-    VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR, INPROCEEDINGS_KEYS
+    VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR
 
 
 class ReferenceServices:
@@ -19,27 +19,28 @@ class ReferenceServices:
         """
         self._reference_repository = reference_repository
 
-    def create_reference(self, reference: dict):
+    def create_reference(self, reference_type: ReferenceType, reference: dict):
         """Validates reference dictionary fields
         generates Reference object and
         and calls reference_repository save method
         Text type fields are only validated for existence not for contents
-        Converst Reference Object into dictionary before calling reference_repository.save()
 
         Args:
           reference (Reference): Refence object
         """
         ref_keys = reference.keys()
-        reference["key"] = self.construct_bibtex_key(reference["author"], reference["year"])
+        key = self.construct_bibtex_key(reference["author"], reference["year"])
 
-        if not all(item in INPROCEEDINGS_KEYS for item in ref_keys):
+        ref_type_keys = reference_type.get_keys()
+        ref_type_mandatory_keys = reference_type.get_mandatory_keys()
+
+        if not all(item in ref_type_keys for item in ref_keys):
             raise ValueError(EXTRA_KEYS_ERROR)
 
-        if not reference["key"] or not reference["title"] or not reference["author"] \
-                or not reference["booktitle"] or not reference["year"]:
+        if not all((m in reference and reference[m] is not None) for m in ref_type_mandatory_keys):
             raise ValueError(MISSING_FIELD_ERROR)
 
-        ref_object = Inproceedings(**reference)
+        ref_object = Reference(reference_type, key, reference)
         self._reference_repository.save(ref_object)
 
 

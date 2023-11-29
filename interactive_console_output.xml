@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.6 on linux)" generated="20231127 14:26:17.932" rpa="false" schemaversion="4">
+<suite id="s1" name="Robot Interactive Console" source="/home/jaakko/.vscode-server/extensions/robocorp.robotframework-lsp-1.11.0/src/robotframework_ls/vendored/robotframework_interactive/robot_interactive_console.robot">
+<test id="s1-t1" name="Default Task/Test" line="5">
+<kw name="Interpreter Main Loop" library="MainLoop">
+<kw name="Input">
+<arg>2</arg>
+<msg timestamp="20231127 14:26:20.022" level="FAIL">No keyword with name 'Input' found.</msg>
+<status status="FAIL" starttime="20231127 14:26:20.021" endtime="20231127 14:26:20.022"/>
+</kw>
+<kw name="Input">
+<arg>inproceedings</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.022" endtime="20231127 14:26:20.022"/>
+</kw>
+<kw name="Input">
+<arg>key_value</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.023" endtime="20231127 14:26:20.023"/>
+</kw>
+<kw name="Input">
+<arg>title_value</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.024" endtime="20231127 14:26:20.024"/>
+</kw>
+<kw name="Input">
+<arg>author_value</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.024" endtime="20231127 14:26:20.024"/>
+</kw>
+<kw name="Input">
+<arg>booktitle_value</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.025" endtime="20231127 14:26:20.025"/>
+</kw>
+<kw name="Input">
+<arg>2000</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.026" endtime="20231127 14:26:20.026"/>
+</kw>
+<kw name="Input">
+<arg>\</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.027" endtime="20231127 14:26:20.027"/>
+</kw>
+<kw name="Input">
+<arg>\</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.028" endtime="20231127 14:26:20.028"/>
+</kw>
+<kw name="Input">
+<arg>\</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.028" endtime="20231127 14:26:20.028"/>
+</kw>
+<kw name="Input">
+<arg>\</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.029" endtime="20231127 14:26:20.029"/>
+</kw>
+<kw name="Input">
+<arg>\</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.030" endtime="20231127 14:26:20.030"/>
+</kw>
+<kw name="Input">
+<arg>\</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.030" endtime="20231127 14:26:20.030"/>
+</kw>
+<kw name="Input">
+<arg>\</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.031" endtime="20231127 14:26:20.031"/>
+</kw>
+<kw name="Input">
+<arg>1</arg>
+<status status="NOT RUN" starttime="20231127 14:26:20.032" endtime="20231127 14:26:20.032"/>
+</kw>
+<kw name="Run Program">
+<status status="NOT RUN" starttime="20231127 14:26:20.033" endtime="20231127 14:26:20.033"/>
+</kw>
+<kw name="Input">
+<arg>2</arg>
+<msg timestamp="20231127 14:26:30.526" level="FAIL">No keyword with name 'Input' found.</msg>
+<status status="FAIL" starttime="20231127 14:26:30.526" endtime="20231127 14:26:30.526"/>
+</kw>
+<kw name="Input" library="AppLibrary">
+<arg>2</arg>
+<status status="PASS" starttime="20231127 14:26:37.209" endtime="20231127 14:26:37.216"/>
+</kw>
+<kw name="Run Program" library="AppLibrary">
+<errors>
+</errors>
+</robot>

@@ -1,10 +1,9 @@
 """Module for the command line user interface"""
-import sys
 from cli_io import ConsoleIO
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
-from constants import INPROCEEDINGS_KEYS, INPROCEEDINGS_MANDATORY_KEYS, \
-    FIELD_MANDATORY_ERROR, UNSUITABLE_COMMAND_ERROR
+from entities.reference import ReferenceType
+from constants import FIELD_MANDATORY_ERROR, UNSUITABLE_COMMAND_ERROR, INVALID_REFERENCE_TYPE_ERROR
 
 
 class UI():
@@ -23,7 +22,8 @@ class UI():
         self._reference_services = reference_service
         self.commands = {
             "1": "Browse all references",
-            "2": "Add reference (inproceedings)",
+            "2": "Add reference",
+            "3": "View references by key",
             "c": "Show command options",
             "x": "Exit"
             # more commands added when needed
@@ -39,21 +39,27 @@ class UI():
         while True:
             self._io.write("\nTo view command options, type c")
             command = self._io.read("What would you like to do?: ")
+            try:
+                if command not in self.commands:
+                    self._io.write("Error: " + UNSUITABLE_COMMAND_ERROR)
 
-            if command not in self.commands:
-                self._io.write("Error: " + UNSUITABLE_COMMAND_ERROR)
+                if command == "1":
+                    self.show_references()
 
-            if command == "1":
-                self.show_references()
+                if command == "2":
+                    self.add_reference()
 
-            if command == "2":
-                self.add_inproceedings()
+                if command == "3":
+                    self.show_reference_by_key()
 
-            if command == "c":
-                self.show_commands()
+                if command == "c":
+                    self.show_commands()
 
-            if command == "x":
-                self.exit()
+                if command == "x":
+                    self._io.write("\nShutting down")
+                    break
+            except SystemExit:
+                break
 
     def show_commands(self) -> None:
         """Print command options."""
@@ -101,24 +107,37 @@ class UI():
                     self._io.write(
                         f"Validation Error for {field}: {str(validation_error)}")
 
-    def add_inproceedings(self) -> None:
+    def add_reference(self) -> None:
         """Start an interactive command line session to ask the user for
-        field values for an Inproceedings-reference.
+        field values for a reference.
 
         Calls reference_services.create_reference with field values.
         """
+        ref_type_literal = ""
+
+        while True:
+            self._io.write("\nSupported reference types:")
+            self._io.write(", ".join(ReferenceType.get_literals()))
+            value = self._io.read("\nEnter reference type: ")
+            if value in ReferenceType.get_literals():
+                ref_type_literal = value
+                break
+            self._io.write("Error: " + INVALID_REFERENCE_TYPE_ERROR)
+
+        ref_type = ReferenceType(ref_type_literal)
+        ref_type_keys = ref_type.get_keys()
+        ref_type_mandatory_keys = ref_type.get_mandatory_keys()
+
         field_values = {}
 
-        for field in INPROCEEDINGS_KEYS:
-            if field == "key":
-                continue
-            mandatory = field in INPROCEEDINGS_MANDATORY_KEYS
+        for field in ref_type_keys:
+            mandatory = field in ref_type_mandatory_keys
             value = self.get_field(field, mandatory)
 
             if value != "":
                 field_values[field] = value
         try:
-            self._reference_services.create_reference(field_values)
+            self._reference_services.create_reference(ref_type, field_values)
         except ValueError as error:
             self._io.write("Error: " + str(error))
 
@@ -160,7 +179,8 @@ class UI():
                 except ValueError as error:
                     self._io.write("Error: " + str(error))
 
-    def exit(self):
-        """Exit program."""
-        self._io.write("\nShutting down")
-        sys.exit()
+    # FOR GUI USE ONLY
+
+    def list_references_for_gui(self) -> list:
+        """Return list of references"""
+        return self._reference_repository.load_all()

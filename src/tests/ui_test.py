@@ -1,40 +1,13 @@
 """Unittests for UI module."""
 import unittest
-import re
-from collections import deque
 from typing import List
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
+from entities.reference import ReferenceType
 from ui import UI
+from mock_io import MockIO
 from constants import ROOT_DIR, UNSUITABLE_COMMAND_ERROR, FIELD_MANDATORY_ERROR, YEAR_FORMAT_ERROR, KEY_DOES_NOT_EXIST_ERROR
 
-class MockIO:
-    """Class to mock IO.
-
-    This class allows to replace standard console IO with a predetermined list
-    of commands and get the output as a string.
-
-    Args:
-        command_list (List[str]): list of strings to feed to the program in order
-    """
-    def __init__(self, command_list: List[str]) -> None:
-        self.command_list = deque(command_list)
-        self.output = ""
-
-    def read(self, prompt: str) -> str:
-        """Return next input from the command list.
-        
-        Also write the prompt to the output.
-        """
-        self.output += "\n" + prompt
-        if len(self.command_list) == 0:
-            # If you don't give the exit command, this handles it.
-            raise SystemExit
-        return self.command_list.popleft()
-
-    def write(self, text: str) -> None:
-        "Write text to the output."
-        self.output += "\n" + text
 
 class TestUI(unittest.TestCase):
     """Unittests for UI class."""
@@ -55,8 +28,7 @@ class TestUI(unittest.TestCase):
         """
         mock_io = MockIO(command_list)
         ui = UI(mock_io, self.ref_repository, self.ref_services)
-        with self.assertRaises(SystemExit):
-            ui.start()
+        ui.start()
         return mock_io.output
 
     def test_shutting_down(self):
@@ -71,6 +43,7 @@ class TestUI(unittest.TestCase):
         """Test adding a reference (Inproceeding)."""
         command_list = [
             "2", # command
+            "inproceedings", # type
             "key_value", # key
             "title_value", # title
             "author_value", # author
@@ -111,6 +84,7 @@ class TestUI(unittest.TestCase):
         """Test that an empty string on a mandatory field gives an error."""
         command_list = [
             "2",
+            "inproceedings",
             ""
         ]
         output = self.run_program(command_list)
@@ -120,6 +94,7 @@ class TestUI(unittest.TestCase):
         """Test that an invalid field prints a validation error."""
         command_list = [
             "2", # command
+            "inproceedings", # type
             "key_value", # key
             "title_value", # title
             "author_value", # author
@@ -141,11 +116,12 @@ class TestUI(unittest.TestCase):
         """Test showing all reference keys."""
         command_list = [
             "3",
+            "x",
             "x"
         ]
         fields = {"title":"test title","author":"test author","booktitle":"test_title", "year":1995}
-        self.ref_services.create_reference(fields)
-        self.ref_services.create_reference(fields)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
         output = self.run_program(command_list)
         self.assertEqual(output.count("testaut95"), len(self.ref_repository._references))
 
@@ -160,13 +136,13 @@ class TestUI(unittest.TestCase):
         ]
         fields = {"title":"test title","author":"test author","booktitle":"test title", "year":1995}
         expected_output = "@inproceedings{testaut95,\n"\
-                        "    author       = {test author},\n"\
                         "    title        = {test title},\n"\
+                        "    author       = {test author},\n"\
                         "    booktitle    = {test title},\n"\
                         "    year         = 1995\n"\
                         "}"
-        self.ref_services.create_reference(fields)
-        self.ref_services.create_reference(fields)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
         output = self.run_program(command_list)
         self.assertIn(expected_output, output)
 
