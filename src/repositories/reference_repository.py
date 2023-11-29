@@ -117,7 +117,7 @@ class ReferenceRepository:
 
         sql = """INSERT INTO Bibrefs (
                     key, title, author_id, year, institution_id, booktitle_id, editor_id,
-                    referecentype_id, volume, type_id, number, series_id, pages, address,
+                    referencetype_id, volume, type_id, number, series_id, pages, address,
                     month, note
               ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
               (SELECT id FROM Institutions WHERE institution = ?),
@@ -148,7 +148,25 @@ class ReferenceRepository:
         Returns:
             list: List of all references
         """
+        # self.load_all_from_database()
         return self._references
+    
+
+    
+    def load_all_from_database(self):
+        """Returns all references from database"""
+
+        cursor = self._connection.cursor()
+
+        sql = """select Bibrefs.key from Bibrefs"""
+        cursor.execute(sql)
+        row = cursor.fetchall()
+        references = []
+        for r in row:
+            references.append(self.load_one_from_database(r[0]))
+        
+        return references
+
 
     def load_one(self, search_key):
         """Retrieves reference by key
@@ -160,10 +178,78 @@ class ReferenceRepository:
         Returns:
             Reference: Reference or subclass object
         """
+        # self.load_one_from_database(search_key)
+        
         reference = [ref for ref in self._references if ref.key == search_key]
         if reference:
             return reference[0]
         raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
+    
+    
+    def load_one_from_database(self, search_key):
+        """Retrieves reference by key
+        """
+        cursor = self._connection.cursor()
+ 
+        sql = """
+    SELECT Referencetypes.referencetype, Bibrefs.key, Bibrefs.title, Authors.author, Bibrefs.year,
+           Institutions.institution, Booktitles.booktitle, Editors.editor, Bibrefs.volume, 
+           Types.type, Bibrefs.number, Series.series, Bibrefs.pages, Bibrefs.address,
+           Bibrefs.month, Bibrefs.note
+    FROM Bibrefs
+    LEFT JOIN Authors ON Bibrefs.author_id = Authors.id
+    LEFT JOIN Institutions ON Bibrefs.institution_id = Institutions.id
+    LEFT JOIN Booktitles ON Bibrefs.booktitle_id = Booktitles.id
+    LEFT JOIN Editors ON Bibrefs.editor_id = Editors.id
+    LEFT JOIN Types ON Bibrefs.type_id = Types.id
+    LEFT JOIN Series ON Bibrefs.series_id = Series.id
+    LEFT JOIN Referencetypes ON Bibrefs.referencetype_id = Referencetypes.id
+    WHERE Bibrefs.key = ?
+"""
+        key = (search_key, )
+        cursor.execute(sql, key)
+
+        row = cursor.fetchone()
+        if row[0] == "ReferenceType.TECHREPORT":
+            reference_fields = {
+            "title": row["title"],
+            "author": row["author"],
+            "institution": row["institution"],
+            "year": row["year"],
+            "type": row["type"],
+            "number": row["number"],
+            "address": row["address"],
+            "month": row["month"],
+            "note": row["note"]
+            #"annote"]
+        }            
+            return Reference(ReferenceType.TECHREPORT, row[1], reference_fields)
+
+        if row[0] == "ReferenceType.INPROCEEDINGS":
+            reference_fields = {
+            "title": row["title"],
+            "author": row["author"],
+            "booktitle": row["booktitle"],
+            "year": row["year"],
+            "editor": row["editor"],
+            "volume": row["volume"],
+            "series": row["series"],
+            "pages": row["pages"],
+            "address": row["address"],
+            "month": row["month"],
+            "note": row["note"]
+        }          
+
+            return Reference(ReferenceType.INPROCEEDINGS, row[1], reference_fields)
+            
+    def delete_from_db(self,search_key):
+        """Deletes reference from database by key"""
+
+        cursor = self._connection.cursor()
+
+        cursor.execute("delete from Bibrefs where key = ?",(search_key, ))
+
+        self._connection.commit()
 
     def get_similar_key_count(self, key: str) -> int:
         """Returns key substring occurrences in self._references

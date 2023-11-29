@@ -76,7 +76,7 @@ def create_tables(connection):
         institution_id INT REFERENCES Institutions,
         booktitle_id INT REFERENCES Booktitles,
         editor_id INT REFERENCES Editors,
-        referecentype_id INT REFERENCES Referencetypes,
+        referencetype_id INT REFERENCES Referencetypes,
         volume TEXT,
         type_id INT REFERENCES Types,
         number TEXT,
