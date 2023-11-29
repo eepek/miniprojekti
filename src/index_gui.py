@@ -13,8 +13,7 @@ def main():
     _reference_repository = ReferenceRepository(_data_folder)
     # Injektoidaan ReferenceRepository sekä serviceille että UI:lle
     _reference_services = ReferenceServices(_reference_repository)
-    app = UI(ConsoleIO(), _reference_repository, _reference_services)
-    program = GUI(app)
+    program = GUI(_reference_repository, _reference_services)
     program.run()
 
 
