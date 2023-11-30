@@ -14,7 +14,7 @@ class ReferenceServices:
     """
 
     def __init__(self, reference_repository: ReferenceRepository) -> None:
-        """Constructor initialises self._reference repository 
+        """Constructor initialises self._reference repository
         from reference repository object given as parameter
         """
         self._reference_repository = reference_repository
@@ -42,7 +42,6 @@ class ReferenceServices:
 
         ref_object = Reference(reference_type, key, reference)
         self._reference_repository.save(ref_object)
-
 
     def validate_field(self, field, value):
         """Validate the user input for a specific field.
@@ -74,7 +73,6 @@ class ReferenceServices:
             if not re.match(regex, value):
                 raise ValueError(PAGES_FORMAT_ERROR)
 
-
     def construct_bibtex_key(self, author: str, year: int) -> str:
         """Algorithm for constucting bibtex -key.
         if author: Powers and year: 2023 -> powers23
@@ -97,3 +95,13 @@ class ReferenceServices:
         if previous > 0:
             bibtex_key = bibtex_key + "_" + str(previous)
         return bibtex_key
+
+    def delete_reference(self, reference_key):
+        """Calls for repository method to delete
+        wanted reference from DB
+
+        Args:
+            reference_key (str): Key value of reference
+            to be deleted
+        """
+        pass

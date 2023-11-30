@@ -63,6 +63,8 @@ class GUI(App[None]):
         self._reference_services = reference_services
         self.references = self._reference_repository.load_all()
 
+    CSS_PATH = "screens/style.tcss"
+
     BINDINGS = [("q", "request_quit", "Quit"), ("s", "show_all", "Show file"),
                 ("l", "list_references", "List view"), ("a", "add_reference", "Add"),
                 Binding("t", "test_screen", "test", show=False)
@@ -98,7 +100,8 @@ class GUI(App[None]):
     def action_list_references(self):
         """Opens screen that shows all reference
         keys as optionlist"""
-        self.push_screen(ListKeys(self.references))
+        self.push_screen(ListKeys(self.references, self._reference_services.delete_reference,
+                         self._reference_services.create_reference))
 
     def action_add_reference(self):
         """Opens screen that shows optionlist for

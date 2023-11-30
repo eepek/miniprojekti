@@ -8,7 +8,7 @@
 from textual import on, events
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Footer, OptionList, DataTable, TextArea
+from textual.widgets import Footer, OptionList, DataTable, TextArea, RichLog
 from textual.widgets.option_list import Option
 from textual.containers import Center
 from textual.screen import Screen
@@ -24,11 +24,13 @@ class ListKeys(Screen[None]):
         Screen (Screen): Textual Screen component
     """
 
-    def __init__(self, references: list[Reference]) -> None:
+    def __init__(self, references: list[Reference], delete_reference, create_reference) -> None:
         super().__init__()
         self.references = references
         self.option_items = [Option(ref.key, id=ref.key)
                              for ref in references]
+        self.delete_reference = delete_reference
+        self.create_reference = create_reference
         self.option_id = 0
 
     BINDINGS = [("b", "back", "Back"),
@@ -37,6 +39,7 @@ class ListKeys(Screen[None]):
     def compose(self) -> ComposeResult:
         yield Center(OptionList(*self.option_items, id="optionList"))
         yield Footer()
+        yield RichLog()
 
     @on(OptionList.OptionMessage)
     def user_selected(self, event: OptionList.OptionSelected):
@@ -52,12 +55,18 @@ class ListKeys(Screen[None]):
         """Opens new screen from selected option,
         triggered by key stroke
         """
-        self.app.switch_screen(SingleReference(
-            self.references, self.option_id))
+
+        def delete_or_edit_reference(reference_key: str = None):
+            if reference_key:
+                self.delete_reference(reference_key)
+
+        self.app.push_screen(SingleReference(
+            self.references, self.option_id), delete_or_edit_reference)
 
     def action_back(self):
         """Closes screen, triggered by keystroke"""
         self.app.pop_screen()
+
 
 class SingleReference(Screen[None]):
     """Screen containing a single reference."""
@@ -66,9 +75,9 @@ class SingleReference(Screen[None]):
     BINDINGS = [("d", "delete_reference", "Delete"),
                 ("b", "back", "Back")]
 
-    def __init__(self, references, reference_id) -> None:
+    def __init__(self, references: list, reference_id: int) -> None:
         super().__init__()
-        self.reference = references[reference_id]
+        self.reference: Reference = references[reference_id]
 
     def compose(self) -> ComposeResult:
         yield SingleReferenceWidget(self.reference)
@@ -80,6 +89,13 @@ class SingleReference(Screen[None]):
         """
         self.app.pop_screen()
 
+    def action_delete_reference(self):
+        """Calls for deletion of current
+        reference from DB"""
+        # Tähän varmaan joku confirmation ois hyvä?
+        self.dismiss(self.reference.key)
+
+
 class SingleReferenceWidget(Widget):
     """Widget for displaying a single reference."""
     # (row_index, key, value)
@@ -87,7 +103,7 @@ class SingleReferenceWidget(Widget):
 
     def __init__(self, reference) -> None:
         super().__init__(classes="single-ref")
-        self.reference = reference
+        self.reference: Reference = reference
         self.last_selected_coord = None
 
     def compose(self) -> ComposeResult:
@@ -122,12 +138,12 @@ class SingleReferenceWidget(Widget):
     @on(DataTable.CellSelected)
     def cell_selected(self, event: DataTable.CellSelected):
         """This will be called when the mouse clicks on a cell.
-        
+
         If the click is on a cell, which was already selected, open the field modify input.
         """
         table = self.query_one(DataTable)
         if event.coordinate == self.last_selected_coord and event.coordinate.column == 1 \
-            and self.modify_field is None:
+                and self.modify_field is None:
             row = table.cursor_coordinate.row
             field, value = table.get_row_at(row)
             self.modify_field = (row, field, value)
@@ -147,7 +163,7 @@ class SingleReferenceWidget(Widget):
             # Implement validating/saving updated field here
             self.modify_field = None
         elif event.key == "ctrl+j" and table.cursor_coordinate.column == 1 \
-            and self.modify_field is None:
+                and self.modify_field is None:
             row = table.cursor_coordinate.row
             field, value = table.get_row_at(row)
             self.modify_field = (row, field, value)
