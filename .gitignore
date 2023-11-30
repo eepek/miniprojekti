@@ -2,5 +2,4 @@
 htmlcov/
 __pycache__/
 .pytest_cache/
-data/
-*.txt
+x*.txt
