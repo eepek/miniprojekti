@@ -7,10 +7,11 @@
 
 from textual.binding import Binding
 from textual.app import App,  ComposeResult
+from textual.events import Key
 from textual.widgets import Header, Footer, Button, Input, RichLog
 from textual.containers import Center
 from textual.screen import Screen
-from screens.quit_screen import QuitScreen
+from screens.confirmation_screen import ConfirmationScreen
 from screens.add_reference import AddReference
 from screens.list_keys import ListKeys
 from screens.show_all import ShowAll
@@ -62,6 +63,10 @@ class GUI(App[None]):
         self._reference_repository = reference_repository
         self._reference_services = reference_services
         self.references = self._reference_repository.load_all()
+        self.show_all = Button("Show in BibTex format", id="toBibtex")
+        self.list_keys = Button(
+            "List all references", id="listAll")
+        self.add_new = Button("Add new", id="addNew")
 
     CSS_PATH = "screens/style.tcss"
 
@@ -73,8 +78,7 @@ class GUI(App[None]):
 
     def compose(self) -> ComposeResult:
         yield Header(name="Vault of references")
-        yield Center(Button("Show in BibTex format", id="toBibtex"), Button(
-            "List all references", id="listAll"), Button("Add new", id="addNew"))
+        yield Center(self.show_all, self.list_keys, self.add_new)
         yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed):
@@ -90,6 +94,17 @@ class GUI(App[None]):
             self.action_list_references()
         elif event.button.id == "addNew":
             self.action_add_reference()
+
+    def on_key(self, key: Key):
+        """Tracks if Enter button presses happen on focused
+        button"""
+        if key.key in ["enter", "ctrl+j"]:
+            if self.show_all.has_focus:
+                self.action_show_all()
+            elif self.list_keys.has_focus:
+                self.action_list_references()
+            elif self.add_new.has_focus:
+                self.action_add_reference()
 
     def action_show_all(self):
         """Opens screen that shows all references
@@ -115,4 +130,8 @@ class GUI(App[None]):
 
     def action_request_quit(self):
         """Opens screen for quit dialog"""
-        self.push_screen(QuitScreen())
+        def confirm_quit(quit_app: bool):
+            if quit_app:
+                self.exit()
+
+        self.push_screen(ConfirmationScreen("quit"), confirm_quit)

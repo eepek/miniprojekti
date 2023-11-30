@@ -7,6 +7,7 @@ a reference
 
 from textual import on
 from textual.app import ComposeResult
+from textual.events import Key
 from textual.widgets import Header, Footer, Button, OptionList, Input, RichLog
 from textual.widgets.option_list import Option
 from textual.containers import Center
@@ -89,12 +90,14 @@ class ReferenceForm(Screen[dict]):
                        for field in self.keys]
         super().__init__()
         self.new_reference = {}
+        self.save_button = Button("Save", id="save")
+        self.cancel_button = Button("Cancel", id="cancel")
 
     def compose(self):
 
         yield Center(*self.inputs)
         yield RichLog()
-        yield Center(Button("Save", id="save"), Button("Cancel", id="cancel"))
+        yield Center(self.save_button, self.cancel_button)
         yield Footer()
 
     def on_input_changed(self, message: Input.Changed):
@@ -110,6 +113,15 @@ class ReferenceForm(Screen[dict]):
             self.action_save()
         elif event.button.id == "cancel":
             self.action_cancel()
+
+    def on_key(self, key: Key):
+        """Tracks if Enter button presses happen on focused
+        button"""
+        if key.key in ["enter", "ctrl+j"]:
+            if self.save_button.has_focus:
+                self.action_save()
+            elif self.cancel_button.has_focus:
+                self.action_cancel()
 
     def action_cancel(self):
         """Closes the screen, triggered by key"""

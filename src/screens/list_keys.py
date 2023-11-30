@@ -14,6 +14,7 @@ from textual.containers import Center
 from textual.screen import Screen
 from textual.reactive import reactive
 from entities.reference import Reference
+from screens.confirmation_screen import ConfirmationScreen
 
 
 class ListKeys(Screen[None]):
@@ -93,7 +94,11 @@ class SingleReference(Screen[None]):
         """Calls for deletion of current
         reference from DB"""
         # Tähän varmaan joku confirmation ois hyvä?
-        self.dismiss(self.reference.key)
+        def confirm(confirmation):
+            if confirmation:
+                self.dismiss(self.reference.key)
+
+        self.app.push_screen(ConfirmationScreen('delete this entry'), confirm)
 
 
 class SingleReferenceWidget(Widget):
