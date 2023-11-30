@@ -75,9 +75,19 @@ class GUI(App[None]):
             "List all references", id="listAll"), Button("Add new", id="addNew"))
         yield Footer()
 
-    # @on(Select.Changed)
-    # def select_changed(self, event: Select.Changed) -> None:
-    #     self.title = str(event.value)
+    def on_button_pressed(self, event: Button.Pressed):
+        """Tracks button press events and
+        calls for approriate method
+
+        Args:
+            event (Button.Pressed): Textual event message
+        """
+        if event.button.id == "toBibtex":
+            self.action_show_all()
+        elif event.button.id == "listAll":
+            self.action_list_references()
+        elif event.button.id == "addNew":
+            self.action_add_reference()
 
     def action_show_all(self):
         """Opens screen that shows all references
