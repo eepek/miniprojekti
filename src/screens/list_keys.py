@@ -15,6 +15,7 @@ from textual.screen import Screen
 from textual.reactive import reactive
 from entities.reference import Reference
 from screens.confirmation_screen import ConfirmationScreen
+from screens.notify_screen import NotifyScreen
 
 
 class ListKeys(Screen[None]):
@@ -57,12 +58,8 @@ class ListKeys(Screen[None]):
         triggered by key stroke
         """
 
-        def delete_or_edit_reference(reference_key: str = None):
-            if reference_key:
-                self.delete_reference(reference_key)
-
-        self.app.push_screen(SingleReference(
-            self.references, self.option_id), delete_or_edit_reference)
+        self.app.switch_screen(SingleReference(
+            self.references, self.option_id, self.delete_reference))
 
     def action_back(self):
         """Closes screen, triggered by keystroke"""
@@ -76,12 +73,14 @@ class SingleReference(Screen[None]):
     BINDINGS = [("d", "delete_reference", "Delete"),
                 ("b", "back", "Back")]
 
-    def __init__(self, references: list, reference_id: int) -> None:
+    def __init__(self, references: list, reference_id: int, delete_reference) -> None:
         super().__init__()
         self.reference: Reference = references[reference_id]
+        self.delete_reference = delete_reference
 
     def compose(self) -> ComposeResult:
         yield SingleReferenceWidget(self.reference)
+        yield RichLog()
         yield Footer()
 
     def action_back(self):
@@ -96,7 +95,17 @@ class SingleReference(Screen[None]):
         # Tähän varmaan joku confirmation ois hyvä?
         def confirm(confirmation):
             if confirmation:
-                self.dismiss(self.reference.key)
+                answer = self.delete_reference(self.reference.key)
+                if answer:
+                    def close(confirm: bool):
+                        if confirm:
+                            self.app.pop_screen()
+
+                    self.app.push_screen(NotifyScreen(
+                        f"{self.reference.key} succesfully removed from DB"), close)
+                else:
+                    self.app.push_screen(NotifyScreen(
+                        "Error, could not delete reference"))
 
         self.app.push_screen(ConfirmationScreen('delete this entry'), confirm)
 

@@ -95,16 +95,19 @@ class GUI(App[None]):
         elif event.button.id == "addNew":
             self.action_add_reference()
 
-    def on_key(self, key: Key):
-        """Tracks if Enter button presses happen on focused
-        button"""
-        if key.key in ["enter", "ctrl+j"]:
-            if self.show_all.has_focus:
-                self.action_show_all()
-            elif self.list_keys.has_focus:
-                self.action_list_references()
-            elif self.add_new.has_focus:
-                self.action_add_reference()
+    # Korjataan tää käyttöön seuraavassa sprintissä
+    # def on_key(self, key: Key):
+    #     """Tracks if Enter button presses happen on focused
+    #     button"""
+    #     if key.key in ["enter", "ctrl+j"]:
+    #         key.stop()
+    #         if self.show_all.has_focus:
+
+    #             self.action_show_all()
+    #         elif self.list_keys.has_focus:
+    #             self.action_list_references()
+    #         elif self.add_new.has_focus:
+    #             self.action_add_reference()
 
     def action_show_all(self):
         """Opens screen that shows all references

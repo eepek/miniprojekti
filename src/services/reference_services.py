@@ -104,4 +104,4 @@ class ReferenceServices:
             reference_key (str): Key value of reference
             to be deleted
         """
-        pass
+        return (True, f"Deleted {reference_key} from DB")
