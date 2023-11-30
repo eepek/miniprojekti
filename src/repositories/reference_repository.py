@@ -13,8 +13,8 @@ class ReferenceRepository:
     def __init__(self, file_path):
         self._references = []
         self._file_path = file_path
-        self.init_references()
         self._connection = get_database_connection()  # temp should be init parameter
+        self.init_references()
 
     def init_references(self):
         """Loads references from
@@ -29,7 +29,7 @@ class ReferenceRepository:
         for entry in bib_data.entries:
             # value after the @ symbol in bibtex
             ref_type_literal = entry["ENTRYTYPE"]
-            ref_key = entry["ID"]
+            # ref_key = entry["ID"]
 
             # Don't load unsupported reference types
             if ref_type_literal not in ReferenceType.get_literals():
@@ -52,8 +52,10 @@ class ReferenceRepository:
             if len(missing_mandatory_keys) > 0:
                 continue
 
-            new_reference = Reference(ref_type, ref_key, ref_prototype)
-            self._references.append(new_reference)
+            # new_reference = Reference(ref_type, ref_key, ref_prototype)
+            # self._references.append(new_reference)
+            self._references = self.load_all_from_database()  # poista tämä ja
+            # palauta edellinen rivi palataksesi vanhaan toiminnallisuuteen
 
     def save(self, reference):
         """Saves reference into references list
@@ -63,12 +65,12 @@ class ReferenceRepository:
         Args:
             reference (Reference): Reference to be saved
         """
-
+        # tallentaa .bib
         self._references.append(reference)
         with open(self._file_path, "a", encoding="utf-8") as references_data:
             references_data.write("\n")
             references_data.write(str(reference))
-
+        # tallentaa database
         self.save_to_db(reference)
 
     def save_to_db(self, reference):
@@ -122,14 +124,14 @@ class ReferenceRepository:
         sql = """INSERT INTO Bibrefs (
                     key, title, author_id, year, institution_id, booktitle_id, editor_id,
                     referencetype_id, volume, type_id, number, series_id, pages, address,
-                    month, note
+                    month, note, annote
               ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
               (SELECT id FROM Institutions WHERE institution = ?),
               (SELECT id FROM Booktitles WHERE booktitle = ?),
               (SELECT id FROM Editors WHERE editor = ?),
               (SELECT id FROM Referencetypes WHERE referencetype = ?), ?,
               (SELECT id FROM Types WHERE type = ?), ?,
-              (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
+              (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?, ?)
             """
         values = (
             reference.key, reference.fields["title"],
@@ -145,7 +147,8 @@ class ReferenceRepository:
             None if "pages" not in reference.fields else reference.fields["pages"],
             None if "address" not in reference.fields else reference.fields["address"],
             None if "month" not in reference.fields else reference.fields["month"],
-            None if "note" not in reference.fields else reference.fields["note"]
+            None if "note" not in reference.fields else reference.fields["note"],
+            None if "annote" not in reference.fields else reference.fields["annote"]
         )
 
         cursor.execute(sql, values)
@@ -158,6 +161,8 @@ class ReferenceRepository:
         Returns:
             list: List of all references
         """
+        # poista seuraava rivi palataksesi vanhaan toiminnallisuuteen
+        self._references = self.load_all_from_database()
         return self._references
 
     def load_all_from_database(self):
@@ -186,12 +191,13 @@ class ReferenceRepository:
         Returns:
             Reference: Reference or subclass object
         """
-        # self.load_one_from_database(search_key)
+        # poista tämä ja palauta alla pois kommentoidut palataksesi vanhaan toiminnallisuuteen
+        return self.load_one_from_database(search_key)
 
-        reference = [ref for ref in self._references if ref.key == search_key]
-        if reference:
-            return reference[0]
-        raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
+        # reference = [ref for ref in self._references if ref.key == search_key]
+        # if reference:
+        #     return reference[0]
+        # raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
 
     def load_one_from_database(self, search_key):
         """Retrieves reference by key
@@ -202,7 +208,7 @@ class ReferenceRepository:
     SELECT Referencetypes.referencetype, Bibrefs.key, Bibrefs.title, Authors.author, Bibrefs.year,
            Institutions.institution, Booktitles.booktitle, Editors.editor, Bibrefs.volume, 
            Types.type, Bibrefs.number, Series.series, Bibrefs.pages, Bibrefs.address,
-           Bibrefs.month, Bibrefs.note
+           Bibrefs.month, Bibrefs.note, Bibrefs.annote
     FROM Bibrefs
     LEFT JOIN Authors ON Bibrefs.author_id = Authors.id
     LEFT JOIN Institutions ON Bibrefs.institution_id = Institutions.id
@@ -230,8 +236,8 @@ class ReferenceRepository:
                 "number": row["number"],
                 "address": row["address"],
                 "month": row["month"],
-                "note": row["note"]
-                # "annote"]
+                "note": row["note"],
+                "annote": row["annote"]
             }
             return Reference(ReferenceType.TECHREPORT, row[1], reference_fields)
 

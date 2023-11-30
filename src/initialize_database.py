@@ -84,7 +84,8 @@ def create_tables(connection):
         pages TEXT,
         address TEXT,
         month TEXT,
-        note TEXT
+        note TEXT,
+        annote TEXT
     );
     """
     cursor.execute(sql)
