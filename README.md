@@ -24,6 +24,14 @@ OHTU miniprojekti
 poetry install
 ```
 
+3. Build / initialize database
+
+```bash
+poetry run invoke build
+```
+
+Note! Build database empties all previously recorded data. Only to be run on first installation.
+
 ## Command line actions
 
 All command line actions to be run on project main folder.
