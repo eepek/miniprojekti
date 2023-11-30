@@ -43,7 +43,6 @@ class ReferenceServices:
         ref_object = Reference(reference_type, key, reference)
         self._reference_repository.save(ref_object)
 
-
     def validate_field(self, field, value):
         """Validate the user input for a specific field.
             Raises ValueError in case of invalid fields
@@ -73,7 +72,6 @@ class ReferenceServices:
             regex = r"^\d+([-]\d+)?$"
             if not re.match(regex, value):
                 raise ValueError(PAGES_FORMAT_ERROR)
-
 
     def construct_bibtex_key(self, author: str, year: int) -> str:
         """Algorithm for constucting bibtex -key.

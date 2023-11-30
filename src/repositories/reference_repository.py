@@ -27,7 +27,8 @@ class ReferenceRepository:
             bib_data = bibtexparser.load(references_data)
 
         for entry in bib_data.entries:
-            ref_type_literal = entry["ENTRYTYPE"] # value after the @ symbol in bibtex
+            # value after the @ symbol in bibtex
+            ref_type_literal = entry["ENTRYTYPE"]
             ref_key = entry["ID"]
 
             # Don't load unsupported reference types
@@ -38,7 +39,7 @@ class ReferenceRepository:
             ref_type_keys = ref_type.get_keys()
             ref_type_mandatory_keys = ref_type.get_mandatory_keys()
 
-            missing_mandatory_keys = set(ref_type_mandatory_keys) # copy
+            missing_mandatory_keys = set(ref_type_mandatory_keys)  # copy
 
             ref_prototype = {}
             for key, value in entry.items():
@@ -86,22 +87,25 @@ class ReferenceRepository:
         if "institution" in reference.fields:
             sql = """INSERT INTO Institutions (institution)
                 VALUES (:institution) ON CONFLICT DO NOTHING"""
-            cursor.execute(sql, {"institution":reference.fields["institution"]})
+            cursor.execute(
+                sql, {"institution": reference.fields["institution"]})
             self._connection.commit()
 
-
         if "booktitle" in reference.fields:
-            sql = """INSERT INTO Booktitles (booktitle) VALUES (:booktitle) ON CONFLICT DO NOTHING"""
+            sql = """INSERT INTO Booktitles (booktitle)
+                VALUES (:booktitle) ON CONFLICT DO NOTHING"""
             cursor.execute(sql, {"booktitle": reference.fields["booktitle"]})
             self._connection.commit()
 
         if "editor" in reference.fields:
-            sql = """INSERT INTO Editors (editor) VALUES (:editor) ON CONFLICT DO NOTHING"""
+            sql = """INSERT INTO Editors (editor)
+                VALUES (:editor) ON CONFLICT DO NOTHING"""
             cursor.execute(sql, {"editor": reference.fields["editor"]})
             self._connection.commit()
 
         if "series" in reference.fields:
-            sql = """INSERT INTO Series (series) VALUES (:series) ON CONFLICT DO NOTHING"""
+            sql = """INSERT INTO Series (series)
+                VALUES (:series) ON CONFLICT DO NOTHING"""
             cursor.execute(sql, {"series": reference.fields["series"]})
             self._connection.commit()
 
@@ -128,13 +132,19 @@ class ReferenceRepository:
               (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?)
             """
         values = (
-            reference.key, reference.fields["title"], reference.fields["author"], reference.fields["year"],
-            None if "institution" not in reference.fields else reference.fields["institution"], None if "booktitle" not in reference.fields else reference.fields["booktitle"],
+            reference.key, reference.fields["title"],
+            reference.fields["author"], reference.fields["year"],
+            None if "institution" not in reference.fields else reference.fields["institution"],
+            None if "booktitle" not in reference.fields else reference.fields["booktitle"],
             None if "editor" not in reference.fields else reference.fields["editor"],
-            str(reference.reference_type), None if "volume" not in reference.fields else reference.fields["volume"], None if "type" not in reference.fields else reference.fields["type"],
-            None if "number" not in reference.fields else reference.fields["number"], None if "series" not in reference.fields else reference.fields["series"], 
+            str(reference.reference_type),
+            None if "volume" not in reference.fields else reference.fields["volume"],
+            None if "type" not in reference.fields else reference.fields["type"],
+            None if "number" not in reference.fields else reference.fields["number"],
+            None if "series" not in reference.fields else reference.fields["series"],
             None if "pages" not in reference.fields else reference.fields["pages"],
-            None if "address" not in reference.fields else reference.fields["address"], None if "month" not in reference.fields else reference.fields["month"], 
+            None if "address" not in reference.fields else reference.fields["address"],
+            None if "month" not in reference.fields else reference.fields["month"],
             None if "note" not in reference.fields else reference.fields["note"]
         )
 
@@ -148,11 +158,8 @@ class ReferenceRepository:
         Returns:
             list: List of all references
         """
-        # self.load_all_from_database()
         return self._references
-    
 
-    
     def load_all_from_database(self):
         """Returns all references from database"""
 
@@ -161,12 +168,13 @@ class ReferenceRepository:
         sql = """select Bibrefs.key from Bibrefs"""
         cursor.execute(sql)
         row = cursor.fetchall()
+        if not row:
+            return []
         references = []
         for r in row:
             references.append(self.load_one_from_database(r[0]))
-        
-        return references
 
+        return references
 
     def load_one(self, search_key):
         """Retrieves reference by key
@@ -179,18 +187,17 @@ class ReferenceRepository:
             Reference: Reference or subclass object
         """
         # self.load_one_from_database(search_key)
-        
+
         reference = [ref for ref in self._references if ref.key == search_key]
         if reference:
             return reference[0]
         raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
-    
-    
+
     def load_one_from_database(self, search_key):
         """Retrieves reference by key
         """
         cursor = self._connection.cursor()
- 
+
         sql = """
     SELECT Referencetypes.referencetype, Bibrefs.key, Bibrefs.title, Authors.author, Bibrefs.year,
            Institutions.institution, Booktitles.booktitle, Editors.editor, Bibrefs.volume, 
@@ -210,44 +217,48 @@ class ReferenceRepository:
         cursor.execute(sql, key)
 
         row = cursor.fetchone()
+        if not row:
+            raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
+
         if row[0] == "ReferenceType.TECHREPORT":
             reference_fields = {
-            "title": row["title"],
-            "author": row["author"],
-            "institution": row["institution"],
-            "year": row["year"],
-            "type": row["type"],
-            "number": row["number"],
-            "address": row["address"],
-            "month": row["month"],
-            "note": row["note"]
-            #"annote"]
-        }            
+                "title": row["title"],
+                "author": row["author"],
+                "institution": row["institution"],
+                "year": row["year"],
+                "type": row["type"],
+                "number": row["number"],
+                "address": row["address"],
+                "month": row["month"],
+                "note": row["note"]
+                # "annote"]
+            }
             return Reference(ReferenceType.TECHREPORT, row[1], reference_fields)
 
         if row[0] == "ReferenceType.INPROCEEDINGS":
             reference_fields = {
-            "title": row["title"],
-            "author": row["author"],
-            "booktitle": row["booktitle"],
-            "year": row["year"],
-            "editor": row["editor"],
-            "volume": row["volume"],
-            "series": row["series"],
-            "pages": row["pages"],
-            "address": row["address"],
-            "month": row["month"],
-            "note": row["note"]
-        }          
-
+                "title": row["title"],
+                "author": row["author"],
+                "booktitle": row["booktitle"],
+                "year": row["year"],
+                "editor": row["editor"],
+                "volume": row["volume"],
+                "series": row["series"],
+                "pages": row["pages"],
+                "address": row["address"],
+                "month": row["month"],
+                "note": row["note"]
+            }
             return Reference(ReferenceType.INPROCEEDINGS, row[1], reference_fields)
-            
-    def delete_from_db(self,search_key):
+
+        raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
+
+    def delete_from_db(self, search_key):
         """Deletes reference from database by key"""
 
         cursor = self._connection.cursor()
 
-        cursor.execute("delete from Bibrefs where key = ?",(search_key, ))
+        cursor.execute("delete from Bibrefs where key = ?", (search_key, ))
 
         self._connection.commit()
 
@@ -278,11 +289,13 @@ class ReferenceRepository:
             pass
 
     def empty_all_tables(self):
+        """Deletes all rows from all database tables
+        """
 
         cursor = self._connection.cursor()
-        tables =  ["Bibrefs", "Authors", "Institutions", "Booktitles", "Editors", "Series", "Types", "Referencetypes"]
+        tables = ["Bibrefs", "Authors", "Institutions", "Booktitles",
+                  "Editors", "Series", "Types", "Referencetypes"]
         for table in tables:
             cursor.execute(f"delete from {table}")
-
 
         self._connection.commit()
