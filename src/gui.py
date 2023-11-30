@@ -61,7 +61,7 @@ class GUI(App[None]):
                  reference_services: ReferenceServices):
         super().__init__()
         self._reference_repository = reference_repository
-        self._reference_services = reference_services
+        self.reference_services = reference_services
         self.references = self._reference_repository.load_all()
         self.show_all = Button("Show in BibTex format", id="toBibtex")
         self.list_keys = Button(
@@ -118,14 +118,14 @@ class GUI(App[None]):
     def action_list_references(self):
         """Opens screen that shows all reference
         keys as optionlist"""
-        self.push_screen(ListKeys(self.references, self._reference_services.delete_reference,
-                         self._reference_services.create_reference))
+        self.push_screen(ListKeys(self.references, self.reference_services.delete_reference,
+                         self.reference_services.create_reference))
 
     def action_add_reference(self):
         """Opens screen that shows optionlist for
         choosing reference type to add"""
         self.push_screen(AddReference(
-            self._reference_services))
+            self.reference_services))
 
     def action_test_screen(self):
         """For testing"""

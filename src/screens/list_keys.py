@@ -174,8 +174,14 @@ class SingleReferenceWidget(Widget):
         """
         table = self.query_one(DataTable)
         if event.key == "ctrl+j" and self.modify_field is not None:
-            # Implement validating/saving updated field here
-            self.modify_field = None
+            field = self.query_one(TextArea)
+            try:
+                self.app.reference_services.validate_field(self.modify_field[1], field.text)
+                self.notify("New value: " + field.text)
+                # Implement saving field here
+                self.modify_field = None
+            except ValueError as error:
+                self.notify(f"Error: {error}", severity="error")
         elif event.key == "ctrl+j" and table.cursor_coordinate.column == 1 \
                 and self.modify_field is None:
             row = table.cursor_coordinate.row
