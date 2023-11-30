@@ -7,7 +7,7 @@
 
 from textual.binding import Binding
 from textual.app import App,  ComposeResult
-from textual.events import Key
+# from textual.events import Key
 from textual.widgets import Header, Footer, Button, Input, RichLog
 from textual.containers import Center
 from textual.screen import Screen
