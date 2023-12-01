@@ -1,17 +1,16 @@
 """Main program module."""
+from tkinter import filedialog
 from gui import GUI
 from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
-from constants import ROOT_DIR
 
 
 def main():
     """Main program function."""
-    _data_folder = f"{ROOT_DIR}/data/references.bib"
-    _reference_repository = ReferenceRepository(_data_folder)
+    _reference_repository = ReferenceRepository()
     # Injektoidaan ReferenceRepository sekä serviceille että UI:lle
     _reference_services = ReferenceServices(_reference_repository)
-    program = GUI(_reference_repository, _reference_services)
+    program = GUI(_reference_repository, _reference_services, filedialog)
     program.run()
 
 

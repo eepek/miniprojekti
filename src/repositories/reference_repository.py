@@ -1,5 +1,4 @@
 """Module for saving references"""
-import bibtexparser
 from entities.reference import Reference, ReferenceType
 from constants import KEY_DOES_NOT_EXIST_ERROR
 from database_connection import get_database_connection
@@ -10,52 +9,15 @@ class ReferenceRepository:
     Currently using .bib file in the folder /data/
     """
 
-    def __init__(self, file_path):
-        self._references = []
-        self._file_path = file_path
+    def __init__(self):
         self._connection = get_database_connection()  # temp should be init parameter
-        self.init_references()
 
-    def init_references(self):
-        """Loads references from
-        database file and saves them into _references
-        list.
-        """
-        self._references = []
-        with open(self._file_path, "r", encoding="utf-8") as references_data:
-
-            bib_data = bibtexparser.load(references_data)
-
-        for entry in bib_data.entries:
-            # value after the @ symbol in bibtex
-            ref_type_literal = entry["ENTRYTYPE"]
-            # ref_key = entry["ID"]
-
-            # Don't load unsupported reference types
-            if ref_type_literal not in ReferenceType.get_literals():
-                continue
-
-            ref_type = ReferenceType(ref_type_literal)
-            ref_type_keys = ref_type.get_keys()
-            ref_type_mandatory_keys = ref_type.get_mandatory_keys()
-
-            missing_mandatory_keys = set(ref_type_mandatory_keys)  # copy
-
-            ref_prototype = {}
-            for key, value in entry.items():
-                if key in ref_type_keys:
-                    ref_prototype[key] = value
-                    if key in ref_type_mandatory_keys:
-                        missing_mandatory_keys.remove(key)
-
-            # If haven't found all mandatory keys, don't load this entry
-            if len(missing_mandatory_keys) > 0:
-                continue
-
-            # new_reference = Reference(ref_type, ref_key, ref_prototype)
-            # self._references.append(new_reference)
-            self._references = self.load_all_from_database()  # poista tämä ja
-            # palauta edellinen rivi palataksesi vanhaan toiminnallisuuteen
+    def save_to_file(self, file_path):
+        """Save database to file in BibTeX form."""
+        with open(file_path, "w", encoding="utf-8") as references_data:
+            for reference in self.load_all_from_database():
+                references_data.write(str(reference))
+                references_data.write("\n")
 
     def save(self, reference):
         """Saves reference into references list
@@ -65,11 +27,6 @@ class ReferenceRepository:
         Args:
             reference (Reference): Reference to be saved
         """
-        # tallentaa .bib
-        self._references.append(reference)
-        with open(self._file_path, "a", encoding="utf-8") as references_data:
-            references_data.write("\n")
-            references_data.write(str(reference))
         # tallentaa database
         self.save_to_db(reference)
 
@@ -161,9 +118,7 @@ class ReferenceRepository:
         Returns:
             list: List of all references
         """
-        # poista seuraava rivi palataksesi vanhaan toiminnallisuuteen
-        self._references = self.load_all_from_database()
-        return self._references
+        return self.load_all_from_database()
 
     def load_all_from_database(self):
         """Returns all references from database"""
@@ -191,13 +146,7 @@ class ReferenceRepository:
         Returns:
             Reference: Reference or subclass object
         """
-        # poista tämä ja palauta alla pois kommentoidut palataksesi vanhaan toiminnallisuuteen
         return self.load_one_from_database(search_key)
-
-        # reference = [ref for ref in self._references if ref.key == search_key]
-        # if reference:
-        #     return reference[0]
-        # raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
 
     def load_one_from_database(self, search_key):
         """Retrieves reference by key
@@ -275,24 +224,7 @@ class ReferenceRepository:
         Returns:
             int: Amount of similar keys
         """
-        return sum(key in reference.key for reference in self._references)
-
-    def file_lines(self):
-        """Helper function for testing
-
-        Returns:
-            int: Number of lines in set use file
-        """
-        with open(self._file_path, "r", encoding="utf-8") as file:
-            lines = len(file.readlines())
-
-        return lines
-
-    def empty_all_references(self):
-        """Deletes all content in database .bib file
-        """
-        with open(self._file_path, "w", encoding="utf-8"):
-            pass
+        return sum(key in reference.key for reference in self.load_all_from_database())
 
     def empty_all_tables(self):
         """Deletes all rows from all database tables

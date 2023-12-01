@@ -5,17 +5,18 @@
     Yields:
         _type_: _description_
     """
+import sqlite3
 from textual import on, events
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Footer, OptionList, DataTable, TextArea, RichLog
+from textual.widgets import Footer, OptionList, DataTable, TextArea, RichLog, Header
 from textual.widgets.option_list import Option
 from textual.containers import Center
 from textual.screen import Screen
 from textual.reactive import reactive
+from textual.coordinate import Coordinate
 from entities.reference import Reference
 from screens.confirmation_screen import ConfirmationScreen
-from screens.notify_screen import NotifyScreen
 
 
 class ListKeys(Screen[None]):
@@ -35,13 +36,13 @@ class ListKeys(Screen[None]):
         self.create_reference = create_reference
         self.option_id = 0
 
-    BINDINGS = [("b", "back", "Back"),
+    BINDINGS = [("escape", "back", "Back"),
                 ("enter, ctrl+j", "open_option", "Open", )]
 
     def compose(self) -> ComposeResult:
+        yield Header()
         yield Center(OptionList(*self.option_items, id="optionList"))
         yield Footer()
-        yield RichLog()
 
     @on(OptionList.OptionMessage)
     def user_selected(self, event: OptionList.OptionSelected):
@@ -58,8 +59,7 @@ class ListKeys(Screen[None]):
         triggered by key stroke
         """
 
-        self.app.switch_screen(SingleReference(
-            self.references, self.option_id, self.delete_reference))
+        self.app.switch_screen(SingleReference(self.references[self.option_id]))
 
     def action_back(self):
         """Closes screen, triggered by keystroke"""
@@ -71,15 +71,15 @@ class SingleReference(Screen[None]):
     CSS_PATH = "style.tcss"
 
     BINDINGS = [("d", "delete_reference", "Delete"),
-                ("b", "back", "Back")]
+                ("escape", "back", "Back")]
 
-    def __init__(self, references: list, reference_id: int, delete_reference) -> None:
+    def __init__(self, reference: Reference, start_selected_coord: Coordinate | None = None):
         super().__init__()
-        self.reference: Reference = references[reference_id]
-        self.delete_reference = delete_reference
+        self.reference = reference
+        self.start_selected_coord = start_selected_coord
 
     def compose(self) -> ComposeResult:
-        yield SingleReferenceWidget(self.reference)
+        yield SingleReferenceWidget(self.reference, self.start_selected_coord)
         yield RichLog()
         yield Footer()
 
@@ -95,17 +95,12 @@ class SingleReference(Screen[None]):
         # Tähän varmaan joku confirmation ois hyvä?
         def confirm(confirmation):
             if confirmation:
-                answer = self.delete_reference(self.reference.key)
-                if answer:
-                    def close(confirm: bool):
-                        if confirm:
-                            self.app.pop_screen()
-
-                    self.app.push_screen(NotifyScreen(
-                        f"{self.reference.key} succesfully removed from DB"), close)
-                else:
-                    self.app.push_screen(NotifyScreen(
-                        "Error, could not delete reference"))
+                try:
+                    self.app.reference_services.delete_reference(self.reference.key)
+                    self.app.notify(f"{self.reference.key} succesfully removed from DB")
+                    self.app.pop_screen()
+                except sqlite3.Error:
+                    self.app.notify("Error, could not delete reference.")
 
         self.app.push_screen(ConfirmationScreen('delete this entry'), confirm)
 
@@ -115,17 +110,23 @@ class SingleReferenceWidget(Widget):
     # (row_index, key, value)
     modify_field: tuple | None = reactive(None)
 
-    def __init__(self, reference) -> None:
+    def __init__(self, reference: Reference, start_selected_coord: Coordinate | None = None):
         super().__init__(classes="single-ref")
         self.reference: Reference = reference
-        self.last_selected_coord = None
+        self.start_selected_coord = start_selected_coord
+        self.last_selected_coord = start_selected_coord
 
     def compose(self) -> ComposeResult:
         table = DataTable()
         table.add_column(self.reference.reference_type.value, width=15)
         table.add_column(self.reference.key)
         for field, value in self.reference.fields.items():
-            table.add_row(field, value)
+            if value is None:
+                continue
+            table.add_row(field, str(value))
+        if self.start_selected_coord is not None:
+            table.move_cursor(row=self.start_selected_coord.row,
+                              column=self.start_selected_coord.column)
         yield table
 
         t = TextArea(classes="modify-field")
@@ -177,9 +178,13 @@ class SingleReferenceWidget(Widget):
             field = self.query_one(TextArea)
             try:
                 self.app.reference_services.validate_field(self.modify_field[1], field.text)
-                self.notify("New value: " + field.text)
-                # Implement saving field here
-                self.modify_field = None
+
+                self.reference.fields[self.modify_field[1]] = field.text
+                self.app.reference_repository.delete_from_db(self.reference.key)
+                self.app.reference_repository.save(self.reference)
+
+
+                self.app.switch_screen(SingleReference(self.reference, table.cursor_coordinate))
             except ValueError as error:
                 self.notify(f"Error: {error}", severity="error")
         elif event.key == "ctrl+j" and table.cursor_coordinate.column == 1 \

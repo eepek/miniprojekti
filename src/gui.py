@@ -58,27 +58,36 @@ class GUI(App[None]):
     to open wanted subscreen"""
 
     def __init__(self, reference_repository: ReferenceRepository,
-                 reference_services: ReferenceServices):
+                 reference_services: ReferenceServices, file_dialog):
         super().__init__()
-        self._reference_repository = reference_repository
+        self.reference_repository = reference_repository
         self.reference_services = reference_services
-        self.references = self._reference_repository.load_all()
+        self.file_dialog = file_dialog
         self.show_all = Button("Show in BibTex format", id="toBibtex")
-        self.list_keys = Button(
-            "List all references", id="listAll")
+        self.list_keys = Button("List by key", id="listAll")
         self.add_new = Button("Add new", id="addNew")
+        self.add_from_bib = Button("Add references from .bib file", id="addFromBib")
+        self.save_to_bib = Button("Save references to .bib file", id="saveToBib")
 
     CSS_PATH = "screens/style.tcss"
 
-    BINDINGS = [("q", "request_quit", "Quit"), ("s", "show_all", "Show file"),
-                ("l", "list_references", "List view"), ("a", "add_reference", "Add"),
+    BINDINGS = [("q", "request_quit", "Quit"),
+                ("s", "show_all", "Show file"),
+                ("l", "list_references", "List by key"),
+                ("a", "add_reference", "Add"),
+                ("f", "add_from_bib", "Add from BibTeX file"),
+                ("o", "save_to_bib", "Save to BibTeX file"),
                 Binding("t", "test_screen", "test", show=False)
                 ]
     INITIAL_VALUE = 1
 
     def compose(self) -> ComposeResult:
         yield Header(name="Vault of references")
-        yield Center(self.show_all, self.list_keys, self.add_new)
+        yield Center(self.show_all,
+                     self.list_keys,
+                     self.add_new,
+                     self.add_from_bib,
+                     self.save_to_bib)
         yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed):
@@ -94,6 +103,10 @@ class GUI(App[None]):
             self.action_list_references()
         elif event.button.id == "addNew":
             self.action_add_reference()
+        elif event.button.id == "addFromBib":
+            self.action_add_from_bib()
+        elif event.button.id == "saveToBib":
+            self.action_save_to_bib()
 
     # Korjataan tää käyttöön seuraavassa sprintissä
     # def on_key(self, key: Key):
@@ -113,12 +126,14 @@ class GUI(App[None]):
         """Opens screen that shows all references
         in BibTex format
         """
-        self.push_screen(ShowAll(self.references))
+        references = self.reference_repository.load_all()
+        self.push_screen(ShowAll(references))
 
     def action_list_references(self):
         """Opens screen that shows all reference
         keys as optionlist"""
-        self.push_screen(ListKeys(self.references, self.reference_services.delete_reference,
+        references = self.reference_repository.load_all()
+        self.push_screen(ListKeys(references, self.reference_services.delete_reference,
                          self.reference_services.create_reference))
 
     def action_add_reference(self):
@@ -126,6 +141,32 @@ class GUI(App[None]):
         choosing reference type to add"""
         self.push_screen(AddReference(
             self.reference_services))
+
+    def action_add_from_bib(self):
+        """Opens dialog box to add references to database from .bib file."""
+        file_path = self.file_dialog.askopenfile(
+            title="Select BibTeX file to load...",
+            filetypes=[("BibTeX files", ["*.bib", "*.txt"]), ("All files", "*.*")])
+        if file_path is not None:
+            errors = self.reference_services.add_from_file(file_path.name)
+            self.notify("File loaded")
+            if len(errors) > 0:
+                self.notify("Some references couldn't be loaded due to the following errors:",
+                            timeout=10)
+                for e in errors:
+                    self.notify(f"Key {e[0]}: {e[1]}", timeout=10)
+
+    def action_save_to_bib(self):
+        """Saves database to .bib file."""
+        file_path = self.file_dialog.asksaveasfilename(
+            defaultextension=".bib",
+            filetypes=[("BibTeX files", ["*.bib", "*.txt"]), ("All files", "*.*")])
+        if isinstance(file_path, str):
+            try:
+                self.reference_repository.save_to_file(file_path)
+                self.notify(f"Saved to {file_path}")
+            except OSError as error:
+                self.notify(f"Error saving file: {error}")
 
     def action_test_screen(self):
         """For testing"""

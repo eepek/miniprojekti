@@ -3,18 +3,15 @@ import unittest
 import pytest
 from repositories.reference_repository import ReferenceRepository, ReferenceType
 from entities.reference import Reference
-from constants import ROOT_DIR, KEY_DOES_NOT_EXIST_ERROR
+from constants import KEY_DOES_NOT_EXIST_ERROR
 
 
 class TestReference(unittest.TestCase):
     """Tests for reference repository class """
 
     def setUp(self):
-        self.repository = ReferenceRepository(
-            f"{ROOT_DIR}/tests/test_references.bib")
-        self.repository.empty_all_references()
+        self.repository = ReferenceRepository()
         self.repository.empty_all_tables()
-        self.repository.init_references()
         self.inpro_all = Reference(ReferenceType.INPROCEEDINGS, "Key123", {
             "title": "Inproceeding name",
             "author": "Mikki Hiiri",
@@ -48,36 +45,12 @@ class TestReference(unittest.TestCase):
             "note": "test note"
         })
 
-    def test_saving_reference_work(self):
-        """Testing that after adding self.inpro_all Inproceedings
-        object to references file, file is 12 lines longer
-        """
-        before_lines = self.repository.file_lines()
-
-        self.repository.save(self.inpro_all)
-
-        after_lines = self.repository.file_lines()
-
-        self.assertEqual(before_lines + 12, after_lines)
-
     def test_loading_references_from_empty_gives_correct_amount(self):
         """Tests that initially the list containing references
         is empty
         """
         references = self.repository.load_all()
         self.assertEqual(len(references), 0)
-
-    def test_after_saving_reference_list_is_updated(self):
-        """Tests that after adding reference it is found
-        in file and in list"""
-
-        self.repository.save(self.inpro_all)
-        lines = self.repository.file_lines()
-        self.assertEqual(12, lines)
-
-        reference_list = self.repository.load_all()
-
-        self.assertEqual(1, len(reference_list))
 
     def test_loading_one_from_empty_raises_error(self):
         """Test for loading one reference when there are none"""

@@ -5,14 +5,15 @@ from unittest import IsolatedAsyncioTestCase
 from entities.reference import Reference
 from repositories.reference_repository import ReferenceRepository, ReferenceType
 from services.reference_services import ReferenceServices
-from constants import ROOT_DIR
+
 
 class TestGUI(IsolatedAsyncioTestCase):
     def setUp(self):
-        self.ref_repository = ReferenceRepository(f"{ROOT_DIR}/tests/test_references.bib")
-        self.ref_repository.empty_all_references()
+        self.ref_repository = ReferenceRepository()
+        self.ref_repository.empty_all_tables()
         self.ref_services = ReferenceServices(self.ref_repository)
-        self.gui = GUI(self.ref_repository, self.ref_services)
+        file_dialog = MagicMock()
+        self.gui = GUI(self.ref_repository, self.ref_services, file_dialog)
         self.inpro_all = Reference(ReferenceType.INPROCEEDINGS, "Key123", {
             "title": "Inproceeding name",
             "author": "Mikki Hiiri",
@@ -65,9 +66,7 @@ class TestGUI(IsolatedAsyncioTestCase):
             self.assertEqual(str(self.gui.screen), "AddReference()")
             await gui.press("o")
             self.assertEqual(str(self.gui.screen), "ReferenceForm()")
-            await gui.press("ctrl+q")
-            self.assertEqual(str(self.gui.screen), "AddReference()")
-            await gui.press("b")
+            await gui.press("escape")
             self.assertEqual(str(self.gui.screen), "Screen(id='_default')")
     
     async def test_add_reference(self):
@@ -120,7 +119,7 @@ class TestGUI(IsolatedAsyncioTestCase):
             self.assertEqual(str(self.gui.screen), "ListKeys()")
             await gui.press("ctrl+j")
             self.assertEqual(str(self.gui.screen), "SingleReference()")
-            await gui.press("b")
+            await gui.press("escape")
             self.assertEqual(str(self.gui.screen), "Screen(id='_default')")
 
     async def test_deleting_reference(self):
@@ -154,5 +153,5 @@ class TestGUI(IsolatedAsyncioTestCase):
         async with self.gui.run_test() as gui:
             await gui.press("s")
             self.assertEqual(str(self.gui.screen), "ShowAll()")
-            await gui.press("b")
+            await gui.press("escape")
             self.assertEqual(str(self.gui.screen), "Screen(id='_default')")

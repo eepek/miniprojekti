@@ -27,7 +27,7 @@ class AddReference(Screen):
             margin: 2;
 }
       """
-    BINDINGS = [("b", "back", "Back"),
+    BINDINGS = [("escape", "back", "Back"),
                 ("o, enter, ctrl+j", "open_option", "Open", )]
 
     def __init__(self, reference_services: ReferenceServices) -> None:
@@ -56,15 +56,7 @@ class AddReference(Screen):
     def action_open_option(self):
         """Opens form for selected reference type
         """
-
-        def save_reference(reference: dict) -> None:
-            # self.query_one(RichLog).write(reference)
-            # self.query_one(RichLog).write(self.option_id)
-            ref_type = ReferenceType(self.option_id)
-            self.services.create_reference(ref_type, reference)
-
-        self.app.push_screen(ReferenceForm(
-            self.option_id), save_reference)
+        self.app.switch_screen(ReferenceForm(self.option_id))
 
     def action_back(self):
         """Closes the screen, triggered by key stroke"""
@@ -82,10 +74,11 @@ class ReferenceForm(Screen[dict]):
         }
     """
 
-    BINDINGS = [("h", "save", "Save"), ("ctrl+q", "cancel", "Cancel")]
+    BINDINGS = [("h", "save", "Save"), ("escape", "cancel", "Cancel")]
 
     def __init__(self, reference_type: str) -> None:
         self.keys = TECHREPORT_KEYS if reference_type == "techreport" else INPROCEEDINGS_KEYS
+        self.reference_type = ReferenceType(reference_type)
         self.inputs = [Input(placeholder=field, id=field, classes="input-field")
                        for field in self.keys]
         super().__init__()
@@ -128,6 +121,11 @@ class ReferenceForm(Screen[dict]):
         self.app.pop_screen()
 
     def action_save(self):
-        """Returns the added reference from input fields as a
-        Reference object"""
-        self.dismiss(self.new_reference)
+        """Trys to create reference."""
+        try:
+            key = self.app.reference_services.create_reference(self.reference_type,
+                                                               self.new_reference)
+            self.app.notify(f"Reference created: {key}")
+            self.dismiss()
+        except ValueError as error:
+            self.app.notify(f"Error: {error}", severity="error")

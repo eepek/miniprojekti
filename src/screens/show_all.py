@@ -18,9 +18,12 @@ class ShowAll(Screen[None]):
 
     def __init__(self, references) -> None:
         super().__init__()
-        self.references = [Label(str(ref)) for ref in references]
+        if len(references) == 0:
+            self.references = [Label(str(""))]
+        else:
+            self.references = [Label(str(ref)) for ref in references]
 
-    BINDINGS = [("b", "back", "Back")]
+    BINDINGS = [("escape", "back", "Back")]
 
     def compose(self) -> ComposeResult:
         textfile = Center(*self.references)
