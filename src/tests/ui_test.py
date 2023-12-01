@@ -15,6 +15,7 @@ class TestUI(unittest.TestCase):
     def setUp(self):
         self.ref_repository = ReferenceRepository(f"{ROOT_DIR}/tests/test_references.bib")
         self.ref_repository.empty_all_references()
+        self.ref_repository.empty_all_tables()
         self.ref_services = ReferenceServices(self.ref_repository)
 
     def run_program(self, command_list: List[str]) -> str:
