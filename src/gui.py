@@ -9,7 +9,7 @@ from textual.binding import Binding
 from textual.app import App,  ComposeResult
 # from textual.events import Key
 from textual.widgets import Header, Footer, Button, Input, RichLog
-from textual.containers import Center
+from textual.containers import Center, Container
 from textual.screen import Screen
 from screens.confirmation_screen import ConfirmationScreen
 from screens.add_reference import AddReference
@@ -63,7 +63,7 @@ class GUI(App[None]):
         self.reference_repository = reference_repository
         self.reference_services = reference_services
         self.file_dialog = file_dialog
-        self.show_all = Button("Show in BibTex format", id="toBibtex")
+        self.show_all = Button("Show all BibTex references", id="toBibtex")
         self.list_keys = Button("List by key", id="listAll")
         self.add_new = Button("Add new", id="addNew")
         self.add_from_bib = Button("Add references from .bib file", id="addFromBib")
@@ -83,11 +83,16 @@ class GUI(App[None]):
 
     def compose(self) -> ComposeResult:
         yield Header(name="Vault of references")
-        yield Center(self.show_all,
-                     self.list_keys,
-                     self.add_new,
-                     self.add_from_bib,
-                     self.save_to_bib)
+        yield Container(
+            Center(
+                    self.show_all,
+                    self.list_keys,
+                    self.add_new,
+                    self.add_from_bib,
+                    self.save_to_bib
+                    ),
+                    id="mainmenu",
+                    )
         yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed):

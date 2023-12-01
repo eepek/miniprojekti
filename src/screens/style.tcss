@@ -8,6 +8,12 @@
     width: auto;
     height: auto;
     margin: 1;
+    padding:5 5;
+}
+
+.showall{
+    width: auto;
+    height: auto;
 }
 
 ConfirmationScreen {
@@ -41,6 +47,7 @@ Button {
     width: 100%;
 }
 
+
 #menuGrid {
     content-align: center middle;
 }
@@ -49,4 +56,9 @@ OptionList {
     height: 1fr;
     width: 60%;
     align: center middle;
+}
+
+#mainmenu {
+    height: 100%;
+    margin: 1 5;
 }
