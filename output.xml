@@ -1,169 +1,400 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20231201 21:11:34.967" rpa="false" schemaversion="4">
+<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20231202 13:38:46.312" rpa="false" schemaversion="4">
 <suite id="s1" name="Tests" source="/home/juhaleik/opisk/ohjelmistotuotanto/miniprojekti/src/tests">
 <suite id="s1-s1" name="Tests" source="/home/juhaleik/opisk/ohjelmistotuotanto/miniprojekti/src/tests/tests.robot">
-<test id="s1-s1-t1" name="Adding Inproceedings Works" line="6">
+<test id="s1-s1-t1" name="Adding Inproceedings Works" line="11">
 <kw name="Command" library="AppLibrary">
 <arg>2</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.150" endtime="20231201 21:11:35.152"/>
+<status status="PASS" starttime="20231202 13:38:46.368" endtime="20231202 13:38:46.370"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>inproceedings</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.153" endtime="20231201 21:11:35.153"/>
+<status status="PASS" starttime="20231202 13:38:46.370" endtime="20231202 13:38:46.370"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>title_value</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.153" endtime="20231201 21:11:35.153"/>
+<status status="PASS" starttime="20231202 13:38:46.370" endtime="20231202 13:38:46.370"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>author_value</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.153" endtime="20231201 21:11:35.153"/>
+<status status="PASS" starttime="20231202 13:38:46.370" endtime="20231202 13:38:46.370"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>booktitle_value</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.153" endtime="20231201 21:11:35.153"/>
+<status status="PASS" starttime="20231202 13:38:46.370" endtime="20231202 13:38:46.370"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>2000</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.153" endtime="20231201 21:11:35.154"/>
+<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.154" endtime="20231201 21:11:35.154"/>
+<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.154" endtime="20231201 21:11:35.154"/>
+<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.154" endtime="20231201 21:11:35.154"/>
+<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.154" endtime="20231201 21:11:35.154"/>
+<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.154" endtime="20231201 21:11:35.154"/>
+<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.155" endtime="20231201 21:11:35.155"/>
+<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.155" endtime="20231201 21:11:35.155"/>
+<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.372"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>1</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.155" endtime="20231201 21:11:35.155"/>
+<status status="PASS" starttime="20231202 13:38:46.372" endtime="20231202 13:38:46.372"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>x</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.155" endtime="20231201 21:11:35.155"/>
+<status status="PASS" starttime="20231202 13:38:46.372" endtime="20231202 13:38:46.372"/>
 </kw>
 <kw name="Run Program" library="AppLibrary">
 <doc>Start running the program with the predetermined command list.</doc>
-<msg timestamp="20231201 21:11:35.161" level="INFO">ReferenceType.INPROCEEDINGS
+<msg timestamp="20231202 13:38:46.378" level="INFO">ReferenceType.INPROCEEDINGS
 author_00
 {'title': 'title_value', 'author': 'author_value', 'booktitle': 'booktitle_value', 'year': '2000'}</msg>
-<status status="PASS" starttime="20231201 21:11:35.155" endtime="20231201 21:11:35.161"/>
+<status status="PASS" starttime="20231202 13:38:46.372" endtime="20231202 13:38:46.378"/>
 </kw>
 <kw name="Output Should Contain" library="AppLibrary">
 <arg>{author_value}</arg>
 <doc>Assert that the output contains a string.</doc>
-<status status="PASS" starttime="20231201 21:11:35.161" endtime="20231201 21:11:35.162"/>
+<status status="PASS" starttime="20231202 13:38:46.378" endtime="20231202 13:38:46.378"/>
 </kw>
-<status status="PASS" starttime="20231201 21:11:35.150" endtime="20231201 21:11:35.162"/>
+<status status="PASS" starttime="20231202 13:38:46.367" endtime="20231202 13:38:46.378"/>
 </test>
-<test id="s1-s1-t2" name="Shutting Down Works" line="25">
+<test id="s1-s1-t2" name="Shutting Down Works" line="30">
 <kw name="Command" library="AppLibrary">
 <arg>x</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.162" endtime="20231201 21:11:35.164"/>
+<status status="PASS" starttime="20231202 13:38:46.378" endtime="20231202 13:38:46.380"/>
 </kw>
 <kw name="Run Program" library="AppLibrary">
 <doc>Start running the program with the predetermined command list.</doc>
-<status status="PASS" starttime="20231201 21:11:35.164" endtime="20231201 21:11:35.164"/>
+<status status="PASS" starttime="20231202 13:38:46.380" endtime="20231202 13:38:46.380"/>
 </kw>
 <kw name="Output Should Contain" library="AppLibrary">
 <arg>Shutting down</arg>
 <doc>Assert that the output contains a string.</doc>
-<status status="PASS" starttime="20231201 21:11:35.164" endtime="20231201 21:11:35.165"/>
+<status status="PASS" starttime="20231202 13:38:46.380" endtime="20231202 13:38:46.380"/>
 </kw>
-<status status="PASS" starttime="20231201 21:11:35.162" endtime="20231201 21:11:35.165"/>
+<status status="PASS" starttime="20231202 13:38:46.378" endtime="20231202 13:38:46.380"/>
 </test>
-<test id="s1-s1-t3" name="Mandatory Field Is Required" line="30">
+<test id="s1-s1-t3" name="Mandatory Field Is Required" line="35">
 <kw name="Command" library="AppLibrary">
 <arg>2</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.165" endtime="20231201 21:11:35.167"/>
+<status status="PASS" starttime="20231202 13:38:46.381" endtime="20231202 13:38:46.382"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>inproceedings</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.167" endtime="20231201 21:11:35.167"/>
+<status status="PASS" starttime="20231202 13:38:46.382" endtime="20231202 13:38:46.383"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231201 21:11:35.167" endtime="20231201 21:11:35.167"/>
+<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:46.383"/>
 </kw>
 <kw name="Run Program" library="AppLibrary">
 <doc>Start running the program with the predetermined command list.</doc>
-<status status="PASS" starttime="20231201 21:11:35.167" endtime="20231201 21:11:35.167"/>
+<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:46.383"/>
 </kw>
 <kw name="Output Should Contain" library="AppLibrary">
 <arg>Field is mandatory</arg>
 <doc>Assert that the output contains a string.</doc>
-<status status="PASS" starttime="20231201 21:11:35.167" endtime="20231201 21:11:35.167"/>
+<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:46.383"/>
 </kw>
-<status status="PASS" starttime="20231201 21:11:35.165" endtime="20231201 21:11:35.168"/>
+<status status="PASS" starttime="20231202 13:38:46.380" endtime="20231202 13:38:46.383"/>
 </test>
-<test id="s1-s1-t4" name="Testing something" line="37">
-<kw name="Press Key" library="GuiLibrary">
-<arg>s</arg>
-<msg timestamp="20231201 21:11:35.168" level="FAIL">AttributeError: 'GUI' object has no attribute 'press'</msg>
-<status status="FAIL" starttime="20231201 21:11:35.168" endtime="20231201 21:11:35.168"/>
+<test id="s1-s1-t4" name="As A User I Want The App To Use Database File" line="42">
+<kw name="Spawn" library="PexpectLibrary">
+<arg>python3 src/index_gui.py</arg>
+<doc>Spawn a new process, and set the active process to the new process.
+If current active process exists, it would be killed before spawning.</doc>
+<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:46.386"/>
 </kw>
-<kw name="Run Gui">
-<status status="NOT RUN" starttime="20231201 21:11:35.169" endtime="20231201 21:11:35.169"/>
+<kw name="Expect" library="PexpectLibrary">
+<arg>GUI</arg>
+<doc>This seeks through the stream until a pattern is matched. The
+pattern is overloaded and may take several types. The pattern can be a
+StringType, pexpect.EOF, pexpect.TIMEOUT, a compiled re, or a list of any of those types.
+Strings will be compiled to re types. This returns the index into the
+pattern list. If the pattern was not a list this returns index 0 on a
+successful match. This may raise exceptions for EOF or TIMEOUT. To
+avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
+list. That will cause expect to match an EOF or TIMEOUT condition
+instead of raising an exception.</doc>
+<status status="PASS" starttime="20231202 13:38:46.386" endtime="20231202 13:38:46.558"/>
 </kw>
-<kw name="Page Should Be" library="GuiLibrary">
-<arg>ShowAll()</arg>
-<status status="NOT RUN" starttime="20231201 21:11:35.169" endtime="20231201 21:11:35.169"/>
+<kw name="Send" library="PexpectLibrary">
+<arg>a</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:46.559" endtime="20231202 13:38:46.609"/>
 </kw>
-<status status="FAIL" starttime="20231201 21:11:35.168" endtime="20231201 21:11:35.170">AttributeError: 'GUI' object has no attribute 'press'</status>
+<kw name="Expect" library="PexpectLibrary">
+<arg>TechReport</arg>
+<doc>This seeks through the stream until a pattern is matched. The
+pattern is overloaded and may take several types. The pattern can be a
+StringType, pexpect.EOF, pexpect.TIMEOUT, a compiled re, or a list of any of those types.
+Strings will be compiled to re types. This returns the index into the
+pattern list. If the pattern was not a list this returns index 0 on a
+successful match. This may raise exceptions for EOF or TIMEOUT. To
+avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
+list. That will cause expect to match an EOF or TIMEOUT condition
+instead of raising an exception.</doc>
+<status status="PASS" starttime="20231202 13:38:46.610" endtime="20231202 13:38:46.685"/>
+</kw>
+<kw name="Expect" library="PexpectLibrary">
+<arg>Inproceedings</arg>
+<doc>This seeks through the stream until a pattern is matched. The
+pattern is overloaded and may take several types. The pattern can be a
+StringType, pexpect.EOF, pexpect.TIMEOUT, a compiled re, or a list of any of those types.
+Strings will be compiled to re types. This returns the index into the
+pattern list. If the pattern was not a list this returns index 0 on a
+successful match. This may raise exceptions for EOF or TIMEOUT. To
+avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
+list. That will cause expect to match an EOF or TIMEOUT condition
+instead of raising an exception.</doc>
+<status status="PASS" starttime="20231202 13:38:46.685" endtime="20231202 13:38:46.685"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>o</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:46.685" endtime="20231202 13:38:46.736"/>
+</kw>
+<kw name="Expect" library="PexpectLibrary">
+<arg>title</arg>
+<doc>This seeks through the stream until a pattern is matched. The
+pattern is overloaded and may take several types. The pattern can be a
+StringType, pexpect.EOF, pexpect.TIMEOUT, a compiled re, or a list of any of those types.
+Strings will be compiled to re types. This returns the index into the
+pattern list. If the pattern was not a list this returns index 0 on a
+successful match. This may raise exceptions for EOF or TIMEOUT. To
+avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
+list. That will cause expect to match an EOF or TIMEOUT condition
+instead of raising an exception.</doc>
+<status status="PASS" starttime="20231202 13:38:46.736" endtime="20231202 13:38:46.808"/>
+</kw>
+<kw name="Send Line" library="PexpectLibrary">
+<arg>test_title</arg>
+<doc>Wraps `Send` , sending string ``s`` to child process, with
+``os.linesep`` automatically appended. Returns number of bytes
+written.  Only a limited number of bytes may be sent for each
+line in the default terminal mode, see docstring of `Send` .</doc>
+<status status="PASS" starttime="20231202 13:38:46.808" endtime="20231202 13:38:46.858"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:46.859" endtime="20231202 13:38:46.909"/>
+</kw>
+<kw name="Send Line" library="PexpectLibrary">
+<arg>test_author</arg>
+<doc>Wraps `Send` , sending string ``s`` to child process, with
+``os.linesep`` automatically appended. Returns number of bytes
+written.  Only a limited number of bytes may be sent for each
+line in the default terminal mode, see docstring of `Send` .</doc>
+<status status="PASS" starttime="20231202 13:38:46.910" endtime="20231202 13:38:46.961"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:46.961" endtime="20231202 13:38:47.012"/>
+</kw>
+<kw name="Send Line" library="PexpectLibrary">
+<arg>MIT</arg>
+<doc>Wraps `Send` , sending string ``s`` to child process, with
+``os.linesep`` automatically appended. Returns number of bytes
+written.  Only a limited number of bytes may be sent for each
+line in the default terminal mode, see docstring of `Send` .</doc>
+<status status="PASS" starttime="20231202 13:38:47.012" endtime="20231202 13:38:47.063"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.063" endtime="20231202 13:38:47.114"/>
+</kw>
+<kw name="Send Line" library="PexpectLibrary">
+<arg>1989</arg>
+<doc>Wraps `Send` , sending string ``s`` to child process, with
+``os.linesep`` automatically appended. Returns number of bytes
+written.  Only a limited number of bytes may be sent for each
+line in the default terminal mode, see docstring of `Send` .</doc>
+<status status="PASS" starttime="20231202 13:38:47.115" endtime="20231202 13:38:47.166"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.166" endtime="20231202 13:38:47.217"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.217" endtime="20231202 13:38:47.268"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.268" endtime="20231202 13:38:47.320"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.320" endtime="20231202 13:38:47.371"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.371" endtime="20231202 13:38:47.422"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.422" endtime="20231202 13:38:47.473"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>\t</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.473" endtime="20231202 13:38:47.524"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>h</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.524" endtime="20231202 13:38:47.575"/>
+</kw>
+<kw name="Expect" library="PexpectLibrary">
+<arg>Show all BibTex references</arg>
+<doc>This seeks through the stream until a pattern is matched. The
+pattern is overloaded and may take several types. The pattern can be a
+StringType, pexpect.EOF, pexpect.TIMEOUT, a compiled re, or a list of any of those types.
+Strings will be compiled to re types. This returns the index into the
+pattern list. If the pattern was not a list this returns index 0 on a
+successful match. This may raise exceptions for EOF or TIMEOUT. To
+avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
+list. That will cause expect to match an EOF or TIMEOUT condition
+instead of raising an exception.</doc>
+<status status="PASS" starttime="20231202 13:38:47.575" endtime="20231202 13:38:47.626"/>
+</kw>
+<kw name="Send" library="PexpectLibrary">
+<arg>l</arg>
+<doc>Sends string ``s`` to the child process, returning the number of
+bytes written. If a logfile is specified, a copy is written to that
+log.</doc>
+<status status="PASS" starttime="20231202 13:38:47.626" endtime="20231202 13:38:47.676"/>
+</kw>
+<kw name="Expect" library="PexpectLibrary">
+<arg>test_au89</arg>
+<doc>This seeks through the stream until a pattern is matched. The
+pattern is overloaded and may take several types. The pattern can be a
+StringType, pexpect.EOF, pexpect.TIMEOUT, a compiled re, or a list of any of those types.
+Strings will be compiled to re types. This returns the index into the
+pattern list. If the pattern was not a list this returns index 0 on a
+successful match. This may raise exceptions for EOF or TIMEOUT. To
+avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
+list. That will cause expect to match an EOF or TIMEOUT condition
+instead of raising an exception.</doc>
+<status status="PASS" starttime="20231202 13:38:47.677" endtime="20231202 13:38:47.678"/>
+</kw>
+<kw name="Terminate" library="PexpectLibrary">
+<doc>This forces a child process to terminate. It starts nicely with
+SIGHUP and SIGINT. If "force" is True then moves onto SIGKILL. This
+returns True if the child was terminated. This returns False if the
+child could not be terminated.</doc>
+<status status="PASS" starttime="20231202 13:38:47.678" endtime="20231202 13:38:47.779"/>
+</kw>
+<kw name="Connect To Database Using Custom Params" library="DatabaseLibrary">
+<arg>sqlite3</arg>
+<arg>${DB_FILE}</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using the map string `db_connect_string`
+(parsed as a list of named arguments).</doc>
+<msg timestamp="20231202 13:38:47.781" level="INFO">Executing : Connect To Database Using Custom Params : sqlite3.connect(db_api_2.connect("data/test-database.sqlite"))</msg>
+<status status="PASS" starttime="20231202 13:38:47.780" endtime="20231202 13:38:47.782"/>
+</kw>
+<kw name="Check If Exists In Database" library="DatabaseLibrary">
+<arg>SELECT * FROM Bibrefs WHERE key='test_au89';</arg>
+<doc>Check if any row would be returned by given the input ``selectStatement``. If there are no results, then this will
+throw an AssertionError.</doc>
+<msg timestamp="20231202 13:38:47.782" level="INFO">Executing : Check If Exists In Database  |  SELECT * FROM Bibrefs WHERE key='test_au89';</msg>
+<msg timestamp="20231202 13:38:47.782" level="INFO">Executing : Query  |  SELECT * FROM Bibrefs WHERE key='test_au89'; </msg>
+<status status="PASS" starttime="20231202 13:38:47.782" endtime="20231202 13:38:47.783"/>
+</kw>
+<kw name="Disconnect From Database" library="DatabaseLibrary">
+<doc>Disconnects from the database.</doc>
+<msg timestamp="20231202 13:38:47.783" level="INFO">Executing : Disconnect From Database</msg>
+<status status="PASS" starttime="20231202 13:38:47.783" endtime="20231202 13:38:47.784"/>
+</kw>
+<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:47.784"/>
 </test>
-<status status="FAIL" starttime="20231201 21:11:34.982" endtime="20231201 21:11:35.170"/>
+<status status="PASS" starttime="20231202 13:38:46.323" endtime="20231202 13:38:47.886"/>
 </suite>
-<status status="FAIL" starttime="20231201 21:11:34.967" endtime="20231201 21:11:35.170"/>
+<status status="PASS" starttime="20231202 13:38:46.313" endtime="20231202 13:38:47.887"/>
 </suite>
 <statistics>
 <total>
-<stat pass="3" fail="1" skip="0">All Tests</stat>
+<stat pass="4" fail="0" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="3" fail="1" skip="0" id="s1" name="Tests">Tests</stat>
-<stat pass="3" fail="1" skip="0" id="s1-s1" name="Tests">Tests.Tests</stat>
+<stat pass="4" fail="0" skip="0" id="s1" name="Tests">Tests</stat>
+<stat pass="4" fail="0" skip="0" id="s1-s1" name="Tests">Tests.Tests</stat>
 </suite>
 </statistics>
 <errors>
