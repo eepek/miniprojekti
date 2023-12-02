@@ -1,147 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20231202 13:38:46.312" rpa="false" schemaversion="4">
+<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20231202 13:47:54.219" rpa="false" schemaversion="4">
 <suite id="s1" name="Tests" source="/home/juhaleik/opisk/ohjelmistotuotanto/miniprojekti/src/tests">
 <suite id="s1-s1" name="Tests" source="/home/juhaleik/opisk/ohjelmistotuotanto/miniprojekti/src/tests/tests.robot">
 <test id="s1-s1-t1" name="Adding Inproceedings Works" line="11">
 <kw name="Command" library="AppLibrary">
 <arg>2</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.368" endtime="20231202 13:38:46.370"/>
+<status status="PASS" starttime="20231202 13:47:54.273" endtime="20231202 13:47:54.275"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>inproceedings</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.370" endtime="20231202 13:38:46.370"/>
+<status status="PASS" starttime="20231202 13:47:54.275" endtime="20231202 13:47:54.275"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>title_value</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.370" endtime="20231202 13:38:46.370"/>
+<status status="PASS" starttime="20231202 13:47:54.275" endtime="20231202 13:47:54.275"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>author_value</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.370" endtime="20231202 13:38:46.370"/>
+<status status="PASS" starttime="20231202 13:47:54.275" endtime="20231202 13:47:54.275"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>booktitle_value</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.370" endtime="20231202 13:38:46.370"/>
+<status status="PASS" starttime="20231202 13:47:54.275" endtime="20231202 13:47:54.276"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>2000</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
+<status status="PASS" starttime="20231202 13:47:54.276" endtime="20231202 13:47:54.276"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
+<status status="PASS" starttime="20231202 13:47:54.276" endtime="20231202 13:47:54.276"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
+<status status="PASS" starttime="20231202 13:47:54.276" endtime="20231202 13:47:54.276"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
+<status status="PASS" starttime="20231202 13:47:54.276" endtime="20231202 13:47:54.276"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
+<status status="PASS" starttime="20231202 13:47:54.276" endtime="20231202 13:47:54.276"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
+<status status="PASS" starttime="20231202 13:47:54.276" endtime="20231202 13:47:54.276"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.371"/>
+<status status="PASS" starttime="20231202 13:47:54.276" endtime="20231202 13:47:54.276"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.371" endtime="20231202 13:38:46.372"/>
+<status status="PASS" starttime="20231202 13:47:54.277" endtime="20231202 13:47:54.277"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>1</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.372" endtime="20231202 13:38:46.372"/>
+<status status="PASS" starttime="20231202 13:47:54.277" endtime="20231202 13:47:54.277"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>x</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.372" endtime="20231202 13:38:46.372"/>
+<status status="PASS" starttime="20231202 13:47:54.277" endtime="20231202 13:47:54.277"/>
 </kw>
 <kw name="Run Program" library="AppLibrary">
 <doc>Start running the program with the predetermined command list.</doc>
-<msg timestamp="20231202 13:38:46.378" level="INFO">ReferenceType.INPROCEEDINGS
+<msg timestamp="20231202 13:47:54.283" level="INFO">ReferenceType.INPROCEEDINGS
 author_00
 {'title': 'title_value', 'author': 'author_value', 'booktitle': 'booktitle_value', 'year': '2000'}</msg>
-<status status="PASS" starttime="20231202 13:38:46.372" endtime="20231202 13:38:46.378"/>
+<status status="PASS" starttime="20231202 13:47:54.277" endtime="20231202 13:47:54.283"/>
 </kw>
 <kw name="Output Should Contain" library="AppLibrary">
 <arg>{author_value}</arg>
 <doc>Assert that the output contains a string.</doc>
-<status status="PASS" starttime="20231202 13:38:46.378" endtime="20231202 13:38:46.378"/>
+<status status="PASS" starttime="20231202 13:47:54.283" endtime="20231202 13:47:54.283"/>
 </kw>
-<status status="PASS" starttime="20231202 13:38:46.367" endtime="20231202 13:38:46.378"/>
+<status status="PASS" starttime="20231202 13:47:54.273" endtime="20231202 13:47:54.283"/>
 </test>
 <test id="s1-s1-t2" name="Shutting Down Works" line="30">
 <kw name="Command" library="AppLibrary">
 <arg>x</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.378" endtime="20231202 13:38:46.380"/>
+<status status="PASS" starttime="20231202 13:47:54.283" endtime="20231202 13:47:54.285"/>
 </kw>
 <kw name="Run Program" library="AppLibrary">
 <doc>Start running the program with the predetermined command list.</doc>
-<status status="PASS" starttime="20231202 13:38:46.380" endtime="20231202 13:38:46.380"/>
+<status status="PASS" starttime="20231202 13:47:54.285" endtime="20231202 13:47:54.285"/>
 </kw>
 <kw name="Output Should Contain" library="AppLibrary">
 <arg>Shutting down</arg>
 <doc>Assert that the output contains a string.</doc>
-<status status="PASS" starttime="20231202 13:38:46.380" endtime="20231202 13:38:46.380"/>
+<status status="PASS" starttime="20231202 13:47:54.285" endtime="20231202 13:47:54.285"/>
 </kw>
-<status status="PASS" starttime="20231202 13:38:46.378" endtime="20231202 13:38:46.380"/>
+<status status="PASS" starttime="20231202 13:47:54.283" endtime="20231202 13:47:54.285"/>
 </test>
 <test id="s1-s1-t3" name="Mandatory Field Is Required" line="35">
 <kw name="Command" library="AppLibrary">
 <arg>2</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.381" endtime="20231202 13:38:46.382"/>
+<status status="PASS" starttime="20231202 13:47:54.285" endtime="20231202 13:47:54.287"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>inproceedings</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.382" endtime="20231202 13:38:46.383"/>
+<status status="PASS" starttime="20231202 13:47:54.287" endtime="20231202 13:47:54.287"/>
 </kw>
 <kw name="Command" library="AppLibrary">
 <arg>\</arg>
 <doc>Add command to be executed.</doc>
-<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:46.383"/>
+<status status="PASS" starttime="20231202 13:47:54.287" endtime="20231202 13:47:54.287"/>
 </kw>
 <kw name="Run Program" library="AppLibrary">
 <doc>Start running the program with the predetermined command list.</doc>
-<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:46.383"/>
+<status status="PASS" starttime="20231202 13:47:54.287" endtime="20231202 13:47:54.287"/>
 </kw>
 <kw name="Output Should Contain" library="AppLibrary">
 <arg>Field is mandatory</arg>
 <doc>Assert that the output contains a string.</doc>
-<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:46.383"/>
+<status status="PASS" starttime="20231202 13:47:54.287" endtime="20231202 13:47:54.288"/>
 </kw>
-<status status="PASS" starttime="20231202 13:38:46.380" endtime="20231202 13:38:46.383"/>
+<status status="PASS" starttime="20231202 13:47:54.285" endtime="20231202 13:47:54.288"/>
 </test>
 <test id="s1-s1-t4" name="As A User I Want The App To Use Database File" line="42">
 <kw name="Spawn" library="PexpectLibrary">
 <arg>python3 src/index_gui.py</arg>
 <doc>Spawn a new process, and set the active process to the new process.
 If current active process exists, it would be killed before spawning.</doc>
-<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:46.386"/>
+<status status="PASS" starttime="20231202 13:47:54.288" endtime="20231202 13:47:54.291"/>
 </kw>
 <kw name="Expect" library="PexpectLibrary">
 <arg>GUI</arg>
@@ -154,14 +154,14 @@ successful match. This may raise exceptions for EOF or TIMEOUT. To
 avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
 list. That will cause expect to match an EOF or TIMEOUT condition
 instead of raising an exception.</doc>
-<status status="PASS" starttime="20231202 13:38:46.386" endtime="20231202 13:38:46.558"/>
+<status status="PASS" starttime="20231202 13:47:54.291" endtime="20231202 13:47:54.462"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>a</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:46.559" endtime="20231202 13:38:46.609"/>
+<status status="PASS" starttime="20231202 13:47:54.462" endtime="20231202 13:47:54.513"/>
 </kw>
 <kw name="Expect" library="PexpectLibrary">
 <arg>TechReport</arg>
@@ -174,7 +174,7 @@ successful match. This may raise exceptions for EOF or TIMEOUT. To
 avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
 list. That will cause expect to match an EOF or TIMEOUT condition
 instead of raising an exception.</doc>
-<status status="PASS" starttime="20231202 13:38:46.610" endtime="20231202 13:38:46.685"/>
+<status status="PASS" starttime="20231202 13:47:54.513" endtime="20231202 13:47:54.587"/>
 </kw>
 <kw name="Expect" library="PexpectLibrary">
 <arg>Inproceedings</arg>
@@ -187,14 +187,14 @@ successful match. This may raise exceptions for EOF or TIMEOUT. To
 avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
 list. That will cause expect to match an EOF or TIMEOUT condition
 instead of raising an exception.</doc>
-<status status="PASS" starttime="20231202 13:38:46.685" endtime="20231202 13:38:46.685"/>
+<status status="PASS" starttime="20231202 13:47:54.587" endtime="20231202 13:47:54.587"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>o</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:46.685" endtime="20231202 13:38:46.736"/>
+<status status="PASS" starttime="20231202 13:47:54.587" endtime="20231202 13:47:54.638"/>
 </kw>
 <kw name="Expect" library="PexpectLibrary">
 <arg>title</arg>
@@ -207,7 +207,7 @@ successful match. This may raise exceptions for EOF or TIMEOUT. To
 avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
 list. That will cause expect to match an EOF or TIMEOUT condition
 instead of raising an exception.</doc>
-<status status="PASS" starttime="20231202 13:38:46.736" endtime="20231202 13:38:46.808"/>
+<status status="PASS" starttime="20231202 13:47:54.638" endtime="20231202 13:47:54.699"/>
 </kw>
 <kw name="Send Line" library="PexpectLibrary">
 <arg>test_title</arg>
@@ -215,14 +215,14 @@ instead of raising an exception.</doc>
 ``os.linesep`` automatically appended. Returns number of bytes
 written.  Only a limited number of bytes may be sent for each
 line in the default terminal mode, see docstring of `Send` .</doc>
-<status status="PASS" starttime="20231202 13:38:46.808" endtime="20231202 13:38:46.858"/>
+<status status="PASS" starttime="20231202 13:47:54.699" endtime="20231202 13:47:54.750"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:46.859" endtime="20231202 13:38:46.909"/>
+<status status="PASS" starttime="20231202 13:47:54.750" endtime="20231202 13:47:54.801"/>
 </kw>
 <kw name="Send Line" library="PexpectLibrary">
 <arg>test_author</arg>
@@ -230,14 +230,14 @@ log.</doc>
 ``os.linesep`` automatically appended. Returns number of bytes
 written.  Only a limited number of bytes may be sent for each
 line in the default terminal mode, see docstring of `Send` .</doc>
-<status status="PASS" starttime="20231202 13:38:46.910" endtime="20231202 13:38:46.961"/>
+<status status="PASS" starttime="20231202 13:47:54.801" endtime="20231202 13:47:54.852"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:46.961" endtime="20231202 13:38:47.012"/>
+<status status="PASS" starttime="20231202 13:47:54.852" endtime="20231202 13:47:54.903"/>
 </kw>
 <kw name="Send Line" library="PexpectLibrary">
 <arg>MIT</arg>
@@ -245,14 +245,14 @@ log.</doc>
 ``os.linesep`` automatically appended. Returns number of bytes
 written.  Only a limited number of bytes may be sent for each
 line in the default terminal mode, see docstring of `Send` .</doc>
-<status status="PASS" starttime="20231202 13:38:47.012" endtime="20231202 13:38:47.063"/>
+<status status="PASS" starttime="20231202 13:47:54.904" endtime="20231202 13:47:54.954"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.063" endtime="20231202 13:38:47.114"/>
+<status status="PASS" starttime="20231202 13:47:54.955" endtime="20231202 13:47:55.005"/>
 </kw>
 <kw name="Send Line" library="PexpectLibrary">
 <arg>1989</arg>
@@ -260,63 +260,63 @@ log.</doc>
 ``os.linesep`` automatically appended. Returns number of bytes
 written.  Only a limited number of bytes may be sent for each
 line in the default terminal mode, see docstring of `Send` .</doc>
-<status status="PASS" starttime="20231202 13:38:47.115" endtime="20231202 13:38:47.166"/>
+<status status="PASS" starttime="20231202 13:47:55.006" endtime="20231202 13:47:55.057"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.166" endtime="20231202 13:38:47.217"/>
+<status status="PASS" starttime="20231202 13:47:55.057" endtime="20231202 13:47:55.108"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.217" endtime="20231202 13:38:47.268"/>
+<status status="PASS" starttime="20231202 13:47:55.108" endtime="20231202 13:47:55.159"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.268" endtime="20231202 13:38:47.320"/>
+<status status="PASS" starttime="20231202 13:47:55.159" endtime="20231202 13:47:55.210"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.320" endtime="20231202 13:38:47.371"/>
+<status status="PASS" starttime="20231202 13:47:55.211" endtime="20231202 13:47:55.261"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.371" endtime="20231202 13:38:47.422"/>
+<status status="PASS" starttime="20231202 13:47:55.262" endtime="20231202 13:47:55.313"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.422" endtime="20231202 13:38:47.473"/>
+<status status="PASS" starttime="20231202 13:47:55.313" endtime="20231202 13:47:55.363"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>\t</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.473" endtime="20231202 13:38:47.524"/>
+<status status="PASS" starttime="20231202 13:47:55.364" endtime="20231202 13:47:55.414"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>h</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.524" endtime="20231202 13:38:47.575"/>
+<status status="PASS" starttime="20231202 13:47:55.414" endtime="20231202 13:47:55.465"/>
 </kw>
 <kw name="Expect" library="PexpectLibrary">
 <arg>Show all BibTex references</arg>
@@ -329,14 +329,14 @@ successful match. This may raise exceptions for EOF or TIMEOUT. To
 avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
 list. That will cause expect to match an EOF or TIMEOUT condition
 instead of raising an exception.</doc>
-<status status="PASS" starttime="20231202 13:38:47.575" endtime="20231202 13:38:47.626"/>
+<status status="PASS" starttime="20231202 13:47:55.465" endtime="20231202 13:47:55.508"/>
 </kw>
 <kw name="Send" library="PexpectLibrary">
 <arg>l</arg>
 <doc>Sends string ``s`` to the child process, returning the number of
 bytes written. If a logfile is specified, a copy is written to that
 log.</doc>
-<status status="PASS" starttime="20231202 13:38:47.626" endtime="20231202 13:38:47.676"/>
+<status status="PASS" starttime="20231202 13:47:55.508" endtime="20231202 13:47:55.559"/>
 </kw>
 <kw name="Expect" library="PexpectLibrary">
 <arg>test_au89</arg>
@@ -349,14 +349,14 @@ successful match. This may raise exceptions for EOF or TIMEOUT. To
 avoid the EOF or TIMEOUT exceptions add pexpect.EOF or pexpect.TIMEOUT to the pattern
 list. That will cause expect to match an EOF or TIMEOUT condition
 instead of raising an exception.</doc>
-<status status="PASS" starttime="20231202 13:38:47.677" endtime="20231202 13:38:47.678"/>
+<status status="PASS" starttime="20231202 13:47:55.559" endtime="20231202 13:47:55.562"/>
 </kw>
 <kw name="Terminate" library="PexpectLibrary">
 <doc>This forces a child process to terminate. It starts nicely with
 SIGHUP and SIGINT. If "force" is True then moves onto SIGKILL. This
 returns True if the child was terminated. This returns False if the
 child could not be terminated.</doc>
-<status status="PASS" starttime="20231202 13:38:47.678" endtime="20231202 13:38:47.779"/>
+<status status="PASS" starttime="20231202 13:47:55.562" endtime="20231202 13:47:55.663"/>
 </kw>
 <kw name="Connect To Database Using Custom Params" library="DatabaseLibrary">
 <arg>sqlite3</arg>
@@ -364,27 +364,27 @@ child could not be terminated.</doc>
 <doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
 connect to the database using the map string `db_connect_string`
 (parsed as a list of named arguments).</doc>
-<msg timestamp="20231202 13:38:47.781" level="INFO">Executing : Connect To Database Using Custom Params : sqlite3.connect(db_api_2.connect("data/test-database.sqlite"))</msg>
-<status status="PASS" starttime="20231202 13:38:47.780" endtime="20231202 13:38:47.782"/>
+<msg timestamp="20231202 13:47:55.665" level="INFO">Executing : Connect To Database Using Custom Params : sqlite3.connect(db_api_2.connect("data/test-database.sqlite"))</msg>
+<status status="PASS" starttime="20231202 13:47:55.663" endtime="20231202 13:47:55.666"/>
 </kw>
 <kw name="Check If Exists In Database" library="DatabaseLibrary">
 <arg>SELECT * FROM Bibrefs WHERE key='test_au89';</arg>
 <doc>Check if any row would be returned by given the input ``selectStatement``. If there are no results, then this will
 throw an AssertionError.</doc>
-<msg timestamp="20231202 13:38:47.782" level="INFO">Executing : Check If Exists In Database  |  SELECT * FROM Bibrefs WHERE key='test_au89';</msg>
-<msg timestamp="20231202 13:38:47.782" level="INFO">Executing : Query  |  SELECT * FROM Bibrefs WHERE key='test_au89'; </msg>
-<status status="PASS" starttime="20231202 13:38:47.782" endtime="20231202 13:38:47.783"/>
+<msg timestamp="20231202 13:47:55.666" level="INFO">Executing : Check If Exists In Database  |  SELECT * FROM Bibrefs WHERE key='test_au89';</msg>
+<msg timestamp="20231202 13:47:55.666" level="INFO">Executing : Query  |  SELECT * FROM Bibrefs WHERE key='test_au89'; </msg>
+<status status="PASS" starttime="20231202 13:47:55.666" endtime="20231202 13:47:55.667"/>
 </kw>
 <kw name="Disconnect From Database" library="DatabaseLibrary">
 <doc>Disconnects from the database.</doc>
-<msg timestamp="20231202 13:38:47.783" level="INFO">Executing : Disconnect From Database</msg>
-<status status="PASS" starttime="20231202 13:38:47.783" endtime="20231202 13:38:47.784"/>
+<msg timestamp="20231202 13:47:55.667" level="INFO">Executing : Disconnect From Database</msg>
+<status status="PASS" starttime="20231202 13:47:55.667" endtime="20231202 13:47:55.668"/>
 </kw>
-<status status="PASS" starttime="20231202 13:38:46.383" endtime="20231202 13:38:47.784"/>
+<status status="PASS" starttime="20231202 13:47:54.288" endtime="20231202 13:47:55.668"/>
 </test>
-<status status="PASS" starttime="20231202 13:38:46.323" endtime="20231202 13:38:47.886"/>
+<status status="PASS" starttime="20231202 13:47:54.229" endtime="20231202 13:47:55.770"/>
 </suite>
-<status status="PASS" starttime="20231202 13:38:46.313" endtime="20231202 13:38:47.887"/>
+<status status="PASS" starttime="20231202 13:47:54.219" endtime="20231202 13:47:55.771"/>
 </suite>
 <statistics>
 <total>
