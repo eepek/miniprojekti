@@ -1,194 +1,186 @@
-from textual import events, on
-from ui import UI
-from entities.reference import Reference
+"""Module constisting of all the GUI-screens
+    that are shown to user.
+
+    Yields:
+        Screen: Textual Screen Widgets
+    """
+
 from textual.binding import Binding
 from textual.app import App,  ComposeResult
-from textual.widgets import Header, Footer, Button, Label, OptionList, Input, RichLog, Select
-from textual.widgets.option_list import Option
-from textual.containers import Grid, Center, Vertical
-from textual.screen import ModalScreen, Screen
-
-
-class QuitScreen(Screen):
-
-    BINDINGS = [("q", "exit", "Quit"),
-                ("c", "cancel", "Cancel"),
-                ("enter, ctrl+j", "on_button_pressed")]
-
-    def compose(self) -> ComposeResult:
-        yield Grid(
-            Label("Do you want to exit the application?", id="question"),
-            Button("Quit", variant="error", id="quit"),
-            Button("Cancel", variant="primary", id="cancel"),
-            id="dialog"
-        )
-        yield Footer()
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "quit":
-            self.app.exit()
-        else:
-            self.app.pop_screen()
-
-    # def on_button_selected(self, key: events.Key, message: Button.Selected):
-    #     if key in ["ctrl+j", "enter", "newline"]:
-
-    def action_exit(self):
-        self.app.exit()
-
-    def action_cancel(self):
-        self.app.pop_screen()
-
-
-class SingleReference(Screen[None]):
-
-    def __init__(self, references, reference_id) -> None:
-        super().__init__()
-        self.reference = references[reference_id]
-
-    BINDINGS = [("e", "edit_reference", "Edit"),
-                ("d", "delete_reference", "Delete"),
-                ("b", "back", "Back")]
-
-    def compose(self) -> ComposeResult:
-        yield Center(Label(str(self.reference)), id="dialog")
-        yield Footer()
-
-    def action_back(self):
-        self.app.pop_screen()
+# from textual.events import Key
+from textual.widgets import Header, Footer, Button, Input, RichLog
+from textual.containers import Center, Container
+from textual.screen import Screen
+from screens.confirmation_screen import ConfirmationScreen
+from screens.add_reference import AddReference
+from screens.list_keys import ListKeys
+from screens.show_all import ShowAll
+from services.reference_services import ReferenceServices
+from repositories.reference_repository import ReferenceRepository
 
 
 class TestScreen(Screen):
+    """Screen for general testing,
+    logs key presses
+
+    Args:
+        Screen (_type_): _description_
+    """
 
     def compose(self) -> ComposeResult:
         yield RichLog()
+        yield Input(placeholder="", value="value", id="id")
         yield Button("One", id="one")
         yield Button("Two", id="two")
 
-    def on_key(self, event: Button._on_key) -> None:
-        # self.query_one(RichLog).write(event)
-        self.query_one(RichLog).write(event)
-        Button.press(self)
+    # def on_key(self, event: Button._on_key) -> None:
+    #     """Pass"""
+    #     # self.query_one(RichLog).write(event)
+    #     self.query_one(RichLog).write(event)
+    #     Button.press(self)
+
+    def on_input_changed(self, message: Input.Changed):
+        """Test function"""
+        input_info = message.input
+        self.query_one(RichLog).write(input_info)
 
     def on_button_pressed(self, event: Button.Pressed):
+        """
+
+        Args:
+            event (Button.Pressed): _description_
+        """
         self.query_one(RichLog).write(event.button.id)
 
 
-class ListKeys(Screen[None]):
-    def __init__(self, references: list[Reference]) -> None:
-        super().__init__()
-        self.references = references
-        self.option_items = [Option(ref.key, id=ref.key)
-                             for ref in references]
-        self.option_id = 0
-
-    BINDINGS = [("b", "back", "Back"),
-                ("enter, ctrl+j", "open_option", "Open", )]
-
-    def compose(self) -> ComposeResult:
-        yield Center(OptionList(*self.option_items, id="optionList"))
-        yield Footer()
-
-    @on(OptionList.OptionMessage)
-    def user_selected(self, event: OptionList.OptionSelected):
-        self.option_id = event.option_index
-
-    def action_open_option(self):
-        self.app.switch_screen(SingleReference(
-            self.references, self.option_id))
-
-    def action_back(self):
-        self.app.pop_screen()
-
-
-class ShowAll(Screen[None]):
-    def __init__(self, references) -> None:
-        super().__init__()
-        self.references = [Label(str(ref)) for ref in references]
-
-    BINDINGS = [("b", "back", "Back")]
-
-    def compose(self) -> ComposeResult:
-        self.textfile = Center(*self.references)
-        yield self.textfile
-        yield Footer()
-
-    def on_mount(self) -> None:
-        self.textfile.styles.width = "50%"
-
-    def action_back(self):
-        self.app.pop_screen()
-
-
-class AddReference(Screen):
-
-    CSS = """
-        OptionList {
-            width: 50%;
-            margin: 2;
-}
-      """
-    BINDINGS = [("b", "back", "Back"),
-                ("enter, ctrl+j", "open_option", "Open", )]
-
-    def compose(self) -> ComposeResult:
-
-        reference_types = [
-            Option("TechReport", id="tech"),
-            Option("Inproceedings", id="inpro")
-        ]
-        yield Header()
-        yield Center(OptionList(*reference_types, id="option_list"))
-
-    @on(OptionList.OptionMessage)
-    def user_selected(self, event: OptionList.OptionSelected):
-        self.option_id = event.option_index
-
-    # def action_open_option(self):
-    #     self.app.switch_screen(ReferenceForm(
-    #         self.option_id))
-
-    def action_back(self):
-        self.app.pop_screen()
-
-# class ReferenceForm(Screen[object]):
-
-
 class GUI(App[None]):
+    """Main app that shows menu screen and buttons
+    to open wanted subscreen"""
 
-    def __init__(self, ui: UI):
+    def __init__(self, reference_repository: ReferenceRepository,
+                 reference_services: ReferenceServices, file_dialog):
         super().__init__()
-        self.ui = ui
-        self.references = self.ui.show_references()
+        self.reference_repository = reference_repository
+        self.reference_services = reference_services
+        self.file_dialog = file_dialog
+        self.show_all = Button("Show all BibTex references", id="toBibtex")
+        self.list_keys = Button("List by key", id="listAll")
+        self.add_new = Button("Add new", id="addNew")
+        self.add_from_bib = Button("Add references from .bib file", id="addFromBib")
+        self.save_to_bib = Button("Save references to .bib file", id="saveToBib")
 
-    CSS_PATH = "css/modal.tcss"
-    BINDINGS = [("q", "request_quit", "Quit"), ("s", "show_all", "Show file"),
-                ("l", "list_references", "List view"), ("a", "add_reference", "Add"),
+    CSS_PATH = "screens/style.tcss"
+
+    BINDINGS = [("q", "request_quit", "Quit"),
+                ("s", "show_all", "Show file"),
+                ("l", "list_references", "List by key"),
+                ("a", "add_reference", "Add"),
+                ("f", "add_from_bib", "Add from BibTeX file"),
+                ("o", "save_to_bib", "Save to BibTeX file"),
                 Binding("t", "test_screen", "test", show=False)
                 ]
     INITIAL_VALUE = 1
 
     def compose(self) -> ComposeResult:
         yield Header(name="Vault of references")
-        yield Center(Button("Show in BibTex format", id="toBibtex"), Button(
-            "List all references", id="listAll"), Button("Add new", id="addNew"))
+        yield Container(
+            Center(
+                    self.show_all,
+                    self.list_keys,
+                    self.add_new,
+                    self.add_from_bib,
+                    self.save_to_bib
+                    ),
+                    id="mainmenu",
+                    )
         yield Footer()
 
-    @on(Select.Changed)
-    def select_changed(self, event: Select.Changed) -> None:
-        self.title = str(event.value)
+    def on_button_pressed(self, event: Button.Pressed):
+        """Tracks button press events and
+        calls for approriate method
+
+        Args:
+            event (Button.Pressed): Textual event message
+        """
+        if event.button.id == "toBibtex":
+            self.action_show_all()
+        elif event.button.id == "listAll":
+            self.action_list_references()
+        elif event.button.id == "addNew":
+            self.action_add_reference()
+        elif event.button.id == "addFromBib":
+            self.action_add_from_bib()
+        elif event.button.id == "saveToBib":
+            self.action_save_to_bib()
+
+    # Korjataan tää käyttöön seuraavassa sprintissä
+    # def on_key(self, key: Key):
+    #     """Tracks if Enter button presses happen on focused
+    #     button"""
+    #     if key.key in ["enter", "ctrl+j"]:
+    #         key.stop()
+    #         if self.show_all.has_focus:
+
+    #             self.action_show_all()
+    #         elif self.list_keys.has_focus:
+    #             self.action_list_references()
+    #         elif self.add_new.has_focus:
+    #             self.action_add_reference()
 
     def action_show_all(self):
-        self.push_screen(ShowAll(self.references))
+        """Opens screen that shows all references
+        in BibTex format
+        """
+        references = self.reference_repository.load_all()
+        self.push_screen(ShowAll(references))
 
     def action_list_references(self):
-        self.push_screen(ListKeys(self.references))
+        """Opens screen that shows all reference
+        keys as optionlist"""
+        references = self.reference_repository.load_all()
+        self.push_screen(ListKeys(references, self.reference_services.delete_reference,
+                         self.reference_services.create_reference))
 
     def action_add_reference(self):
-        self.push_screen(AddReference())
+        """Opens screen that shows optionlist for
+        choosing reference type to add"""
+        self.push_screen(AddReference(
+            self.reference_services))
+
+    def action_add_from_bib(self):
+        """Opens dialog box to add references to database from .bib file."""
+        file_path = self.file_dialog.askopenfile(
+            title="Select BibTeX file to load...",
+            filetypes=[("BibTeX files", ["*.bib", "*.txt"]), ("All files", "*.*")])
+        if file_path is not None:
+            errors = self.reference_services.add_from_file(file_path.name)
+            self.notify("File loaded")
+            if len(errors) > 0:
+                self.notify("Some references couldn't be loaded due to the following errors:",
+                            timeout=10)
+                for e in errors:
+                    self.notify(f"Key {e[0]}: {e[1]}", timeout=10)
+
+    def action_save_to_bib(self):
+        """Saves database to .bib file."""
+        file_path = self.file_dialog.asksaveasfilename(
+            defaultextension=".bib",
+            filetypes=[("BibTeX files", ["*.bib", "*.txt"]), ("All files", "*.*")])
+        if isinstance(file_path, str):
+            try:
+                self.reference_repository.save_to_file(file_path)
+                self.notify(f"Saved to {file_path}")
+            except OSError as error:
+                self.notify(f"Error saving file: {error}")
 
     def action_test_screen(self):
+        """For testing"""
         self.push_screen(TestScreen())
 
     def action_request_quit(self):
-        self.push_screen(QuitScreen())
+        """Opens screen for quit dialog"""
+        def confirm_quit(quit_app: bool):
+            if quit_app:
+                self.exit()
+
+        self.push_screen(ConfirmationScreen("quit"), confirm_quit)

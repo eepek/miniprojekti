@@ -71,3 +71,9 @@ poetry run invoke coverage-report
 ```bash
 poetry run invoke coverage-report-html
 ```
+
+7. Robot tests are run with:
+
+```bash
+poetry run invoke test-robot
+```
