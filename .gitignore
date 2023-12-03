@@ -3,3 +3,7 @@ htmlcov/
 __pycache__/
 .pytest_cache/
 x*.txt
+.*.xml
+report.html
+log.html
+data/*.sqlite
