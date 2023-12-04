@@ -15,6 +15,8 @@ OHTU miniprojekti
 
 [License](https://github.com/eepek/miniprojekti/blob/main/LICENSE)
 
+[Sprint 2 retrospect](https://github.com/eepek/miniprojekti/retro.md)
+
 ## Installation
 
 1. Clone repository [Miniprojekti](https://github.com/eepek/miniprojekti)
