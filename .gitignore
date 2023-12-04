@@ -2,4 +2,8 @@
 htmlcov/
 __pycache__/
 .pytest_cache/
-data/
+x*.txt
+*.xml
+report.html
+log.html
+data/*.sqlite

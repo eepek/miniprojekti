@@ -17,8 +17,7 @@ class TestReferenceServices(unittest.TestCase):
         Create dictionary with all valid fields corresponding to
         Reference class object
         """
-        self.repository = ReferenceRepository(
-            f"{ROOT_DIR}/tests/test_references.bib")
+        self.repository = ReferenceRepository()
         self.ref_services = ReferenceServices(self.repository)
 
         self.inpro = {

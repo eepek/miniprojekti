@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, sprint1]
+    branches: [main, sprint1, sprint2]
   pull_request:
-    branches: [main, sprint1]
+    branches: [main, sprint1, sprint2]
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
       - name: Run tests
         run: poetry run coverage run --branch -m pytest
       - name: Run Robot tests
-        run: poetry run robot src/tests
+        run: poetry run invoke test-robot
       - name: Create coverage report
         run: poetry run coverage xml
       - name: Publish coverage report to Codecov

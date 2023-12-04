@@ -1,0 +1,64 @@
+.modify-field {
+    layer: above;
+    height: 1;
+    margin-left: 17;
+}
+
+.single-ref{
+    width: auto;
+    height: auto;
+    margin: 1;
+    padding:5 5;
+}
+
+.showall{
+    width: auto;
+    height: auto;
+}
+
+ConfirmationScreen {
+    align: center middle;
+}
+
+SingleReference {
+    align: center middle;
+}
+
+
+#dialog {
+    grid-size: 2;
+    grid-gutter: 1 2;
+    grid-rows: 1fr 3;
+    padding: 0 1;
+    width: 60;
+    height: 11;
+    border: thick $background 50%;
+    background: $surface;
+}
+
+#question {
+    column-span: 2;
+    height: 1fr;
+    width: 1fr;
+    content-align: center middle;
+}
+
+Button {
+    width: 100%;
+}
+
+
+#menuGrid {
+    content-align: center middle;
+}
+
+OptionList {
+    height: 1fr;
+    width: 60%;
+    align: center middle;
+}
+
+#mainmenu {
+    height: 100%;
+    margin: 1 5;
+}

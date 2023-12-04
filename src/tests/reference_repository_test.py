@@ -3,16 +3,15 @@ import unittest
 import pytest
 from repositories.reference_repository import ReferenceRepository, ReferenceType
 from entities.reference import Reference
-from constants import ROOT_DIR, KEY_DOES_NOT_EXIST_ERROR
+from constants import KEY_DOES_NOT_EXIST_ERROR
 
 
 class TestReference(unittest.TestCase):
     """Tests for reference repository class """
 
     def setUp(self):
-        self.repository = ReferenceRepository(f"{ROOT_DIR}/tests/test_references.bib")
-        self.repository.empty_all_references()
-        self.repository.init_references()
+        self.repository = ReferenceRepository()
+        self.repository.empty_all_tables()
         self.inpro_all = Reference(ReferenceType.INPROCEEDINGS, "Key123", {
             "title": "Inproceeding name",
             "author": "Mikki Hiiri",
@@ -24,18 +23,27 @@ class TestReference(unittest.TestCase):
             "month": "June",
             "note": "test"
         })
-
-    def test_saving_reference_work(self):
-        """Testing that after adding self.inpro_all Inproceedings
-        object to references file, file is 12 lines longer
-        """
-        before_lines = self.repository.file_lines()
-
-        self.repository.save(self.inpro_all)
-
-        after_lines = self.repository.file_lines()
-
-        self.assertEqual(before_lines + 12, after_lines)
+        self.test_ref1 = Reference(ReferenceType.INPROCEEDINGS, "Unique1", {
+            "title": "Test title",
+            "author": "One, Some",
+            "booktitle": "Annual conference of Everything",
+            "year": 2021,
+            "volume": 2,
+            "pages": "111-145",
+            "address": "Stockholm",
+            "month": "June",
+            "note": "test note"
+        })
+        self.test_ref2 = Reference(ReferenceType.TECHREPORT, "Unique2", {
+            "title": "Test title",
+            "author": "Body, Some",
+            "institution": "important place",
+            "year": 2022,
+            "type": "Whitepaper",
+            "address": "Tanska",
+            "month": "7",
+            "note": "test note"
+        })
 
     def test_loading_references_from_empty_gives_correct_amount(self):
         """Tests that initially the list containing references
@@ -43,18 +51,6 @@ class TestReference(unittest.TestCase):
         """
         references = self.repository.load_all()
         self.assertEqual(len(references), 0)
-
-    def test_after_saving_reference_list_is_updated(self):
-        """Tests that after adding reference it is found
-        in file and in list"""
-
-        self.repository.save(self.inpro_all)
-        lines = self.repository.file_lines()
-        self.assertEqual(12, lines)
-
-        reference_list = self.repository.load_all()
-
-        self.assertEqual(1, len(reference_list))
 
     def test_loading_one_from_empty_raises_error(self):
         """Test for loading one reference when there are none"""
@@ -74,3 +70,30 @@ class TestReference(unittest.TestCase):
         self.repository.save(self.inpro_all)
         reference = self.repository.load_one("Key123")
         assert issubclass(type(reference), Reference)
+
+    def test_save_to_db(self):
+        init_refs = self.repository.load_all_from_database()
+        self.repository.save_to_db(self.test_ref1)
+        self.repository.save_to_db(self.test_ref2)
+
+        refs_after_add = self.repository.load_all_from_database()
+        self.assertEqual(len(refs_after_add), 2)
+
+    def test_non_existent_key_returns_valueerror(self):
+        with pytest.raises(ValueError,
+                           match=KEY_DOES_NOT_EXIST_ERROR):
+            self.repository.load_one_from_database("NON-EXISTENT")
+
+    def test_delete_from_database(self):
+        init_refs = self.repository.load_all_from_database()
+        self.repository.save_to_db(self.test_ref1)
+        self.repository.save_to_db(self.test_ref2)
+        refs_after_add = self.repository.load_all_from_database()
+        key = refs_after_add[0].key
+        self.repository.delete_from_db(key)
+        refs_after_delete = self.repository.load_all_from_database()
+        self.assertEqual(len(refs_after_delete)+1, len(refs_after_add))
+        key2 = refs_after_add[1].key
+        self.repository.delete_from_db(key2)
+        refs_after_delete2 = self.repository.load_all_from_database()
+        self.assertEqual(len(refs_after_delete2)+2, len(refs_after_add))

@@ -24,6 +24,14 @@ OHTU miniprojekti
 poetry install
 ```
 
+3. Build / initialize database
+
+```bash
+poetry run invoke build
+```
+
+Note! Build database empties all previously recorded data. Only to be run on first installation.
+
 ## Command line actions
 
 All command line actions to be run on project main folder.
@@ -62,4 +70,10 @@ poetry run invoke coverage-report
 
 ```bash
 poetry run invoke coverage-report-html
+```
+
+7. Robot tests are run with:
+
+```bash
+poetry run invoke test-robot
 ```

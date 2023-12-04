@@ -7,9 +7,17 @@ def start(c):
 
 
 @task
+def start_gui(c):
+    c.run('python3 src/index_gui.py', pty=True)
+
+
+@task
 def test(c):
     c.run('pytest src', pty=True)
 
+@task
+def test_robot(c):
+    c.run('export DATABASE_FILENAME=test-database.sqlite; robot src/tests', pty=True)
 
 @task
 def coverage(c):
@@ -29,6 +37,7 @@ def coverage_report_html(c):
 @task
 def lint(c):
     c.run('pylint src', pty=True)
+
 
 @task
 def build(ctx):

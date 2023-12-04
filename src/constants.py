@@ -11,6 +11,7 @@ FIELD_MANDATORY_ERROR = "Field is mandatory"
 UNSUITABLE_COMMAND_ERROR = "Unsuitable command"
 KEY_DOES_NOT_EXIST_ERROR = "Key does not exist"
 INVALID_REFERENCE_TYPE_ERROR = "Invalid reference type"
+KEY_ALREADY_EXISTS_ERROR = "Key already exists"
 
 INPROCEEDINGS_KEYS = ["title", "author", "booktitle", "year",
                       "editor", "volume", "series", "pages", "address",

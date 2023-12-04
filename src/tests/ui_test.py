@@ -6,15 +6,15 @@ from services.reference_services import ReferenceServices
 from entities.reference import ReferenceType
 from ui import UI
 from mock_io import MockIO
-from constants import ROOT_DIR, UNSUITABLE_COMMAND_ERROR, FIELD_MANDATORY_ERROR, YEAR_FORMAT_ERROR, KEY_DOES_NOT_EXIST_ERROR
+from constants import UNSUITABLE_COMMAND_ERROR, FIELD_MANDATORY_ERROR, YEAR_FORMAT_ERROR, KEY_DOES_NOT_EXIST_ERROR
 
 
 class TestUI(unittest.TestCase):
     """Unittests for UI class."""
 
     def setUp(self):
-        self.ref_repository = ReferenceRepository(f"{ROOT_DIR}/tests/test_references.bib")
-        self.ref_repository.empty_all_references()
+        self.ref_repository = ReferenceRepository()
+        self.ref_repository.empty_all_tables()
         self.ref_services = ReferenceServices(self.ref_repository)
 
     def run_program(self, command_list: List[str]) -> str:
@@ -123,7 +123,7 @@ class TestUI(unittest.TestCase):
         self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
         self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, fields)
         output = self.run_program(command_list)
-        self.assertEqual(output.count("testaut95"), len(self.ref_repository._references))
+        self.assertEqual(output.count("testaut95"), 2)
 
     def test_show_reference_by_key(self):
         """Test accessing single reference via ui"""
