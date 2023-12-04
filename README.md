@@ -41,7 +41,7 @@ All command line actions to be run on project main folder.
 1. To start program run:
 
 ```bash
-poetry run invoke start
+poetry run invoke start-gui
 ```
 
 2. Static code analysis is run with:
