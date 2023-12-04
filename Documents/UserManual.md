@@ -28,92 +28,46 @@ All command line actions to be run on project main folder.
 To start program run:
 
 ```bash
-poetry run invoke start
+poetry run python3 src/index_gui.py
 ```
 
 ## Main view
 
-Main view shows menu with following commands:
+Main view shows main menu with options:
 
----
+![Home](/manual_img/main_view.png)
 
-Welcome to your vault of references!
+You can interact with the GUI using mouse, or keyboard. On the main menu you can open a bibtex
 
-Command options:
+## Show all view
 
-1: Browse all references
+When choosing to view all references, program opens a scrollable view of all the references.
 
-2: Add reference
+![All_refrences](/manual_img/all_references.png)
 
-3: View references by key
-
-c: Show command options
-
-x: Exit
-
-To view command options, type c
-
-What would you like to do?:
-
----
-
-Command is chosen by pressing key 1, 2, 3 c or x from keyboard:
-
-- 1: shows all references on screen
-- 2: opens prompt to add new reference, see below for details
-- 3: shows all the reference keys in working memory
-- c: shows main menu
-- x: ends the program
 
 ### Add reference view
 
-Choosing "Add reference" opens prompt for inputting details of new reference. First you are greeted with a view where you can specify the type of reference you wish to add:
+Choosing "Add reference" opens a view which shows you the available reference types:
 
----
+![Select_type](/manual_img/add_new_select_type.png)
+
 
 Supported reference types:
 inproceedings, techreport
 
-## Enter reference type:
+After selecting the reference type you can inpput the relevant reference fields. After you have entered the input, you can proceed and save the reference or cancel. If you choose to save the reference, program checks for mandatory fields and and informs the user if there are any problems.
 
-After inputting type to be added prompt is asking one detail at the time. Mandatory fields must be inputted (they will be asked again), optional fields can be skipped by pressing enter. Where there are constraints for the user input, an error will be shown if the input is invalid and the input field will be repeated until valid input is entered. Below is list of asked details(example for type inproceedings), with format requirements:
+![Select_type](/manual_img/insert_reference_info.png)
 
----
-
-- Enter value for field title (mandatory): free text
-- Enter value for field author (Lastname, Firstname) (mandatory): free text
-- Enter value for field booktitle (mandatory): free text
-- Enter value for field year (mandatory): numerical in format YYYY
-- Enter value for field editor (optional, enter to skip): free text
-- Enter value for field volume (optional, enter to skip): numerical in format N (or NN or NNN, etc)
-- Enter value for field series (optional, enter to skip): free text
-- Enter value for field pages (optional, enter to skip): text in format pp-pp or pp (for single page articles)
-- Enter value for field address (optional, enter to skip): free text
-- Enter value for field month (optional, enter to skip): one of below formats:
-  - month number 1-12
-  - English standard abbreviation (jan, feb, mar, ...)
-  - English full month name (January, February, ...)
-- Enter value for field note (optional, enter to skip): free text
-
----
-
-Program will check that each field is in required format, and in case it is not, error message is shown. If all fields in the inputted reference are in acceptable format, the reference will be saved into a file.
 
 ### View references by key view
 
-Choosing "View reference by key" displays all the BibTex- reference keys in working memory and a prompt for user input asking if the user would like to:
+Choosing "View reference by key" displays all the BibTex- reference keys in working memory.
 
-- View a single reference in BibTex- format by entering a key.
-- Enter 'k' to reprint the keys
-- Enter 'x' and return to main menu.
 
-Here is an example view:
+![Show_keys](/manual_img/listkeys.png)
 
----
+From this view you can open a single reference. When you have opened the reference you can modify or delete the reference.
 
-Keys:
-doe20
-
-Enter key, 'k' for keys or 'x' for return:
-
----
+![Single_reference](/manual_img/single_reference.png)
