@@ -21,7 +21,7 @@ class ReferenceServices:
         """
         self._reference_repository = reference_repository
 
-    def create_reference(self, reference_type: ReferenceType, reference: dict, manual_key = None):
+    def create_reference(self, reference_type: ReferenceType, reference: dict, manual_key=None):
         """Validates reference dictionary fields
         generates Reference object and
         and calls reference_repository save method
@@ -44,7 +44,8 @@ class ReferenceServices:
         key: str
 
         if manual_key is None:
-            key = self.construct_bibtex_key(reference["author"], reference["year"])
+            key = self.construct_bibtex_key(
+                reference["author"], reference["year"])
         else:
             key = manual_key
 
@@ -110,7 +111,8 @@ class ReferenceServices:
             if not re.match(regex, str(value)):
                 raise ValueError(VOLUME_FORMAT_ERROR)
         elif field == "pages":
-            regex = r"^\d+([-]\d+)?$"
+            regex = r"^\d+(-{1,2}\d+)?$"
+            # regex = r"^\d+([-]\d+)?$"
             if not re.match(regex, str(value)):
                 raise ValueError(PAGES_FORMAT_ERROR)
 

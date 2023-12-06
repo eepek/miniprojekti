@@ -28,7 +28,7 @@ class TestReferenceServices(unittest.TestCase):
             "editor": "Super Editor",
             "volume": 1,
             "series": "Proceedings in Science",
-            "pages": "123-145",
+            "pages": "123--145",
             "address": "Helsinki",
             "month": "June",
             "note": "test"
@@ -36,43 +36,50 @@ class TestReferenceServices(unittest.TestCase):
 
     def test_all_valid_fields_does_not_raise_error(self):
         """No ValueError with all valid fields"""
-        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+        self.ref_services.create_reference(
+            ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_alternative_month_format_does_not_raise_error(self):
         """No Value error when month is standard English abbreviation"""
         self.inpro["month"] = "jun"
-        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+        self.ref_services.create_reference(
+            ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_alternative_numerical_month_format_does_not_raise_error(self):
         """No Value error when month is in numerical format"""
         self.inpro["month"] = 6
-        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+        self.ref_services.create_reference(
+            ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_single_page_does_not_raise_error(self):
         """Tests with single page article, no ValueError"""
         self.inpro["pages"] = "44"
-        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+        self.ref_services.create_reference(
+            ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_missing_title_raises_error(self):
         """Test Value error with missing field title"""
         self.inpro["title"] = None
         with pytest.raises(ValueError,
                            match=MISSING_FIELD_ERROR):
-            self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+            self.ref_services.create_reference(
+                ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_missing_booktitle_raises_error(self):
         """Test Value error with missing field booktitletitle"""
         self.inpro["booktitle"] = None
         with pytest.raises(ValueError,
                            match=MISSING_FIELD_ERROR):
-            self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+            self.ref_services.create_reference(
+                ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_missing_year_raises_error(self):
         """Test Value error with missing field year"""
         self.inpro["year"] = None
         with pytest.raises(ValueError,
                            match=MISSING_FIELD_ERROR):
-            self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+            self.ref_services.create_reference(
+                ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_valid_month_does_not_raise_error(self):
         self.ref_services.validate_field("month", "january")
@@ -94,7 +101,7 @@ class TestReferenceServices(unittest.TestCase):
         """Test Value error with invalid volume format"""
         with pytest.raises(ValueError, match=VOLUME_FORMAT_ERROR):
             self.ref_services.validate_field("volume", "VolumeX")
-    
+
     def test_valid_pages_does_not_raise_error(self):
         self.ref_services.validate_field("pages", str(11))
 
@@ -107,7 +114,8 @@ class TestReferenceServices(unittest.TestCase):
         """Test Value error with invalid pages format"""
         self.inpro["extrafiled"] = "foo"
         with pytest.raises(ValueError, match=EXTRA_KEYS_ERROR):
-            self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+            self.ref_services.create_reference(
+                ReferenceType.INPROCEEDINGS, self.inpro)
 
     def test_only_mandatory_fields_passes(self):
         """Tests that reference with only mandatory fields doesn't cause Value Error"""
@@ -118,7 +126,7 @@ class TestReferenceServices(unittest.TestCase):
             "year": 2023
         }
         self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, inpro)
-    
+
     def test_bibtex_key_generator(self):
         """ Test for bibtex key constructing"""
         inpro = {
