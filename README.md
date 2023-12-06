@@ -17,6 +17,8 @@ OHTU miniprojekti
 
 [Sprint 2 retrospect](https://github.com/eepek/miniprojekti/blob/main/retro.md)
 
+[Sprint 3 retrospect](https://github.com/eepek/miniprojekti/blob/main/retro2.md)
+
 ## Installation
 
 1. Clone repository [Miniprojekti](https://github.com/eepek/miniprojekti)
