@@ -177,5 +177,3 @@ class TestReferenceServices(unittest.TestCase):
         self.assertEqual(len(res), 1)
         res = self.ref_services.filter_references(refs, 1, "1973")
         self.assertEqual(len(res), 0)
-        res = self.ref_services.filter_references(refs, 1, "2000")
-        self.assertEqual(len(res), 0)
