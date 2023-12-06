@@ -146,8 +146,8 @@ class ReferenceServices:
             to be deleted
         """
         self._reference_repository.delete_from_db(reference_key)
-    
-    def filter_references(self, references: list, type:int, filter: str) -> list:
+
+    def filter_references(self, references: list, option:int, arg: str) -> list:
         """Filters references based on type and filter
         Args:
             references (list): List of reference objects
@@ -156,10 +156,16 @@ class ReferenceServices:
         Returns:
             list: Filtered list
         """
-        if type == 0:
-            return [obj for obj in references if re.search(re.escape(filter), str(obj.fields["author"]), re.IGNORECASE)]
-        elif type == 1:
-            return [obj for obj in references if re.search(re.escape(filter), str(obj.fields["title"]), re.IGNORECASE)]
-        elif type == 2:
-            pattern = re.compile(fr'\b\d*{re.escape(filter)}\d*\b', re.IGNORECASE)
-            return [obj for obj in references if pattern.search(str(obj.fields["year"]))]
+        if option == 0:
+            filtered_list = [obj for obj in references
+                    if re.search(re.escape(arg), str(obj.fields["author"]), re.IGNORECASE)]
+
+        if option == 1:
+            pattern = re.compile(fr'\b\d*{re.escape(arg)}\d*\b', re.IGNORECASE)
+            filtered_list = [obj for obj in references if pattern.search(str(obj.fields["year"]))]
+
+        if option == 2:
+            filtered_list = [obj for obj in references
+                    if re.search(re.escape(arg), str(obj.fields["title"]), re.IGNORECASE)]
+
+        return filtered_list
