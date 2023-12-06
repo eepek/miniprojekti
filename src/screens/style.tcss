@@ -62,3 +62,45 @@ OptionList {
     height: 100%;
     margin: 1 5;
 }
+
+RadioSet {
+    layout: horizontal;
+    align: center middle;
+    width: 60;
+    padding: 0;
+    margin: 1 0 0 0;
+    border: solid $secondary;
+    overflow: hidden auto;
+}
+
+RadioButton {
+    text-align: center;
+    overflow: hidden auto;
+}
+
+#results-container {
+    background: $background 30%;
+    margin: 2 2 2 2;
+    height: 80%;
+    overflow: hidden auto;
+    border: hidden $background;
+}
+
+#results-container:focus {
+    border: tall $accent;
+}
+
+Markdown MarkdownH1 {
+    text-align: left;
+    width: 100%;
+    height: auto;
+    margin: 0 0 0 0;
+    background: $primary 50%;
+    color: $secondary;
+    text-style: dim;
+}
+
+Markdown MarkdownH6 {
+    margin: 0;
+}
+
