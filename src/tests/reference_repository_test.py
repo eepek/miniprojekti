@@ -3,7 +3,7 @@ import unittest
 import pytest
 from repositories.reference_repository import ReferenceRepository, ReferenceType
 from entities.reference import Reference
-from constants import KEY_DOES_NOT_EXIST_ERROR
+from constants import KEY_DOES_NOT_EXIST_ERROR, INVALID_REFERENCE_TYPE_ERROR
 
 
 class TestReference(unittest.TestCase):
@@ -41,7 +41,32 @@ class TestReference(unittest.TestCase):
             "year": 2022,
             "type": "Whitepaper",
             "address": "Tanska",
+            "number": "9",
             "month": "7",
+            "note": "test note",
+            "annote": "test annote"
+        })
+
+        self.test_ref3 = Reference(ReferenceType.ARTICLE, "Unique3", {
+            "title": "Test title",
+            "author": "Body, Some",
+            "journal": "Science",
+            "year": 2020,
+            "volume": "7",
+            "number": "8",
+            "pages": "111-145",
+            "month": "7",
+            "note": "test note"
+        })
+
+        self.test_ref4 = Reference(ReferenceType.PHD, "Unique4", {
+            "title": "Test title",
+            "author": "Body, Some",
+            "school": "Tallin ulikool",
+            "year": 2000,
+            "type": "dissertation",
+            "address": "Estonia",
+            "month": "July",
             "note": "test note"
         })
 
@@ -72,28 +97,30 @@ class TestReference(unittest.TestCase):
         assert issubclass(type(reference), Reference)
 
     def test_save_to_db(self):
-        init_refs = self.repository.load_all_from_database()
-        self.repository.save_to_db(self.test_ref1)
-        self.repository.save_to_db(self.test_ref2)
+        init_refs = self.repository.load_all()
+        self.repository.save(self.test_ref1)
+        self.repository.save(self.test_ref2)
+        self.repository.save(self.test_ref3)
+        self.repository.save(self.test_ref4)
 
-        refs_after_add = self.repository.load_all_from_database()
-        self.assertEqual(len(refs_after_add), 2)
+        refs_after_add = self.repository.load_all()
+        self.assertEqual(len(refs_after_add), 4)
 
     def test_non_existent_key_returns_valueerror(self):
         with pytest.raises(ValueError,
                            match=KEY_DOES_NOT_EXIST_ERROR):
-            self.repository.load_one_from_database("NON-EXISTENT")
+            self.repository.load_one("NON-EXISTENT")
 
     def test_delete_from_database(self):
-        init_refs = self.repository.load_all_from_database()
-        self.repository.save_to_db(self.test_ref1)
-        self.repository.save_to_db(self.test_ref2)
-        refs_after_add = self.repository.load_all_from_database()
+        init_refs = self.repository.load_all()
+        self.repository.save(self.test_ref1)
+        self.repository.save(self.test_ref2)
+        refs_after_add = self.repository.load_all()
         key = refs_after_add[0].key
         self.repository.delete_from_db(key)
-        refs_after_delete = self.repository.load_all_from_database()
+        refs_after_delete = self.repository.load_all()
         self.assertEqual(len(refs_after_delete)+1, len(refs_after_add))
         key2 = refs_after_add[1].key
         self.repository.delete_from_db(key2)
-        refs_after_delete2 = self.repository.load_all_from_database()
+        refs_after_delete2 = self.repository.load_all()
         self.assertEqual(len(refs_after_delete2)+2, len(refs_after_add))
