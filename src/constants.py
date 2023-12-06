@@ -22,5 +22,11 @@ TECHREPORT_KEYS = ["title", "author", "institution", "year", "type", "number",
                    "address", "month", "note", "annote"]
 TECHREPORT_MANDATORY_KEYS = set(["title", "author", "institution", "year"])
 
+ARTICLE_KEYS = ["title", "author", "journal", "year", "volume", "number", "pages", "month", "note"]
+ARTICLE_MANDATORY_KEYS = set(["title", "author", "journal", "year"])
+
+PHD_KEYS = [ "author", "title", "school", "year", "type", "address", "month", "note"]
+PHD_MANDATORY_KEYS = set([ "author", "title", "school", "year"])
+
 NUMBER_KEYS = set(["year", "volume"])
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
