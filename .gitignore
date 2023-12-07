@@ -2,7 +2,7 @@
 htmlcov/
 __pycache__/
 .pytest_cache/
-x*.txt
+*.txt
 *.xml
 report.html
 log.html
