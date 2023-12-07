@@ -142,3 +142,38 @@ class TestReferenceServices(unittest.TestCase):
         self.assertEqual(key1, "powers23")
         self.assertEqual(key2, "powerss95")
         self.assertEqual(key3, "alphabe23_1")
+
+    def test_filtering_references(self):
+        """Test for filtering references"""
+        self.inpro["author"] = "Reed, Lou"
+        self.inpro["title"] = "Walk on the Wild Side"
+        self.inpro["year"] = 1972
+        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+        refs = self.repository.load_all()
+        print(refs)
+        res = self.ref_services.filter_references(refs, 0, "Reed, Lou")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 0, "lou")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 0, "rEed")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 0, "Mankell")
+        self.assertEqual(len(res), 0)
+        res = self.ref_services.filter_references(refs, 2, "Walk")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 2, "alk")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 2, "wild")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 2, "ON THE WILD")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 2, "Perfect day")
+        self.assertEqual(len(res), 0)
+        res = self.ref_services.filter_references(refs, 1, "1972")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 1, "72")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 1, "197")
+        self.assertEqual(len(res), 1)
+        res = self.ref_services.filter_references(refs, 1, "1973")
+        self.assertEqual(len(res), 0)

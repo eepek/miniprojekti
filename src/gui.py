@@ -132,7 +132,7 @@ class GUI(App[None]):
         in BibTex format
         """
         references = self.reference_repository.load_all()
-        self.push_screen(ShowAll(references))
+        self.push_screen(ShowAll(references, self.reference_services))
 
     def action_list_references(self):
         """Opens screen that shows all reference
