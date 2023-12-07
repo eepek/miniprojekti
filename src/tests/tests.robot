@@ -101,3 +101,21 @@ As A User I Can Delete References By Key
     Connect To Database Using Custom Params  sqlite3  ${DB_FILE}
     Check If Not Exists In Database  SELECT * FROM Bibrefs WHERE key='Powers65';
     Disconnect From Database
+
+As A User I Want To Modify Added References
+    Spawn  python3 src/index_gui.py
+    Send  l
+    #Tää rivi modataan kun enter saadaan toimimaan
+    Send Control  j
+    Expect  title
+    Send  \x1b[C
+    Expect Exact  report
+    Send Control  j
+    Send Control  a
+    Send  \x7f[C
+    Send  Testmodifystringthatshouldnotbefoundelsewhere
+    Send Control  j
+    Expect Exact  Testmodifystringthatshouldnotbefoundelsewhere
+    Send  s
+    Expect Exact  Testmodifystringthatshouldnotbefoundelsewhere
+    Terminate

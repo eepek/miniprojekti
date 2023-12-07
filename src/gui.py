@@ -7,7 +7,7 @@
 
 from textual.binding import Binding
 from textual.app import App,  ComposeResult
-# from textual.events import Key
+from textual.events import Key
 from textual.widgets import Header, Footer, Button, Input, RichLog
 from textual.containers import Center, Container
 from textual.screen import Screen
@@ -33,11 +33,9 @@ class TestScreen(Screen):
         yield Button("One", id="one")
         yield Button("Two", id="two")
 
-    # def on_key(self, event: Button._on_key) -> None:
-    #     """Pass"""
-    #     # self.query_one(RichLog).write(event)
-    #     self.query_one(RichLog).write(event)
-    #     Button.press(self)
+    def on_key(self, event: Key) -> None:
+        """Pass"""
+        self.query_one(RichLog).write(event)
 
     def on_input_changed(self, message: Input.Changed):
         """Test function"""
@@ -66,8 +64,10 @@ class GUI(App[None]):
         self.show_all = Button("Show all BibTex references", id="toBibtex")
         self.list_keys = Button("List by key", id="listAll")
         self.add_new = Button("Add new", id="addNew")
-        self.add_from_bib = Button("Add references from .bib file", id="addFromBib")
-        self.save_to_bib = Button("Save references to .bib file", id="saveToBib")
+        self.add_from_bib = Button(
+            "Add references from .bib file", id="addFromBib")
+        self.save_to_bib = Button(
+            "Save references to .bib file", id="saveToBib")
 
     CSS_PATH = "screens/style.tcss"
 
@@ -85,14 +85,14 @@ class GUI(App[None]):
         yield Header(name="Vault of references")
         yield Container(
             Center(
-                    self.show_all,
-                    self.list_keys,
-                    self.add_new,
-                    self.add_from_bib,
-                    self.save_to_bib
-                    ),
-                    id="mainmenu",
-                    )
+                self.show_all,
+                self.list_keys,
+                self.add_new,
+                self.add_from_bib,
+                self.save_to_bib
+            ),
+            id="mainmenu",
+        )
         yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed):
