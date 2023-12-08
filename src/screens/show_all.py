@@ -52,6 +52,8 @@ class ShowAll(Screen[None]):
     def on_radio_set_changed(self, event: RadioSet.Changed) -> None:
         """Takes care of radio index change"""
         self.index = event.radio_set.pressed_index
+        search = self.query_one('#input', Input)
+        self.lookup_references(search.value)
 
 
     async def on_input_changed(self, message: Input.Changed) -> None:
