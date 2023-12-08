@@ -8,8 +8,8 @@
 from textual.binding import Binding
 from textual.app import App,  ComposeResult
 from textual.events import Key
+from textual.widget import Widget
 from textual.widgets import Header, Footer, Button, Input, RichLog
-from textual.containers import Center, Container
 from textual.screen import Screen
 from screens.confirmation_screen import ConfirmationScreen
 from screens.add_reference import AddReference
@@ -51,6 +51,32 @@ class TestScreen(Screen):
         self.query_one(RichLog).write(event.button.id)
 
 
+class NavigableButtonContainer(Widget):
+    """Widget for a vertical list of buttons that can be navigated with arrow keys."""
+    def __init__(self, buttons: list[Button], _id):
+        super().__init__(id=_id)
+        self.buttons = buttons
+
+    def compose(self):
+        for button in self.buttons:
+            yield button
+
+    def on_key(self, key: Key):
+        """Select next/previous button."""
+        if key.name in ["down", "up"]:
+            offset: int
+            if key.name == "down":
+                offset = 1
+            if key.name == "up":
+                offset = -1
+
+            for index, button in enumerate(self.buttons):
+                if "focus" in button.get_pseudo_classes():
+                    next_button_index = (index + offset) % len(self.buttons)
+                    self.buttons[next_button_index].focus()
+                    break
+
+
 class GUI(App[None]):
     """Main app that shows menu screen and buttons
     to open wanted subscreen"""
@@ -61,13 +87,13 @@ class GUI(App[None]):
         self.reference_repository = reference_repository
         self.reference_services = reference_services
         self.file_dialog = file_dialog
-        self.show_all = Button("Show all BibTex references", id="toBibtex")
-        self.list_keys = Button("List by key", id="listAll")
-        self.add_new = Button("Add new", id="addNew")
-        self.add_from_bib = Button(
-            "Add references from .bib file", id="addFromBib")
-        self.save_to_bib = Button(
-            "Save references to .bib file", id="saveToBib")
+        self.buttons = [
+            Button("Show all BibTex references", id="toBibtex"),
+            Button("List by key", id="listAll"),
+            Button("Add new", id="addNew"),
+            Button("Add references from .bib file", id="addFromBib"),
+            Button("Save references to .bib file", id="saveToBib")
+        ]
 
     CSS_PATH = "screens/style.tcss"
 
@@ -83,16 +109,7 @@ class GUI(App[None]):
 
     def compose(self) -> ComposeResult:
         yield Header(name="Vault of references")
-        yield Container(
-            Center(
-                self.show_all,
-                self.list_keys,
-                self.add_new,
-                self.add_from_bib,
-                self.save_to_bib
-            ),
-            id="mainmenu",
-        )
+        yield NavigableButtonContainer(self.buttons, _id="mainmenu")
         yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed):
