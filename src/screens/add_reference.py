@@ -14,7 +14,6 @@ from textual.containers import Center
 from textual.screen import Screen
 from services.reference_services import ReferenceServices
 from entities.reference import ReferenceType
-from constants import TECHREPORT_KEYS, INPROCEEDINGS_KEYS
 
 
 class AddReference(Screen):
@@ -36,13 +35,15 @@ class AddReference(Screen):
         self.services = reference_services
 
     def compose(self) -> ComposeResult:
-        reference_types = [
-            Option("TechReport", id="techreport"),
-            Option("Inproceedings", id="inproceedings")
-        ]
+        reference_types = [Option(literal, id=literal) for literal in ReferenceType.get_literals()]
         yield Header()
         yield Center(OptionList(*reference_types, id="option_list"))
         yield Footer()
+
+    def on_key(self, event: Key):
+        """Pass"""
+        if event.key == "enter":
+            self.action_open_option()
 
     @on(OptionList.OptionMessage)
     def user_selected(self, event: OptionList.OptionSelected):
@@ -51,7 +52,7 @@ class AddReference(Screen):
         Args:
             event (OptionList.OptionSelected): Textual message
         """
-        self.option_id = "techreport" if event.option_index == 0 else "inproceedings"
+        self.option_id = event.option_id
 
     def action_open_option(self):
         """Opens form for selected reference type
@@ -77,8 +78,8 @@ class ReferenceForm(Screen[dict]):
     BINDINGS = [("h", "save", "Save"), ("escape", "cancel", "Cancel")]
 
     def __init__(self, reference_type: str) -> None:
-        self.keys = TECHREPORT_KEYS if reference_type == "techreport" else INPROCEEDINGS_KEYS
         self.reference_type = ReferenceType(reference_type)
+        self.keys = self.reference_type.get_keys()
         self.inputs = [Input(placeholder=field, id=field, classes="input-field")
                        for field in self.keys]
         super().__init__()

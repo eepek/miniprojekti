@@ -10,8 +10,8 @@ class ReferenceType(Enum):
 
     The enum value for each type is the bibtex literal for that type.
     """
-    INPROCEEDINGS = "inproceedings"
     TECHREPORT = "techreport"
+    INPROCEEDINGS = "inproceedings"
     ARTICLE = "article"
     PHD = "phd"
 

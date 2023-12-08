@@ -13,8 +13,8 @@ As A User I Want The App To Use Database File
     Spawn  python3 src/index_gui.py
     Expect  GUI
     Send  a
-    Expect  TechReport
-    Expect  Inproceedings
+    Expect  techreport
+    Expect  inproceedings
     Send  o
     Expect  title
     Send Line  test_title
