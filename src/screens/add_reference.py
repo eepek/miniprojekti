@@ -80,12 +80,23 @@ class ReferenceForm(Screen[dict]):
     def __init__(self, reference_type: str) -> None:
         self.reference_type = ReferenceType(reference_type)
         self.keys = self.reference_type.get_keys()
-        self.inputs = [Input(placeholder=field, id=field, classes="input-field")
-                       for field in self.keys]
+        self.mandatory_keys = self.reference_type.get_mandatory_keys()
+        self.inputs = [Input(
+            placeholder=f"{field} {self.get_mandatory_text(field)}",
+            id=field,
+            classes="input-field")
+            for field in self.keys]
         super().__init__()
         self.new_reference = {}
         self.save_button = Button("Save", id="save")
         self.cancel_button = Button("Cancel", id="cancel")
+
+    def get_mandatory_text(self, field):
+        """Return string for mandatory field."""
+        if field in self.mandatory_keys:
+            return "(mandatory)"
+
+        return ""
 
     def compose(self):
 
