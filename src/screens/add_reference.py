@@ -31,6 +31,7 @@ class AddReference(Screen):
 
     def __init__(self, reference_services: ReferenceServices) -> None:
         super().__init__()
+        self.sub_title = "Add new reference"
         self.option_id = ""
         self.services = reference_services
 
@@ -78,7 +79,9 @@ class ReferenceForm(Screen[dict]):
     BINDINGS = [("h", "save", "Save"), ("escape", "cancel", "Cancel")]
 
     def __init__(self, reference_type: str) -> None:
+        super().__init__()
         self.reference_type = ReferenceType(reference_type)
+        self.sub_title = f"Add new {self.reference_type.value}"
         self.keys = self.reference_type.get_keys()
         self.mandatory_keys = self.reference_type.get_mandatory_keys()
         self.inputs = [Input(
@@ -86,7 +89,6 @@ class ReferenceForm(Screen[dict]):
             id=field,
             classes="input-field")
             for field in self.keys]
-        super().__init__()
         self.new_reference = {}
         self.save_button = Button("Save", id="save")
         self.cancel_button = Button("Cancel", id="cancel")
@@ -99,7 +101,7 @@ class ReferenceForm(Screen[dict]):
         return ""
 
     def compose(self):
-
+        yield Header()
         yield Center(*self.inputs)
         yield RichLog()
         yield Center(self.save_button, self.cancel_button)

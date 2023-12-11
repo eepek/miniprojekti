@@ -84,13 +84,14 @@ class GUI(App[None]):
     def __init__(self, reference_repository: ReferenceRepository,
                  reference_services: ReferenceServices, file_dialog):
         super().__init__()
+        self.title = "Vault of References"
         self.reference_repository = reference_repository
         self.reference_services = reference_services
         self.file_dialog = file_dialog
         self.buttons = [
-            Button("Show all BibTex references", id="toBibtex"),
+            Button("Show all references", id="toBibtex"),
             Button("List by key", id="listAll"),
-            Button("Add new", id="addNew"),
+            Button("Add new reference", id="addNew"),
             Button("Add references from .bib file", id="addFromBib"),
             Button("Save references to .bib file", id="saveToBib")
         ]
@@ -98,7 +99,7 @@ class GUI(App[None]):
     CSS_PATH = "screens/style.tcss"
 
     BINDINGS = [("q", "request_quit", "Quit"),
-                ("s", "show_all", "Show file"),
+                ("s", "show_all", "Show all"),
                 ("l", "list_references", "List by key"),
                 ("a", "add_reference", "Add"),
                 ("f", "add_from_bib", "Add from BibTeX file"),
@@ -129,20 +130,6 @@ class GUI(App[None]):
             self.action_add_from_bib()
         elif event.button.id == "saveToBib":
             self.action_save_to_bib()
-
-    # Korjataan tää käyttöön seuraavassa sprintissä
-    # def on_key(self, key: Key):
-    #     """Tracks if Enter button presses happen on focused
-    #     button"""
-    #     if key.key in ["enter", "ctrl+j"]:
-    #         key.stop()
-    #         if self.show_all.has_focus:
-
-    #             self.action_show_all()
-    #         elif self.list_keys.has_focus:
-    #             self.action_list_references()
-    #         elif self.add_new.has_focus:
-    #             self.action_add_reference()
 
     def action_show_all(self):
         """Opens screen that shows all references

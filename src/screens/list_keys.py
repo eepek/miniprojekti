@@ -31,6 +31,7 @@ class ListKeys(Screen[None]):
 
     def __init__(self, references: list[Reference], delete_reference, create_reference) -> None:
         super().__init__()
+        self.sub_title = "List by key"
         self.references = references
         self.option_items = [Option(ref.key, id=ref.key)
                              for ref in references]
@@ -83,9 +84,11 @@ class SingleReference(Screen[None]):
     def __init__(self, reference: Reference, start_selected_coord: Coordinate | None = None):
         super().__init__()
         self.reference = reference
+        self.sub_title = f"{self.reference.reference_type.value}: {self.reference.key}"
         self.start_selected_coord = start_selected_coord
 
     def compose(self) -> ComposeResult:
+        yield Header()
         yield SingleReferenceWidget(self.reference, self.start_selected_coord)
         yield RichLog()
         yield Footer()

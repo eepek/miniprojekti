@@ -11,7 +11,7 @@ ${right_key}  '\x1b[C'
 *** Test Cases ***
 As A User I Want The App To Use Database File
     Spawn  python3 src/index_gui.py
-    Expect  GUI
+    Expect  Vault of References
     Send  a
     Expect  techreport
     Expect  inproceedings
@@ -32,7 +32,7 @@ As A User I Want The App To Use Database File
     Send  \t
     Send  \t
     Send  h
-    Expect  Show all BibTex references
+    Expect  Show all references
     Send  l
     Expect  test_au89
     Terminate
@@ -64,7 +64,7 @@ As A User I Can Delete References By Key
     Send Control  j
     Send  d
     Send  y
-    Expect  Show all BibTex references
+    Expect  Show all references
     Send  l
     Expect  test_au89
     Send Control  j
