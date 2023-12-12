@@ -9,46 +9,13 @@ from textual.binding import Binding
 from textual.app import App,  ComposeResult
 from textual.events import Key
 from textual.widget import Widget
-from textual.widgets import Header, Footer, Button, Input, RichLog
-from textual.screen import Screen
+from textual.widgets import Header, Footer, Button
 from screens.confirmation_screen import ConfirmationScreen
 from screens.add_reference import AddReference
 from screens.list_keys import ListKeys
 from screens.show_all import ShowAll
 from services.reference_services import ReferenceServices
 from repositories.reference_repository import ReferenceRepository
-
-
-class TestScreen(Screen):
-    """Screen for general testing,
-    logs key presses
-
-    Args:
-        Screen (_type_): _description_
-    """
-
-    def compose(self) -> ComposeResult:
-        yield RichLog()
-        yield Input(placeholder="", value="value", id="id")
-        yield Button("One", id="one")
-        yield Button("Two", id="two")
-
-    def on_key(self, event: Key) -> None:
-        """Pass"""
-        self.query_one(RichLog).write(event)
-
-    def on_input_changed(self, message: Input.Changed):
-        """Test function"""
-        input_info = message.input
-        self.query_one(RichLog).write(input_info)
-
-    def on_button_pressed(self, event: Button.Pressed):
-        """
-
-        Args:
-            event (Button.Pressed): _description_
-        """
-        self.query_one(RichLog).write(event.button.id)
 
 
 class NavigableButtonContainer(Widget):
@@ -177,9 +144,6 @@ class GUI(App[None]):
             except OSError as error:
                 self.notify(f"Error saving file: {error}")
 
-    def action_test_screen(self):
-        """For testing"""
-        self.push_screen(TestScreen())
 
     def action_request_quit(self):
         """Opens screen for quit dialog"""

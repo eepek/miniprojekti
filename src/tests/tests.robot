@@ -2,6 +2,7 @@
 Library  ../AppLibrary.py
 Library  PexpectLibrary
 Library  DatabaseLibrary
+Suite Setup  Empty All Tables
 
 *** Variables ***
 ${DB_FILE}  "data/test-database.sqlite"

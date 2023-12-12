@@ -102,7 +102,7 @@ class SingleReference(Screen[None]):
     def action_delete_reference(self):
         """Calls for deletion of current
         reference from DB"""
-        # Tähän varmaan joku confirmation ois hyvä?
+
         def confirm(confirmation):
             if confirmation:
                 try:
