@@ -9,7 +9,7 @@ import sqlite3
 from textual import on, events
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Footer, OptionList, DataTable, TextArea, RichLog, Header
+from textual.widgets import Footer, OptionList, DataTable, TextArea, Header
 from textual.widgets.option_list import Option
 from textual.containers import Center
 from textual.screen import Screen
@@ -90,7 +90,6 @@ class SingleReference(Screen[None]):
     def compose(self) -> ComposeResult:
         yield Header()
         yield SingleReferenceWidget(self.reference, self.start_selected_coord)
-        yield RichLog()
         yield Footer()
 
     def action_back(self):
