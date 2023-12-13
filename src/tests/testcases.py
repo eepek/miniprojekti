@@ -29,6 +29,15 @@ INPRO_VALID2 = Reference(ReferenceType.INPROCEEDINGS, "Jonessen23", {
     "note": "Best Paper Award",
 })
 
+INPRO_SOME_FIELDS = Reference(ReferenceType.INPROCEEDINGS, "Boser92", {
+    "title": "A training algorithm for optimal margin classifiers",
+    "author": "Boser, Bernhard E and Guyon, Isabelle M and Vapnik, Vladimir N",
+    "booktitle": "Proceedings of the fifth annual workshop on Computational learning theory",
+    "year": 1992,
+    "note": "important paper"
+})
+
+
 TECHREPORT_VALID = Reference(ReferenceType.TECHREPORT, "Jones11", {
     "title": "Advancements in Network Security Protocols",
     "author": "Jones, David",
