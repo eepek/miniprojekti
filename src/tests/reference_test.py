@@ -13,7 +13,8 @@ class TestReference(unittest.TestCase):
         - One with all the optional parameters
         - One with only optional parameter "test"
         """
-        self.ref = Reference(ReferenceType.INPROCEEDINGS, "key1", {"title": "Test title"})
+        self.ref = Reference(ReferenceType.INPROCEEDINGS,
+                             "key1", {"title": "Test title"})
         self.inpro_all = Reference(ReferenceType.INPROCEEDINGS, "Key123", {
             "title": "Inproceeding name",
             "author": "Mikki Hiiri",
@@ -62,9 +63,11 @@ class TestReference(unittest.TestCase):
     def test_inproceedings_get_keys(self):
         inproceedings = ReferenceType("inproceedings")
         self.assertListEqual(inproceedings.get_keys(), INPROCEEDINGS_KEYS)
-        self.assertSetEqual(inproceedings.get_mandatory_keys(), INPROCEEDINGS_MANDATORY_KEYS)
+        self.assertSetEqual(inproceedings.get_mandatory_keys(),
+                            INPROCEEDINGS_MANDATORY_KEYS)
 
     def test_techreport_get_keys(self):
         techreport = ReferenceType("techreport")
         self.assertListEqual(techreport.get_keys(), TECHREPORT_KEYS)
-        self.assertSetEqual(techreport.get_mandatory_keys(), TECHREPORT_MANDATORY_KEYS)
+        self.assertSetEqual(techreport.get_mandatory_keys(),
+                            TECHREPORT_MANDATORY_KEYS)
