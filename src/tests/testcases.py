@@ -37,7 +37,6 @@ INPRO_SOME_FIELDS = Reference(ReferenceType.INPROCEEDINGS, "Boser92", {
     "note": "important paper"
 })
 
-
 TECHREPORT_VALID = Reference(ReferenceType.TECHREPORT, "Jones11", {
     "title": "Advancements in Network Security Protocols",
     "author": "Jones, David",

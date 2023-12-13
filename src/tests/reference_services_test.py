@@ -5,7 +5,9 @@ from repositories.reference_repository import ReferenceRepository
 from services.reference_services import ReferenceServices
 from entities.reference import ReferenceType
 from constants import MISSING_FIELD_ERROR, YEAR_FORMAT_ERROR, \
-    MONTH_FORMAT_ERROR, VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, EXTRA_KEYS_ERROR, ROOT_DIR
+    MONTH_FORMAT_ERROR, VOLUME_FORMAT_ERROR, PAGES_FORMAT_ERROR, \
+    EXTRA_KEYS_ERROR, ROOT_DIR, KEY_ALREADY_EXISTS_ERROR
+from tests.testcases import INPRO_VALID1
 
 
 class TestReferenceServices(unittest.TestCase):
@@ -21,11 +23,11 @@ class TestReferenceServices(unittest.TestCase):
         self.ref_services = ReferenceServices(self.repository)
 
         self.inpro = {
-            "title": "Title",
-            "author": "Ghost Writer",
+            "title": "On theory of relativity",
+            "author": "Smith, John",
             "booktitle": "Proceedings of the Conference",
             "year": 2023,
-            "editor": "Super Editor",
+            "editor": "Doe, Jane",
             "volume": 1,
             "series": "Proceedings in Science",
             "pages": "123--145",
@@ -38,6 +40,11 @@ class TestReferenceServices(unittest.TestCase):
         """No ValueError with all valid fields"""
         self.ref_services.create_reference(
             ReferenceType.INPROCEEDINGS, self.inpro)
+
+    def test_all_valid_fields_with_manual_key_does_not_raise_error(self):
+        """No ValueError with all valid fields"""
+        self.ref_services.create_reference(
+            ReferenceType.INPROCEEDINGS, self.inpro, manual_key="Unique25")
 
     def test_alternative_month_format_does_not_raise_error(self):
         """No Value error when month is standard English abbreviation"""
@@ -148,7 +155,8 @@ class TestReferenceServices(unittest.TestCase):
         self.inpro["author"] = "Reed, Lou"
         self.inpro["title"] = "Walk on the Wild Side"
         self.inpro["year"] = 1972
-        self.ref_services.create_reference(ReferenceType.INPROCEEDINGS, self.inpro)
+        self.ref_services.create_reference(
+            ReferenceType.INPROCEEDINGS, self.inpro)
         refs = self.repository.load_all()
         print(refs)
         res = self.ref_services.filter_references(refs, 0, "Reed, Lou")
@@ -177,3 +185,28 @@ class TestReferenceServices(unittest.TestCase):
         self.assertEqual(len(res), 1)
         res = self.ref_services.filter_references(refs, 1, "1973")
         self.assertEqual(len(res), 0)
+
+    def test_add_valid_from_file_no_errors(self):
+        """Tests that adding valid references from file does not cause errors
+        and unsupported types are just passed"""
+        res = self.ref_services.add_from_file("data/test_build.bib")
+        self.assertEqual(len(res), 0)
+
+    def test_add_extra_fields_type_returns_error(self):
+        """Tests that adding valid references from file does not cause errors"""
+        res = self.ref_services.add_from_file("data/errors.bib")
+        self.assertEqual(len(res), 2)
+        self.assertEqual(
+            str(res[0][1]), EXTRA_KEYS_ERROR)
+        self.assertEqual(
+            str(res[1][1]), KEY_ALREADY_EXISTS_ERROR)
+
+    def test_delete_reference_works(self):
+        """Tests that delete_reference reduces reference count by one"""
+        self.repository.empty_all_tables()
+        self.ref_services.add_from_file("data/test_build.bib")
+        orig_refs = self.repository.load_all()
+        orig_length = len(orig_refs)
+        self.ref_services.delete_reference(orig_refs[0].key)
+        new_length = len(self.repository.load_all())
+        self.assertEqual(orig_length, new_length+1)
