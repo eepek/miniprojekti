@@ -7,10 +7,12 @@ Suite Setup  Empty All Tables
 *** Variables ***
 ${DB_FILE}  "data/test-database.sqlite"
 ${right_key}  '\x1b[C'
+${down_key}  '\x1b[D'
 
 
 *** Test Cases ***
 As A User I Want The App To Use Database File
+    #Tests also adding of techreport reference
     Spawn  python3 src/index_gui.py
     Expect  Vault of References
     Send  a
@@ -65,6 +67,7 @@ As A User I Can Delete References By Key
     Send Control  j
     Send  d
     Send  y
+    Sleep  2s
     Expect  Show all references
     Send  l
     Expect  test_au89
@@ -98,6 +101,7 @@ As a user I want to filter references by reference type, year or author
     #Adding another entry to database
     Send  a
     Send  o
+    Sleep  1s
     Expect  title
     Send Line  Technical Report
     Send  \t
@@ -116,6 +120,7 @@ As a user I want to filter references by reference type, year or author
     Send  h
     #Filtering results
     Send  s
+    Sleep  2s
     Expect  Filter
     Send  1965
     Send  \t
@@ -125,4 +130,109 @@ As a user I want to filter references by reference type, year or author
     Expect  Powers, Austin
     #test_author is not found
     Expect  ${{['test_author', pexpect.EOF, pexpect.TIMEOUT]}}
+    Close
+
+As A User I Can Add Inproceedings Reference to App
+    Spawn  python3 src/index_gui.py
+    Expect  Vault of References
+    Send  a
+    Expect  techreport
+    Expect  inproceedings
+    Send  ${down_key}
+    Send  o
+    Expect  title
+    Send Line  test_title
+    Send  \t
+    Send Line  test_author
+    Send  \t
+    Send Line  MIT
+    Send  \t
+    Send Line  1999
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  h
+    Sleep  3s
+    Expect  Show all references
+    Send  l
+    Expect  test_au99
+    Terminate
+
+As A User I Can Add Article Reference To App
+    Spawn  python3 src/index_gui.py
+    Expect  Vault of References
+    Send  a
+    Expect  techreport
+    Expect  inproceedings
+    Expect  article
+    Send  ${down_key}
+    Send  ${down_key}
+    Send  o
+    Expect  title
+    Send Line  test_title
+    Send  \t
+    Send Line  test_author
+    Send  \t
+    Send Line  MIT
+    Send  \t
+    Send Line  2000
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  h
+    Expect  Show all references
+    Send  l
+    Expect  test_au00
+    Terminate
+
+As A User I Can Add Phd Reference To App
+    Spawn  python3 src/index_gui.py
+    Expect  Vault of References
+    Send  a
+    Expect  techreport
+    Expect  inproceedings
+    Expect  article
+    Send  ${down_key}
+    Send  ${down_key}
+    Send  ${down_key}
+    Send  o
+    Expect  title
+    Send Line  test_title
+    Send  \t
+    Send Line  test_author
+    Send  \t
+    Send Line  MIT
+    Send  \t
+    Send Line  2010
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  \t
+    Send  h
+    Sleep  2s
+    Expect  Show all references
+    Send  l
+    Expect  test_au10
+    Terminate
+
+As A User I Can List References by Key Value
+    Spawn  python3 src/index_gui.py
+    Expect  Vault of References
+    Send  l
+    Sleep  3s    Waiting for list to load
+    Expect  test_au89
+    Expect  test_au99
+    Expect  test_au00
+    Expect  test_au10
     Close
