@@ -7,10 +7,9 @@
 
 from textual.binding import Binding
 from textual.app import App,  ComposeResult
-# from textual.events import Key
-from textual.widgets import Header, Footer, Button, Input, RichLog
-from textual.containers import Center, Container
-from textual.screen import Screen
+from textual.events import Key
+from textual.widget import Widget
+from textual.widgets import Header, Footer, Button
 from screens.confirmation_screen import ConfirmationScreen
 from screens.add_reference import AddReference
 from screens.list_keys import ListKeys
@@ -19,38 +18,30 @@ from services.reference_services import ReferenceServices
 from repositories.reference_repository import ReferenceRepository
 
 
-class TestScreen(Screen):
-    """Screen for general testing,
-    logs key presses
+class NavigableButtonContainer(Widget):
+    """Widget for a vertical list of buttons that can be navigated with arrow keys."""
+    def __init__(self, buttons: list[Button], _id):
+        super().__init__(id=_id)
+        self.buttons = buttons
 
-    Args:
-        Screen (_type_): _description_
-    """
+    def compose(self):
+        for button in self.buttons:
+            yield button
 
-    def compose(self) -> ComposeResult:
-        yield RichLog()
-        yield Input(placeholder="", value="value", id="id")
-        yield Button("One", id="one")
-        yield Button("Two", id="two")
+    def on_key(self, key: Key):
+        """Select next/previous button."""
+        if key.name in ["down", "up"]:
+            offset: int
+            if key.name == "down":
+                offset = 1
+            if key.name == "up":
+                offset = -1
 
-    # def on_key(self, event: Button._on_key) -> None:
-    #     """Pass"""
-    #     # self.query_one(RichLog).write(event)
-    #     self.query_one(RichLog).write(event)
-    #     Button.press(self)
-
-    def on_input_changed(self, message: Input.Changed):
-        """Test function"""
-        input_info = message.input
-        self.query_one(RichLog).write(input_info)
-
-    def on_button_pressed(self, event: Button.Pressed):
-        """
-
-        Args:
-            event (Button.Pressed): _description_
-        """
-        self.query_one(RichLog).write(event.button.id)
+            for index, button in enumerate(self.buttons):
+                if "focus" in button.get_pseudo_classes():
+                    next_button_index = (index + offset) % len(self.buttons)
+                    self.buttons[next_button_index].focus()
+                    break
 
 
 class GUI(App[None]):
@@ -60,19 +51,22 @@ class GUI(App[None]):
     def __init__(self, reference_repository: ReferenceRepository,
                  reference_services: ReferenceServices, file_dialog):
         super().__init__()
+        self.title = "Vault of References"
         self.reference_repository = reference_repository
         self.reference_services = reference_services
         self.file_dialog = file_dialog
-        self.show_all = Button("Show all BibTex references", id="toBibtex")
-        self.list_keys = Button("List by key", id="listAll")
-        self.add_new = Button("Add new", id="addNew")
-        self.add_from_bib = Button("Add references from .bib file", id="addFromBib")
-        self.save_to_bib = Button("Save references to .bib file", id="saveToBib")
+        self.buttons = [
+            Button("Show all references", id="toBibtex"),
+            Button("List by key", id="listAll"),
+            Button("Add new reference", id="addNew"),
+            Button("Add references from .bib file", id="addFromBib"),
+            Button("Save references to .bib file", id="saveToBib")
+        ]
 
     CSS_PATH = "screens/style.tcss"
 
     BINDINGS = [("q", "request_quit", "Quit"),
-                ("s", "show_all", "Show file"),
+                ("s", "show_all", "Show all"),
                 ("l", "list_references", "List by key"),
                 ("a", "add_reference", "Add"),
                 ("f", "add_from_bib", "Add from BibTeX file"),
@@ -83,16 +77,7 @@ class GUI(App[None]):
 
     def compose(self) -> ComposeResult:
         yield Header(name="Vault of references")
-        yield Container(
-            Center(
-                    self.show_all,
-                    self.list_keys,
-                    self.add_new,
-                    self.add_from_bib,
-                    self.save_to_bib
-                    ),
-                    id="mainmenu",
-                    )
+        yield NavigableButtonContainer(self.buttons, _id="mainmenu")
         yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed):
@@ -112,20 +97,6 @@ class GUI(App[None]):
             self.action_add_from_bib()
         elif event.button.id == "saveToBib":
             self.action_save_to_bib()
-
-    # Korjataan tää käyttöön seuraavassa sprintissä
-    # def on_key(self, key: Key):
-    #     """Tracks if Enter button presses happen on focused
-    #     button"""
-    #     if key.key in ["enter", "ctrl+j"]:
-    #         key.stop()
-    #         if self.show_all.has_focus:
-
-    #             self.action_show_all()
-    #         elif self.list_keys.has_focus:
-    #             self.action_list_references()
-    #         elif self.add_new.has_focus:
-    #             self.action_add_reference()
 
     def action_show_all(self):
         """Opens screen that shows all references
@@ -173,9 +144,6 @@ class GUI(App[None]):
             except OSError as error:
                 self.notify(f"Error saving file: {error}")
 
-    def action_test_screen(self):
-        """For testing"""
-        self.push_screen(TestScreen())
 
     def action_request_quit(self):
         """Opens screen for quit dialog"""

@@ -43,7 +43,7 @@ All command line actions to be run on project main folder.
 1. To start program run:
 
 ```bash
-poetry run invoke start-gui
+poetry run python3 src/index_gui.py
 ```
 
 2. Static code analysis is run with:

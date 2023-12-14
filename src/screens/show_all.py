@@ -8,7 +8,7 @@ output
     """
 from textual import work
 from textual.app import ComposeResult
-from textual.widgets import Footer
+from textual.widgets import Header, Footer
 from textual.screen import Screen
 from textual.containers import Center, VerticalScroll
 from textual.widgets import RadioSet, RadioButton, Input, Markdown
@@ -20,6 +20,7 @@ class ShowAll(Screen[None]):
 
     def __init__(self, references, ref_services) -> None:
         super().__init__(classes="showall")
+        self.sub_title = "Show all references"
         self.references = references
         self.ref_services = ref_services
         self.border = True
@@ -29,6 +30,7 @@ class ShowAll(Screen[None]):
     BINDINGS = [("escape", "back", "Back")]
 
     def compose(self) -> ComposeResult:
+        yield Header()
         yield Input(id="input", placeholder="Filter")
         with Center():
             with RadioSet():
@@ -52,6 +54,8 @@ class ShowAll(Screen[None]):
     def on_radio_set_changed(self, event: RadioSet.Changed) -> None:
         """Takes care of radio index change"""
         self.index = event.radio_set.pressed_index
+        search = self.query_one('#input', Input)
+        self.lookup_references(search.value)
 
 
     async def on_input_changed(self, message: Input.Changed) -> None:
