@@ -9,12 +9,14 @@ import sqlite3
 from textual import on, events
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Footer, OptionList, DataTable, TextArea, RichLog, Header
+from textual.widgets import Footer, OptionList, DataTable, TextArea, Header
 from textual.widgets.option_list import Option
 from textual.containers import Center
 from textual.screen import Screen
 from textual.reactive import reactive
 from textual.coordinate import Coordinate
+from textual.events import Key
+from textual.message import Message
 from entities.reference import Reference
 from screens.confirmation_screen import ConfirmationScreen
 
@@ -29,6 +31,7 @@ class ListKeys(Screen[None]):
 
     def __init__(self, references: list[Reference], delete_reference, create_reference) -> None:
         super().__init__()
+        self.sub_title = "List by key"
         self.references = references
         self.option_items = [Option(ref.key, id=ref.key)
                              for ref in references]
@@ -37,7 +40,12 @@ class ListKeys(Screen[None]):
         self.option_id = 0
 
     BINDINGS = [("escape", "back", "Back"),
-                ("enter, ctrl+j", "open_option", "Open", )]
+                ("enter, ctrl+j, ctrl+m", "open_option", "Open", )]
+
+    def on_key(self, event: Key):
+        """Pass"""
+        if event.key == "enter":
+            self.action_open_option()
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -76,11 +84,12 @@ class SingleReference(Screen[None]):
     def __init__(self, reference: Reference, start_selected_coord: Coordinate | None = None):
         super().__init__()
         self.reference = reference
+        self.sub_title = f"{self.reference.reference_type.value}: {self.reference.key}"
         self.start_selected_coord = start_selected_coord
 
     def compose(self) -> ComposeResult:
+        yield Header()
         yield SingleReferenceWidget(self.reference, self.start_selected_coord)
-        yield RichLog()
         yield Footer()
 
     def action_back(self):
@@ -92,7 +101,7 @@ class SingleReference(Screen[None]):
     def action_delete_reference(self):
         """Calls for deletion of current
         reference from DB"""
-        # Tähän varmaan joku confirmation ois hyvä?
+
         def confirm(confirmation):
             if confirmation:
                 try:
@@ -103,6 +112,18 @@ class SingleReference(Screen[None]):
                     self.app.notify("Error, could not delete reference.")
 
         self.app.push_screen(ConfirmationScreen('delete this entry'), confirm)
+
+
+class SingleLineTextArea(TextArea):
+    """TextArea with new line disabled."""
+    async def _on_key(self, event: events.Key):
+        if event.key in ["enter", "ctrl+j"]:
+            event.prevent_default()
+            self.post_message(ModifyField())
+
+
+class ModifyField(Message):
+    """Message sent when hitting enter on modified field."""
 
 
 class SingleReferenceWidget(Widget):
@@ -129,7 +150,7 @@ class SingleReferenceWidget(Widget):
                               column=self.start_selected_coord.column)
         yield table
 
-        t = TextArea(classes="modify-field")
+        t = SingleLineTextArea(classes="modify-field")
         t.show_line_numbers = False
         t.visible = False
         yield t
@@ -169,12 +190,11 @@ class SingleReferenceWidget(Widget):
         """If clicked on another cell, close field modify input."""
         self.modify_field = None
 
-    def on_key(self, event: events.Key):
-        """This will detect whether to open/close the field modify input,
-        or to send new modified value.
-        """
+    @on(ModifyField)
+    def field_modified(self):
+        """Catch message from modify field."""
         table = self.query_one(DataTable)
-        if event.key == "ctrl+j" and self.modify_field is not None:
+        if self.modify_field is not None:
             field = self.query_one(TextArea)
             try:
                 self.app.reference_services.validate_field(self.modify_field[1], field.text)
@@ -187,7 +207,11 @@ class SingleReferenceWidget(Widget):
                 self.app.switch_screen(SingleReference(self.reference, table.cursor_coordinate))
             except ValueError as error:
                 self.notify(f"Error: {error}", severity="error")
-        elif event.key == "ctrl+j" and table.cursor_coordinate.column == 1 \
+
+    def on_key(self, event: events.Key):
+        """Open modify field on enter. Close field on escape."""
+        table = self.query_one(DataTable)
+        if event.key in ["enter", "ctrl+j"] and table.cursor_coordinate.column == 1 \
                 and self.modify_field is None:
             row = table.cursor_coordinate.row
             field, value = table.get_row_at(row)

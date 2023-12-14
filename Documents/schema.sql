@@ -14,7 +14,10 @@ CREATE TABLE Bibrefs (
     pages TEXT,
     address TEXT,
     month TEXT,
-    note TEXT
+    note TEXT,
+    annote TEXT,
+    school TEXT,
+    journal TEXT
 );    
 
 CREATE TABLE Authors (

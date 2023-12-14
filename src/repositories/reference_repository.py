@@ -1,44 +1,35 @@
 """Module for saving references"""
 from entities.reference import Reference, ReferenceType
-from constants import KEY_DOES_NOT_EXIST_ERROR
+from constants import KEY_DOES_NOT_EXIST_ERROR, INVALID_REFERENCE_TYPE_ERROR
 from database_connection import get_database_connection
 
 
 class ReferenceRepository:
     """Class that interacts with database.
-    Currently using .bib file in the folder /data/
     """
 
     def __init__(self):
-        self._connection = get_database_connection()  # temp should be init parameter
+        """Class constructor, initializes database connection"""
+        self._connection = get_database_connection()
 
     def save_to_file(self, file_path):
         """Save database to file in BibTeX form."""
         with open(file_path, "w", encoding="utf-8") as references_data:
-            for reference in self.load_all_from_database():
+            for reference in self.load_all():
                 references_data.write(str(reference))
                 references_data.write("\n")
 
     def save(self, reference):
-        """Saves reference into references list
+        """Saves reference into database
         which can be read when displaying references
         to user
 
         Args:
             reference (Reference): Reference to be saved
         """
-        # tallentaa database
-        self.save_to_db(reference)
-
-    def save_to_db(self, reference):
-        """Saves reference into database
-
-        """
 
         cursor = self._connection.cursor()
-        print(reference.reference_type)
-        print(reference.key)
-        print(reference.fields)
+
         sql = """INSERT INTO Authors (author) VALUES (:author) ON CONFLICT DO NOTHING"""
         cursor.execute(sql, {"author": reference.fields["author"]})
         self._connection.commit()
@@ -81,14 +72,14 @@ class ReferenceRepository:
         sql = """INSERT INTO Bibrefs (
                     key, title, author_id, year, institution_id, booktitle_id, editor_id,
                     referencetype_id, volume, type_id, number, series_id, pages, address,
-                    month, note, annote
+                    month, note, annote, school, journal
               ) VALUES (?, ?, (SELECT id FROM Authors WHERE author = ?), ?,
               (SELECT id FROM Institutions WHERE institution = ?),
               (SELECT id FROM Booktitles WHERE booktitle = ?),
               (SELECT id FROM Editors WHERE editor = ?),
               (SELECT id FROM Referencetypes WHERE referencetype = ?), ?,
               (SELECT id FROM Types WHERE type = ?), ?,
-              (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?, ?)
+              (SELECT id FROM Series WHERE series = ?), ?, ?, ?, ?, ?, ?, ?)
             """
         values = (
             reference.key, reference.fields["title"],
@@ -105,23 +96,19 @@ class ReferenceRepository:
             None if "address" not in reference.fields else reference.fields["address"],
             None if "month" not in reference.fields else reference.fields["month"],
             None if "note" not in reference.fields else reference.fields["note"],
-            None if "annote" not in reference.fields else reference.fields["annote"]
+            None if "annote" not in reference.fields else reference.fields["annote"],
+            None if "school" not in reference.fields else reference.fields["school"],
+            None if "journal" not in reference.fields else reference.fields["journal"]
         )
 
         cursor.execute(sql, values)
         self._connection.commit()
 
     def load_all(self):
-        """Returns all the references currently in
-        working memory on references list
+        """Loads all references from database
 
-        Returns:
-            list: List of all references
+        Returns all references from database
         """
-        return self.load_all_from_database()
-
-    def load_all_from_database(self):
-        """Returns all references from database"""
 
         cursor = self._connection.cursor()
 
@@ -132,7 +119,7 @@ class ReferenceRepository:
             return []
         references = []
         for r in row:
-            references.append(self.load_one_from_database(r[0]))
+            references.append(self.load_one(r[0]))
 
         return references
 
@@ -146,28 +133,23 @@ class ReferenceRepository:
         Returns:
             Reference: Reference or subclass object
         """
-        return self.load_one_from_database(search_key)
-
-    def load_one_from_database(self, search_key):
-        """Retrieves reference by key
-        """
         cursor = self._connection.cursor()
 
         sql = """
-    SELECT Referencetypes.referencetype, Bibrefs.key, Bibrefs.title, Authors.author, Bibrefs.year,
-           Institutions.institution, Booktitles.booktitle, Editors.editor, Bibrefs.volume, 
-           Types.type, Bibrefs.number, Series.series, Bibrefs.pages, Bibrefs.address,
-           Bibrefs.month, Bibrefs.note, Bibrefs.annote
-    FROM Bibrefs
-    LEFT JOIN Authors ON Bibrefs.author_id = Authors.id
-    LEFT JOIN Institutions ON Bibrefs.institution_id = Institutions.id
-    LEFT JOIN Booktitles ON Bibrefs.booktitle_id = Booktitles.id
-    LEFT JOIN Editors ON Bibrefs.editor_id = Editors.id
-    LEFT JOIN Types ON Bibrefs.type_id = Types.id
-    LEFT JOIN Series ON Bibrefs.series_id = Series.id
-    LEFT JOIN Referencetypes ON Bibrefs.referencetype_id = Referencetypes.id
-    WHERE Bibrefs.key = ?
-"""
+                SELECT Referencetypes.referencetype, Bibrefs.key, Bibrefs.title, Authors.author, Bibrefs.year,
+                    Institutions.institution, Booktitles.booktitle, Editors.editor, Bibrefs.volume, 
+                    Types.type, Bibrefs.number, Series.series, Bibrefs.pages, Bibrefs.address,
+                    Bibrefs.month, Bibrefs.note, Bibrefs.annote, Bibrefs.school, Bibrefs.journal
+                FROM Bibrefs
+                LEFT JOIN Authors ON Bibrefs.author_id = Authors.id
+                LEFT JOIN Institutions ON Bibrefs.institution_id = Institutions.id
+                LEFT JOIN Booktitles ON Bibrefs.booktitle_id = Booktitles.id
+                LEFT JOIN Editors ON Bibrefs.editor_id = Editors.id
+                LEFT JOIN Types ON Bibrefs.type_id = Types.id
+                LEFT JOIN Series ON Bibrefs.series_id = Series.id
+                LEFT JOIN Referencetypes ON Bibrefs.referencetype_id = Referencetypes.id
+                WHERE Bibrefs.key = ?
+            """
         key = (search_key, )
         cursor.execute(sql, key)
 
@@ -206,14 +188,43 @@ class ReferenceRepository:
             }
             return Reference(ReferenceType.INPROCEEDINGS, row[1], reference_fields)
 
-        raise ValueError(KEY_DOES_NOT_EXIST_ERROR)
+        if row[0] == "ReferenceType.ARTICLE":
+            reference_fields = {
+                "title": row["title"],
+                "author": row["author"],
+                "journal": row["journal"],
+                "year": row["year"],
+                "volume": row["volume"],
+                "number": row["number"],
+                "pages": row["pages"],
+                "month": row["month"],
+                "note": row["note"]
+            }
+            return Reference(ReferenceType.ARTICLE, row[1], reference_fields)
+
+        if row[0] == "ReferenceType.PHD":
+            reference_fields = {
+                "title": row["title"],
+                "author": row["author"],
+                "school": row["school"],
+                "year": row["year"],
+                "type": row["type"],
+                "address": row["address"],
+                "month": row["month"],
+                "note": row["note"]
+            }
+            return Reference(ReferenceType.PHD, row[1], reference_fields)
+
+        raise ValueError(INVALID_REFERENCE_TYPE_ERROR)
 
     def delete_from_db(self, search_key):
         """Deletes reference from database by key"""
 
         cursor = self._connection.cursor()
 
-        cursor.execute("delete from Bibrefs where key = ?", (search_key, ))
+        sql = "DELETE FROM Bibrefs WHERE key = ?"
+        key = (search_key, )
+        cursor.execute(sql, key)
 
         self._connection.commit()
 
@@ -224,7 +235,7 @@ class ReferenceRepository:
         Returns:
             int: Amount of similar keys
         """
-        return sum(key in reference.key for reference in self.load_all_from_database())
+        return sum(key in reference.key for reference in self.load_all())
 
     def empty_all_tables(self):
         """Deletes all rows from all database tables
@@ -233,7 +244,8 @@ class ReferenceRepository:
         cursor = self._connection.cursor()
         tables = ["Bibrefs", "Authors", "Institutions", "Booktitles",
                   "Editors", "Series", "Types", "Referencetypes"]
+        sql = "DELETE FROM"
         for table in tables:
-            cursor.execute(f"delete from {table}")
+            cursor.execute(f"{sql} {table}")
 
         self._connection.commit()

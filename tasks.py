@@ -1,16 +1,5 @@
 from invoke import task
 
-
-@task
-def start(c):
-    c.run('python3 src/index.py', pty=True)
-
-
-@task
-def start_gui(c):
-    c.run('python3 src/index_gui.py', pty=True)
-
-
 @task
 def test(c):
     c.run('pytest src', pty=True)
