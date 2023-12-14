@@ -6,7 +6,6 @@ from database_connection import get_database_connection
 
 class ReferenceRepository:
     """Class that interacts with database.
-    Currently using .bib file in the folder /data/
     """
 
     def __init__(self):
